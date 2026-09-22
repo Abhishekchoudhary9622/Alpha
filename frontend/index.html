@@ -12,7 +12,7 @@
   <!-- Chart.js with animation support -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   
-  <link rel="stylesheet" href="/static/styles/main.css?v=20260923_REAL_DATA_INSTITUTIONAL_V1">
+  <link rel="stylesheet" href="/static/styles/main.css?v=20260923_CLEAN_MINIMAL_V2">
   <!-- Google Identity Services (GIS) SDK -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -1060,66 +1060,53 @@
              PANEL: IPO INTELLIGENCE RADAR & LIVE GMP PREDICTOR
              =================================================================== -->
         <section id="panel-ipos" class="view-panel">
-          <div class="multiasset-hero-banner">
-            <div class="multiasset-hero-left">
-              <div class="advisory-badge-pill">
-                <span class="badge-sparkle">✦</span>
-                <span>Institutional IPO Intelligence Engine</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h2 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 0;">🚀 IPO Intelligence Radar</h2>
+                <span class="badge-pill badge-green" style="font-size: 10px; padding: 2px 7px;">LIVE GMP FEEDS</span>
               </div>
-              <h2 class="multiasset-hero-headline">🚀 IPO Radar & Live Grey Market Premium (GMP)</h2>
-              <p class="multiasset-hero-subhead">
-                Live Grey Market Premium tracking, subscription demand heatmaps, balance-sheet valuation audits, and definitive Apply vs Avoid verdicts for Mainboard & SME IPOs.
-              </p>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Real-time Grey Market Premiums, subscription demand, and listing gain forecasts</div>
             </div>
-            <div class="multiasset-hero-stats">
-              <div class="multiasset-stat-tile green" onclick="window.filterIpoCategory('apply')">
-                <span class="stat-tile-val" id="ipo-stat-apply">2</span>
-                <span class="stat-tile-lbl">Strong Apply</span>
+            <div style="display: flex; gap: 8px;">
+              <div class="multiasset-stat-tile green" onclick="window.filterIpoCategory('apply')" style="padding: 6px 14px; min-width: 80px;">
+                <span class="stat-tile-val" id="ipo-stat-apply" style="font-size: 16px;">2</span>
+                <span class="stat-tile-lbl" style="font-size: 10px;">Apply</span>
               </div>
-              <div class="multiasset-stat-tile blue" onclick="window.filterIpoCategory('longterm')">
-                <span class="stat-tile-val" id="ipo-stat-longterm">1</span>
-                <span class="stat-tile-lbl">Long Term</span>
+              <div class="multiasset-stat-tile blue" onclick="window.filterIpoCategory('longterm')" style="padding: 6px 14px; min-width: 80px;">
+                <span class="stat-tile-val" id="ipo-stat-longterm" style="font-size: 16px;">1</span>
+                <span class="stat-tile-lbl" style="font-size: 10px;">Long-Term</span>
               </div>
-              <div class="multiasset-stat-tile yellow" onclick="window.filterIpoCategory('caution')">
-                <span class="stat-tile-val" id="ipo-stat-caution">1</span>
-                <span class="stat-tile-lbl">Caution</span>
+              <div class="multiasset-stat-tile yellow" onclick="window.filterIpoCategory('caution')" style="padding: 6px 14px; min-width: 80px;">
+                <span class="stat-tile-val" id="ipo-stat-caution" style="font-size: 16px;">1</span>
+                <span class="stat-tile-lbl" style="font-size: 10px;">Caution</span>
               </div>
-              <div class="multiasset-stat-tile red" onclick="window.filterIpoCategory('avoid')">
-                <span class="stat-tile-val" id="ipo-stat-avoid">2</span>
-                <span class="stat-tile-lbl">Avoid</span>
+              <div class="multiasset-stat-tile red" onclick="window.filterIpoCategory('avoid')" style="padding: 6px 14px; min-width: 80px;">
+                <span class="stat-tile-val" id="ipo-stat-avoid" style="font-size: 16px;">2</span>
+                <span class="stat-tile-lbl" style="font-size: 10px;">Avoid</span>
               </div>
             </div>
           </div>
 
           <!-- Filter Bar -->
-          <div class="advisory-filter-bar">
+          <div class="advisory-filter-bar" style="margin-bottom: 16px;">
             <div class="advisory-tabs-group">
-              <button class="adv-tab-btn active" id="ipo-tab-all" onclick="window.filterIpoCategory('all', this)">
-                All IPOs (<span id="ipo-count-all">6</span>)
-              </button>
-              <button class="adv-tab-btn" id="ipo-tab-apply" onclick="window.filterIpoCategory('apply', this)">
-                🟢 Strong Apply (<span id="ipo-count-apply">2</span>)
-              </button>
-              <button class="adv-tab-btn" id="ipo-tab-gmp" onclick="window.filterIpoCategory('high-gmp', this)">
-                🔥 High GMP (&gt;40%) (<span id="ipo-count-gmp">2</span>)
-              </button>
-              <button class="adv-tab-btn" id="ipo-tab-mainboard" onclick="window.filterIpoCategory('mainboard', this)">
-                🏛️ Mainboard (<span id="ipo-count-mainboard">4</span>)
-              </button>
-              <button class="adv-tab-btn" id="ipo-tab-sme" onclick="window.filterIpoCategory('sme', this)">
-                ⚡ SME IPOs (<span id="ipo-count-sme">2</span>)
-              </button>
+              <button class="adv-tab-btn active" id="ipo-tab-all" onclick="window.filterIpoCategory('all', this)">All IPOs (<span id="ipo-count-all">6</span>)</button>
+              <button class="adv-tab-btn" id="ipo-tab-apply" onclick="window.filterIpoCategory('apply', this)">🟢 Strong Apply</button>
+              <button class="adv-tab-btn" id="ipo-tab-gmp" onclick="window.filterIpoCategory('high-gmp', this)">🔥 High GMP (&gt;40%)</button>
+              <button class="adv-tab-btn" id="ipo-tab-mainboard" onclick="window.filterIpoCategory('mainboard', this)">🏛️ Mainboard</button>
+              <button class="adv-tab-btn" id="ipo-tab-sme" onclick="window.filterIpoCategory('sme', this)">⚡ SME</button>
             </div>
             <div class="adv-search-box">
               <span>🔍</span>
-              <input type="text" id="ipo-filter-input" placeholder="Search IPO by company or sector..." oninput="window.filterIpoSearch(this.value)">
+              <input type="text" id="ipo-filter-input" placeholder="Search IPOs..." oninput="window.filterIpoSearch(this.value)">
             </div>
           </div>
 
           <!-- IPO Cards Container -->
           <div class="ipo-cards-grid" id="ipo-cards-container">
             <div style="padding: 40px; text-align: center; color: var(--text-muted); grid-column: 1/-1;">
-              Loading real-time IPO intelligence and GMP feeds...
+              Loading real-time IPO intelligence...
             </div>
           </div>
         </section>
@@ -1128,66 +1115,77 @@
              PANEL: DIRECT MUTUAL FUNDS & SIP WEALTH MACHINE
              =================================================================== -->
         <section id="panel-mutual-funds" class="view-panel">
-          <div class="multiasset-hero-banner">
-            <div class="multiasset-hero-left">
-              <div class="advisory-badge-pill">
-                <span class="badge-sparkle">✦</span>
-                <span>Zero-Commission Direct Fund Rankings</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h2 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 0;">💎 Direct Mutual Funds & SIP Machine</h2>
+                <span class="badge-pill badge-purple" style="font-size: 10px; padding: 2px 7px;">DIRECT 0% COMMISSION</span>
               </div>
-              <h2 class="multiasset-hero-headline">💎 Direct Mutual Funds & SIP Wealth Builder</h2>
-              <p class="multiasset-hero-subhead">
-                Curated top-performing Direct-Growth funds across Flexi Cap, Index, Mid Cap & Small Cap with rolling Sharpe ratios, expense drag audits, and custom portfolio allocation.
-              </p>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Institutional fund rankings, expense drag audits, and compounding wealth planner</div>
             </div>
-            <div class="multiasset-hero-stats">
-              <div class="multiasset-stat-tile purple" onclick="window.filterMfCategory('Flexi Cap')">
-                <span class="stat-tile-val">24.5%</span>
-                <span class="stat-tile-lbl">Top Flexi 5Y</span>
+            <div style="display: flex; gap: 8px;">
+              <div class="multiasset-stat-tile purple" onclick="window.filterMfCategory('Flexi Cap')" style="padding: 6px 14px; min-width: 90px;">
+                <span class="stat-tile-val" style="font-size: 16px; color: #c084fc;">24.5%</span>
+                <span class="stat-tile-lbl" style="font-size: 10px;">Flexi 5Y</span>
               </div>
-              <div class="multiasset-stat-tile green" onclick="window.filterMfCategory('Small Cap')">
-                <span class="stat-tile-val">38.6%</span>
-                <span class="stat-tile-lbl">Small Cap 5Y</span>
+              <div class="multiasset-stat-tile green" onclick="window.filterMfCategory('Small Cap')" style="padding: 6px 14px; min-width: 90px;">
+                <span class="stat-tile-val" style="font-size: 16px; color: #34d399;">38.6%</span>
+                <span class="stat-tile-lbl" style="font-size: 10px;">Small 5Y</span>
               </div>
-              <div class="multiasset-stat-tile blue" onclick="window.filterMfCategory('Large Cap Index')">
-                <span class="stat-tile-val">0.18%</span>
-                <span class="stat-tile-lbl">Low Expense</span>
+              <div class="multiasset-stat-tile blue" onclick="window.filterMfCategory('Large Cap Index')" style="padding: 6px 14px; min-width: 90px;">
+                <span class="stat-tile-val" style="font-size: 16px; color: #60a5fa;">0.18%</span>
+                <span class="stat-tile-lbl" style="font-size: 10px;">Low Cost</span>
               </div>
             </div>
           </div>
 
           <div class="mf-layout-grid">
-            <!-- Left: Interactive SIP Wealth Machine -->
+            <!-- Left: Interactive Modern SIP Wealth Machine -->
             <div class="sip-machine-panel">
               <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 10px;">
-                <div style="font-size: 15px; font-weight: 800; color: #38bdf8; display: flex; align-items: center; gap: 6px;">
+                <div style="font-size: 14px; font-weight: 800; color: #38bdf8; display: flex; align-items: center; gap: 6px;">
                   <span>⚙️</span>
-                  <span>SIP Wealth Machine</span>
+                  <span>Interactive SIP Calculator</span>
                 </div>
-                <span class="badge-pill badge-green" style="font-size: 10px;">Compounder</span>
+                <span class="badge-pill badge-green" style="font-size: 9.5px;">Compounding</span>
               </div>
 
-              <!-- Monthly Investment -->
+              <!-- Monthly Investment with Quick Preset Buttons -->
               <div class="sip-slider-group">
                 <div class="sip-slider-header">
-                  <span>Monthly SIP Amount</span>
+                  <span>Monthly SIP</span>
                   <span class="sip-slider-val" id="sip-val-monthly">₹10,000 / mo</span>
                 </div>
                 <input type="range" class="sip-range-input" id="sip-range-monthly" min="1000" max="100000" step="1000" value="10000" oninput="window.updateSipCalculation()">
+                <div style="display: flex; gap: 4px; margin-top: 4px;">
+                  <button class="ipo-lot-btn" id="sip-preset-5k" onclick="window.setSipAmount(5000, this)">₹5K</button>
+                  <button class="ipo-lot-btn active" id="sip-preset-10k" onclick="window.setSipAmount(10000, this)">₹10K</button>
+                  <button class="ipo-lot-btn" id="sip-preset-25k" onclick="window.setSipAmount(25000, this)">₹25K</button>
+                  <button class="ipo-lot-btn" id="sip-preset-50k" onclick="window.setSipAmount(50000, this)">₹50K</button>
+                  <button class="ipo-lot-btn" id="sip-preset-100k" onclick="window.setSipAmount(100000, this)">₹1L</button>
+                </div>
               </div>
 
-              <!-- Horizon -->
+              <!-- Horizon with Quick Preset Buttons -->
               <div class="sip-slider-group">
                 <div class="sip-slider-header">
                   <span>Investment Horizon</span>
                   <span class="sip-slider-val" id="sip-val-years">10 Years</span>
                 </div>
                 <input type="range" class="sip-range-input" id="sip-range-years" min="1" max="30" step="1" value="10" oninput="window.updateSipCalculation()">
+                <div style="display: flex; gap: 4px; margin-top: 4px;">
+                  <button class="ipo-lot-btn" id="sip-year-3" onclick="window.setSipYears(3, this)">3Y</button>
+                  <button class="ipo-lot-btn" id="sip-year-5" onclick="window.setSipYears(5, this)">5Y</button>
+                  <button class="ipo-lot-btn active" id="sip-year-10" onclick="window.setSipYears(10, this)">10Y</button>
+                  <button class="ipo-lot-btn" id="sip-year-15" onclick="window.setSipYears(15, this)">15Y</button>
+                  <button class="ipo-lot-btn" id="sip-year-20" onclick="window.setSipYears(20, this)">20Y</button>
+                </div>
               </div>
 
               <!-- Expected Return -->
               <div class="sip-slider-group">
                 <div class="sip-slider-header">
-                  <span>Expected CAGR Return</span>
+                  <span>Expected CAGR</span>
                   <span class="sip-slider-val" id="sip-val-rate">15.0% p.a.</span>
                 </div>
                 <input type="range" class="sip-range-input" id="sip-range-rate" min="8" max="25" step="0.5" value="15" oninput="window.updateSipCalculation()">
@@ -1196,7 +1194,7 @@
               <!-- Annual Step-Up -->
               <div class="sip-slider-group">
                 <div class="sip-slider-header">
-                  <span>Annual SIP Step-Up</span>
+                  <span>Annual Step-Up</span>
                   <span class="sip-slider-val" id="sip-val-stepup">10% / yr</span>
                 </div>
                 <input type="range" class="sip-range-input" id="sip-range-stepup" min="0" max="20" step="5" value="10" oninput="window.updateSipCalculation()">
@@ -1204,7 +1202,7 @@
 
               <!-- SIP Calculation Visual Hero -->
               <div class="sip-result-hero">
-                <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Projected Future Corpus</div>
+                <div style="font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 2px;">Estimated Future Corpus</div>
                 <div class="sip-corpus-num" id="sip-result-corpus">₹43,58,400</div>
                 
                 <div class="sip-wealth-split-bar">
@@ -1212,23 +1210,23 @@
                   <div class="sip-split-gain" id="sip-bar-gain" style="width: 56%;" title="Wealth Gain"></div>
                 </div>
 
-                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-top: 6px;">
+                <div style="display: flex; justify-content: space-between; font-size: 11px; margin-top: 4px;">
                   <div style="color: #60a5fa;">Invested: <strong id="sip-result-invested">₹19.1 L</strong></div>
                   <div style="color: #34d399;">Gain: <strong id="sip-result-gain">+₹24.5 L</strong></div>
                 </div>
               </div>
 
               <!-- Risk Profile Allocator Selector -->
-              <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px;">
-                <div style="font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">
-                  🎯 Personalized Allocation Engine
+              <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 10px;">
+                <div style="font-size: 11.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">
+                  🎯 Portfolio Allocator
                 </div>
-                <div style="display: flex; gap: 4px; margin-bottom: 10px;">
-                  <button class="adv-tab-btn active" id="mf-risk-moderate" style="font-size: 11px; padding: 4px 8px;" onclick="window.selectMfRiskProfile('moderate', this)">⚖️ Moderate</button>
-                  <button class="adv-tab-btn" id="mf-risk-aggressive" style="font-size: 11px; padding: 4px 8px;" onclick="window.selectMfRiskProfile('aggressive', this)">🚀 Aggressive</button>
-                  <button class="adv-tab-btn" id="mf-risk-conservative" style="font-size: 11px; padding: 4px 8px;" onclick="window.selectMfRiskProfile('conservative', this)">🛡️ Defensive</button>
+                <div style="display: flex; gap: 4px; margin-bottom: 8px;">
+                  <button class="adv-tab-btn active" id="mf-risk-moderate" style="font-size: 10.5px; padding: 3px 8px;" onclick="window.selectMfRiskProfile('moderate', this)">⚖️ Moderate</button>
+                  <button class="adv-tab-btn" id="mf-risk-aggressive" style="font-size: 10.5px; padding: 3px 8px;" onclick="window.selectMfRiskProfile('aggressive', this)">🚀 Aggressive</button>
+                  <button class="adv-tab-btn" id="mf-risk-conservative" style="font-size: 10.5px; padding: 3px 8px;" onclick="window.selectMfRiskProfile('conservative', this)">🛡️ Defensive</button>
                 </div>
-                <div id="mf-alloc-breakdown" style="font-size: 11.5px; color: var(--text-secondary); background: rgba(0,0,0,0.2); padding: 8px 10px; border-radius: 6px;">
+                <div id="mf-alloc-breakdown" style="font-size: 11px; color: var(--text-secondary); background: rgba(0,0,0,0.2); padding: 8px 10px; border-radius: 6px;">
                   Loading portfolio allocation...
                 </div>
               </div>
@@ -1237,15 +1235,15 @@
             <!-- Right: Mutual Funds Catalog -->
             <div>
               <!-- Category Filter Bar -->
-              <div class="advisory-filter-bar" style="margin-top: 0; margin-bottom: 14px;">
+              <div class="advisory-filter-bar" style="margin-top: 0; margin-bottom: 12px;">
                 <div class="advisory-tabs-group">
                   <button class="adv-tab-btn active" onclick="window.filterMfCategory('all', this)">All Funds (9)</button>
                   <button class="adv-tab-btn" onclick="window.filterMfCategory('Flexi Cap', this)">Flexi Cap</button>
-                  <button class="adv-tab-btn" onclick="window.filterMfCategory('Large Cap Index', this)">Index Funds</button>
+                  <button class="adv-tab-btn" onclick="window.filterMfCategory('Large Cap Index', this)">Index</button>
                   <button class="adv-tab-btn" onclick="window.filterMfCategory('Mid Cap', this)">Mid Cap</button>
                   <button class="adv-tab-btn" onclick="window.filterMfCategory('Small Cap', this)">Small Cap</button>
-                  <button class="adv-tab-btn" onclick="window.filterMfCategory('ELSS', this)">ELSS Tax Saver</button>
-                  <button class="adv-tab-btn" onclick="window.filterMfCategory('Hybrid', this)">Hybrid BAF</button>
+                  <button class="adv-tab-btn" onclick="window.filterMfCategory('ELSS', this)">ELSS</button>
+                  <button class="adv-tab-btn" onclick="window.filterMfCategory('Hybrid', this)">Hybrid</button>
                 </div>
               </div>
 
@@ -1263,18 +1261,15 @@
              PANEL: F&O DERIVATIVES & OPTION CHAIN LAB
              =================================================================== -->
         <section id="panel-fno" class="view-panel">
-          <div class="multiasset-hero-banner">
-            <div class="multiasset-hero-left">
-              <div class="advisory-badge-pill">
-                <span class="badge-sparkle">✦</span>
-                <span>Derivatives Greeks & Strike Lab</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h2 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 0;">⚡ F&O Derivatives & Option Chain</h2>
+                <span class="badge-pill badge-blue" style="font-size: 10px; padding: 2px 7px;">REAL-TIME GREEKS</span>
               </div>
-              <h2 class="multiasset-hero-headline">⚡ F&O Derivatives & Real-Time Option Chain</h2>
-              <p class="multiasset-hero-subhead">
-                Live Put-Call Ratio (PCR), Open Interest build-up heatmap, Max Pain strike equilibrium, and algorithmic options multi-leg strategy synthesis.
-              </p>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Put-Call Ratios, Max Pain strike, Open Interest walls & quantitative strategy builder</div>
             </div>
-            <div style="display: flex; gap: 8px; align-items: center;">
+            <div style="display: flex; gap: 6px;">
               <button class="adv-tab-btn active" id="fno-sym-nifty" onclick="window.loadFnoOptionChain('NIFTY', this)">NIFTY 50</button>
               <button class="adv-tab-btn" id="fno-sym-banknifty" onclick="window.loadFnoOptionChain('BANKNIFTY', this)">BANK NIFTY</button>
             </div>
@@ -1287,7 +1282,7 @@
               <span class="fno-tele-val" id="fno-val-spot" style="color: #38bdf8;">24,850.20</span>
             </div>
             <div class="fno-tele-card">
-              <span class="fno-tele-lbl">PCR (Open Interest)</span>
+              <span class="fno-tele-lbl">PCR (OI)</span>
               <span class="fno-tele-val" id="fno-val-pcr-oi" style="color: #34d399;">1.24 (Bullish)</span>
             </div>
             <div class="fno-tele-card">
@@ -1295,28 +1290,28 @@
               <span class="fno-tele-val" id="fno-val-pcr-vol" style="color: #34d399;">1.15</span>
             </div>
             <div class="fno-tele-card">
-              <span class="fno-tele-lbl">Max Pain Strike</span>
+              <span class="fno-tele-lbl">Max Pain</span>
               <span class="fno-tele-val" id="fno-val-pain" style="color: #fbbf24;">24,800.00</span>
             </div>
             <div class="fno-tele-card">
-              <span class="fno-tele-lbl">Major Support Floor</span>
+              <span class="fno-tele-lbl">Support Floor</span>
               <span class="fno-tele-val" id="fno-val-support" style="color: #10b981;">24,500.00</span>
             </div>
             <div class="fno-tele-card">
-              <span class="fno-tele-lbl">Major Resistance Wall</span>
+              <span class="fno-tele-lbl">Resistance Wall</span>
               <span class="fno-tele-val" id="fno-val-resistance" style="color: #f43f5e;">25,000.00</span>
             </div>
           </div>
 
           <!-- Strike Ladder Table Container -->
           <div class="fno-chain-table-wrap">
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 18px; border-bottom: 1px solid rgba(255,255,255,0.08);">
-              <div style="font-weight: 700; font-size: 13px; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+              <div style="font-weight: 700; font-size: 12.5px; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
                 <span>📊 Live Option Chain Strike Ladder</span>
-                <span class="badge-pill badge-green" style="font-size: 10px;">EXPIRY: CURRENT WEEK</span>
+                <span class="badge-pill badge-green" style="font-size: 9.5px;">CURRENT EXPIRY</span>
               </div>
-              <div style="font-size: 11px; color: var(--text-muted);">
-                🟢 High Put OI = Institutional Support Floor | 🔴 High Call OI = Overhead Resistance Wall
+              <div style="font-size: 10.5px; color: var(--text-muted);">
+                🟢 High Put OI = Institutional Floor | 🔴 High Call OI = Resistance Wall
               </div>
             </div>
             <table class="fno-table" id="fno-table-body">
@@ -1342,9 +1337,9 @@
           </div>
 
           <!-- Algorithmic Strategy Synthesizer -->
-          <div style="margin-top: 24px;">
-            <div style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-              <span>🎯 Algorithmic Options Strategies (Synthesized by Quant Engine)</span>
+          <div style="margin-top: 20px;">
+            <div style="font-size: 15px; font-weight: 800; color: var(--text-primary); margin-bottom: 10px;">
+              🎯 Algorithmic Options Strategies
             </div>
             <div class="fno-strategy-grid" id="fno-strategies-container">
               <!-- Rendered dynamically -->
@@ -2148,6 +2143,6 @@
   <div class="toast-bar" id="global-toast"></div>
 
   <!-- Application Logic -->
-  <script src="/static/src/app.js?v=20260923_REAL_DATA_INSTITUTIONAL_V1"></script>
+  <script src="/static/src/app.js?v=20260923_CLEAN_MINIMAL_V2"></script>
 </body>
 </html>

@@ -5191,6 +5191,28 @@ function updateSipCalculation() {
 }
 window.updateSipCalculation = updateSipCalculation;
 
+function setSipAmount(amt, btn = null) {
+  const slider = document.getElementById('sip-range-monthly');
+  if (slider) slider.value = amt;
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll('.ipo-lot-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  updateSipCalculation();
+}
+window.setSipAmount = setSipAmount;
+
+function setSipYears(years, btn = null) {
+  const slider = document.getElementById('sip-range-years');
+  if (slider) slider.value = years;
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll('.ipo-lot-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  updateSipCalculation();
+}
+window.setSipYears = setSipYears;
+
 async function selectMfRiskProfile(profile, btn) {
   if (btn && btn.parentElement) {
     btn.parentElement.querySelectorAll('.adv-tab-btn').forEach(b => b.classList.remove('active'));
