@@ -5276,3 +5276,543 @@ button, input, select, textarea {
   font-size: 11.5px;
   color: #94a3b8;
 }
+
+/* ==========================================================================
+   MULTI-ASSET VIEW SUITE: IPOs, MUTUAL FUNDS & F&O DERIVATIVES LAB
+   ========================================================================== */
+
+/* --- 1. HERO BANNERS & STAT PILLS --- */
+.multiasset-hero-banner {
+  background: linear-gradient(135deg, rgba(21, 29, 46, 0.95), rgba(14, 20, 32, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.multiasset-hero-banner::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.multiasset-hero-left {
+  max-width: 60%;
+}
+
+.multiasset-hero-headline {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 6px 0 8px;
+  letter-spacing: -0.02em;
+}
+
+.multiasset-hero-subhead {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.multiasset-hero-stats {
+  display: flex;
+  gap: 12px;
+}
+
+.multiasset-stat-tile {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  text-align: center;
+  min-width: 105px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.multiasset-stat-tile:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.multiasset-stat-tile.green { border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.08); }
+.multiasset-stat-tile.blue { border-color: rgba(59, 130, 246, 0.35); background: rgba(59, 130, 246, 0.08); }
+.multiasset-stat-tile.yellow { border-color: rgba(245, 158, 11, 0.35); background: rgba(245, 158, 11, 0.08); }
+.multiasset-stat-tile.purple { border-color: rgba(139, 92, 246, 0.35); background: rgba(139, 92, 246, 0.08); }
+.multiasset-stat-tile.red { border-color: rgba(244, 63, 94, 0.35); background: rgba(244, 63, 94, 0.08); }
+
+.stat-tile-val {
+  display: block;
+  font-size: 20px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.stat-tile-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* --- 2. IPO RADAR & GMP STYLING --- */
+.ipo-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.ipo-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ipo-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+.ipo-card.border-apply { border-left: 4px solid #10b981; }
+.ipo-card.border-longterm { border-left: 4px solid #3b82f6; }
+.ipo-card.border-caution { border-left: 4px solid #f59e0b; }
+.ipo-card.border-avoid { border-left: 4px solid #f43f5e; }
+
+.ipo-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.ipo-company-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.ipo-company-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.ipo-gmp-glow-box {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(5, 150, 105, 0.25));
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  text-align: right;
+  min-width: 110px;
+}
+
+.ipo-gmp-val {
+  font-size: 16px;
+  font-weight: 800;
+  color: #34d399;
+  font-family: var(--font-mono);
+}
+
+.ipo-gmp-pct {
+  font-size: 11px;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.ipo-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 12px;
+}
+
+.ipo-metric-cell {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ipo-metric-label {
+  color: var(--text-muted);
+}
+
+.ipo-metric-val {
+  font-weight: 600;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.ipo-sub-bars-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ipo-sub-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.ipo-sub-label {
+  width: 45px;
+  color: var(--text-secondary);
+}
+
+.ipo-progress-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.ipo-progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, #3b82f6, #10b981);
+}
+
+.ipo-sub-val {
+  width: 45px;
+  text-align: right;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.ipo-calc-row {
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+}
+
+.ipo-calc-lots-selector {
+  display: flex;
+  gap: 4px;
+}
+
+.ipo-lot-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ipo-lot-btn.active, .ipo-lot-btn:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #ffffff;
+}
+
+/* --- 3. MUTUAL FUNDS & SIP WEALTH MACHINE --- */
+.mf-layout-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 20px;
+  margin-top: 16px;
+}
+
+@media (max-width: 1100px) {
+  .mf-layout-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sip-machine-panel {
+  background: linear-gradient(160deg, rgba(26, 36, 58, 0.95), rgba(15, 23, 42, 0.98));
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.sip-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sip-slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.sip-slider-val {
+  font-weight: 800;
+  color: #38bdf8;
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+}
+
+.sip-range-input {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  outline: none;
+}
+
+.sip-range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #38bdf8;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.8);
+}
+
+.sip-result-hero {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  text-align: center;
+}
+
+.sip-corpus-num {
+  font-size: 26px;
+  font-weight: 900;
+  color: #34d399;
+  font-family: var(--font-mono);
+  letter-spacing: -0.02em;
+}
+
+.sip-wealth-split-bar {
+  display: flex;
+  height: 10px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin: 12px 0 8px;
+}
+
+.sip-split-invested {
+  background: #3b82f6;
+  height: 100%;
+  transition: width 0.3s;
+}
+
+.sip-split-gain {
+  background: #10b981;
+  height: 100%;
+  transition: width 0.3s;
+}
+
+.mf-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 16px;
+}
+
+.mf-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.25s ease;
+}
+
+.mf-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(139, 92, 246, 0.4);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.mf-return-pills {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  text-align: center;
+}
+
+.mf-cagr-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  padding: 6px 4px;
+}
+
+.mf-cagr-lbl { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+.mf-cagr-num { font-size: 13px; font-weight: 800; font-family: var(--font-mono); color: #34d399; }
+
+/* --- 4. F&O DERIVATIVES & OPTION CHAIN LAB --- */
+.fno-telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.fno-tele-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fno-tele-lbl {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.fno-tele-val {
+  font-size: 18px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
+.fno-chain-table-wrap {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  overflow-x: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.fno-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  text-align: right;
+}
+
+.fno-table th {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  white-space: nowrap;
+}
+
+.fno-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.fno-strike-cell {
+  text-align: center;
+  font-weight: 800;
+  font-size: 13px;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-primary);
+  min-width: 100px;
+}
+
+.fno-strike-atm {
+  background: rgba(59, 130, 246, 0.25) !important;
+  color: #60a5fa !important;
+  border-left: 2px solid #3b82f6;
+  border-right: 2px solid #3b82f6;
+}
+
+.fno-strike-pain {
+  background: rgba(245, 158, 11, 0.2) !important;
+  color: #fbbf24 !important;
+}
+
+.fno-oi-bar-cell {
+  position: relative;
+  width: 90px;
+}
+
+.fno-oi-bar-call {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  right: 0;
+  background: rgba(244, 63, 94, 0.25);
+  border-radius: 2px;
+  z-index: 1;
+}
+
+.fno-oi-bar-put {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  background: rgba(16, 185, 129, 0.25);
+  border-radius: 2px;
+  z-index: 1;
+}
+
+.fno-strategy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.fno-strategy-card {
+  background: linear-gradient(145deg, rgba(21, 29, 46, 0.9), rgba(15, 22, 35, 0.95));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fno-strategy-card.bullish { border-top: 3px solid #10b981; }
+.fno-strategy-card.bearish { border-top: 3px solid #f43f5e; }
+.fno-strategy-card.neutral { border-top: 3px solid #f59e0b; }
+

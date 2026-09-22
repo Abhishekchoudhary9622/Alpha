@@ -1121,6 +1121,14 @@ function switchTerminalView(viewKey) {
     loadExchangeChart(window.currentStockTicker || 'CUPID', window.currentChartDays || 1);
   } else if (viewKey === 'advisory') {
     renderAdvisoryHub();
+  } else if (viewKey === 'ipos') {
+    renderIposView();
+  } else if (viewKey === 'mutual-funds') {
+    renderMutualFundsView();
+    updateSipCalculation();
+    selectMfRiskProfile('moderate');
+  } else if (viewKey === 'fno') {
+    loadFnoOptionChain('NIFTY');
   } else if (viewKey === 'portfolio') {
     renderPortfolioCards();
     setTimeout(() => renderPortfolioSectorDonut(), 50);
@@ -4772,3 +4780,569 @@ async function clearCopilotChat() {
   triggerToast('AlphaBot conversation reset.');
 }
 window.clearCopilotChat = clearCopilotChat;
+
+// ==========================================================================
+// 4C. IPO Intelligence Radar & Live GMP Predictor
+// ==========================================================================
+
+window.ipoUniverse = [];
+window.ipoCurrentFilter = 'all';
+window.ipoSearchQuery = '';
+
+async function renderIposView() {
+  const container = document.getElementById('ipo-cards-container');
+  if (!container) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/ipos`).then(r => r.json()).catch(() => null);
+    if (res && res.ipos) {
+      window.ipoUniverse = res.ipos;
+      if (res.summary) {
+        const setTxt = (id, txt) => { const el = document.getElementById(id); if (el) el.innerText = txt; };
+        setTxt('ipo-stat-apply', res.summary.strong_apply_count || 2);
+        setTxt('ipo-stat-longterm', res.summary.apply_longterm_count || 1);
+        setTxt('ipo-stat-caution', res.summary.caution_count || 1);
+        setTxt('ipo-stat-avoid', res.summary.avoid_count || 2);
+        setTxt('ipo-count-all', res.ipos.length);
+        setTxt('ipo-count-apply', res.summary.strong_apply_count || 2);
+      }
+    }
+  } catch (e) {
+    console.error('Failed to fetch IPOs:', e);
+  }
+
+  filterIpoCards();
+}
+window.renderIposView = renderIposView;
+
+function filterIpoCategory(cat, btn) {
+  window.ipoCurrentFilter = cat;
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll('.adv-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  filterIpoCards();
+}
+window.filterIpoCategory = filterIpoCategory;
+
+function filterIpoSearch(query) {
+  window.ipoSearchQuery = (query || '').toLowerCase().trim();
+  filterIpoCards();
+}
+window.filterIpoSearch = filterIpoSearch;
+
+function filterIpoCards() {
+  const container = document.getElementById('ipo-cards-container');
+  if (!container) return;
+
+  const ipos = window.ipoUniverse || [];
+  const filter = window.ipoCurrentFilter || 'all';
+  const query = window.ipoSearchQuery || '';
+
+  let filtered = ipos.filter(ipo => {
+    if (query) {
+      const matchText = `${ipo.name} ${ipo.symbol} ${ipo.sector} ${ipo.verdict}`.toLowerCase();
+      if (!matchText.includes(query)) return false;
+    }
+    if (filter === 'all') return true;
+    if (filter === 'apply') return ipo.verdict && ipo.verdict.includes('APPLY');
+    if (filter === 'high-gmp') return (ipo.gmp_pct || 0) >= 40;
+    if (filter === 'mainboard') return (ipo.issue_size_cr || 0) >= 500;
+    if (filter === 'sme') return (ipo.issue_size_cr || 0) < 500;
+    if (filter === 'longterm') return ipo.verdict && ipo.verdict.includes('LONG TERM');
+    if (filter === 'caution') return ipo.verdict && ipo.verdict.includes('CAUTION');
+    if (filter === 'avoid') return ipo.verdict && ipo.verdict.includes('AVOID');
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="padding: 50px; text-align: center; color: var(--text-muted); grid-column: 1/-1;">
+        No IPOs found matching the selected filter.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map((ipo, idx) => {
+    const verdictStr = ipo.verdict || 'ANALYZE';
+    let borderClass = 'border-apply';
+    let badgePillClass = 'badge-green';
+    if (verdictStr.includes('STRONG APPLY')) {
+      borderClass = 'border-apply';
+      badgePillClass = 'badge-green';
+    } else if (verdictStr.includes('LONG TERM')) {
+      borderClass = 'border-longterm';
+      badgePillClass = 'badge-blue';
+    } else if (verdictStr.includes('CAUTION')) {
+      borderClass = 'border-caution';
+      badgePillClass = 'badge-yellow';
+    } else if (verdictStr.includes('AVOID')) {
+      borderClass = 'border-avoid';
+      badgePillClass = 'badge-red';
+    }
+
+    const gmpPct = ipo.gmp_pct || 0;
+    const gmpRupees = ipo.gmp_rupees || 0;
+    const priceBand = ipo.price_band || `₹${ipo.min_price || 100} – ₹${ipo.max_price || 120}`;
+    const lotSize = ipo.lot_size || 50;
+    const minInv = ipo.min_investment || ((ipo.max_price || 100) * lotSize);
+    const subQib = ipo.subscription_qib || '54.2x';
+    const subHni = ipo.subscription_hni || '32.1x';
+    const subRetail = ipo.subscription_retail || '8.4x';
+    const expectedListingPrice = (ipo.max_price || 100) + gmpRupees;
+    const defaultListingProfit = gmpRupees * lotSize;
+
+    const reasonsHtml = (ipo.strengths || []).map(s => `<div style="color: #34d399; font-size: 11.5px; margin-bottom: 2px;">✓ ${escapeHtml(s)}</div>`).join('');
+    const risksHtml = (ipo.risks || []).map(r => `<div style="color: #f87171; font-size: 11.5px; margin-bottom: 2px;">⚠ ${escapeHtml(r)}</div>`).join('');
+
+    return `
+      <div class="ipo-card ${borderClass}">
+        <div class="ipo-card-header">
+          <div>
+            <div class="ipo-company-name">${escapeHtml(ipo.name)}</div>
+            <div class="ipo-company-meta">
+              <span>🏷️ ${escapeHtml(ipo.symbol || 'IPO')}</span>
+              <span>•</span>
+              <span>🏢 ${escapeHtml(ipo.sector || 'Mainboard')}</span>
+            </div>
+          </div>
+          <div class="ipo-gmp-glow-box">
+            <div class="ipo-gmp-val">+₹${gmpRupees}</div>
+            <div class="ipo-gmp-pct">+${gmpPct}% GMP POP</div>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="badge-pill ${badgePillClass}" style="font-size: 11px; padding: 3px 8px; font-weight: 700;">
+            ${escapeHtml(verdictStr)}
+          </span>
+          <span style="font-size: 11.5px; color: var(--text-muted);">
+            Issue Size: <strong style="color: var(--text-primary); font-family: var(--font-mono);">₹${(ipo.issue_size_cr || 0).toLocaleString('en-IN')} Cr</strong>
+          </span>
+        </div>
+
+        <div class="ipo-metrics-grid">
+          <div class="ipo-metric-cell">
+            <span class="ipo-metric-label">Price Band:</span>
+            <span class="ipo-metric-val">${priceBand}</span>
+          </div>
+          <div class="ipo-metric-cell">
+            <span class="ipo-metric-label">Lot Size:</span>
+            <span class="ipo-metric-val">${lotSize} Shares</span>
+          </div>
+          <div class="ipo-metric-cell">
+            <span class="ipo-metric-label">Min Application:</span>
+            <span class="ipo-metric-val">₹${minInv.toLocaleString('en-IN')}</span>
+          </div>
+          <div class="ipo-metric-cell">
+            <span class="ipo-metric-label">Est. Listing:</span>
+            <span class="ipo-metric-val" style="color: #34d399;">₹${expectedListingPrice}</span>
+          </div>
+        </div>
+
+        <!-- Subscription Demand Gauges -->
+        <div class="ipo-sub-bars-wrap">
+          <div style="font-size: 10.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Live Subscription Demand</div>
+          <div class="ipo-sub-row">
+            <span class="ipo-sub-label">QIB</span>
+            <div class="ipo-progress-track">
+              <div class="ipo-progress-fill" style="width: ${Math.min(parseFloat(subQib)*2, 100)}%;"></div>
+            </div>
+            <span class="ipo-sub-val">${subQib}</span>
+          </div>
+          <div class="ipo-sub-row">
+            <span class="ipo-sub-label">HNI/NII</span>
+            <div class="ipo-progress-track">
+              <div class="ipo-progress-fill" style="width: ${Math.min(parseFloat(subHni)*2, 100)}%;"></div>
+            </div>
+            <span class="ipo-sub-val">${subHni}</span>
+          </div>
+          <div class="ipo-sub-row">
+            <span class="ipo-sub-label">Retail</span>
+            <div class="ipo-progress-track">
+              <div class="ipo-progress-fill" style="width: ${Math.min(parseFloat(subRetail)*8, 100)}%;"></div>
+            </div>
+            <span class="ipo-sub-val">${subRetail}</span>
+          </div>
+        </div>
+
+        <!-- 1-Click Listing Gain Calculator -->
+        <div class="ipo-calc-row">
+          <div>
+            <div style="font-size: 11px; color: var(--text-secondary);">Expected Listing Gain:</div>
+            <div id="ipo-profit-${idx}" style="font-size: 14px; font-weight: 800; font-family: var(--font-mono); color: #34d399;">
+              +₹${defaultListingProfit.toLocaleString('en-IN')}
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 11px; color: var(--text-muted);">Lots:</span>
+            <div class="ipo-calc-lots-selector">
+              <button class="ipo-lot-btn active" onclick="window.selectIpoLot(${idx}, 1, ${gmpRupees}, ${lotSize}, this)">1</button>
+              <button class="ipo-lot-btn" onclick="window.selectIpoLot(${idx}, 2, ${gmpRupees}, ${lotSize}, this)">2</button>
+              <button class="ipo-lot-btn" onclick="window.selectIpoLot(${idx}, 5, ${gmpRupees}, ${lotSize}, this)">5</button>
+              <button class="ipo-lot-btn" onclick="window.selectIpoLot(${idx}, 13, ${gmpRupees}, ${lotSize}, this)">Max</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Strengths / Risks Preview -->
+        <div style="background: rgba(0,0,0,0.2); padding: 10px 12px; border-radius: 6px;">
+          ${reasonsHtml}
+          ${risksHtml}
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 8px; margin-top: auto;">
+          <button class="btn-core" style="flex: 1; font-size: 12px; padding: 7px 10px; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.4); color: #60a5fa;" onclick="window.sendQuickPrompt('Analyze the ${escapeHtml(ipo.name)} IPO. What is the valuation, GMP trend, and should I apply for listing gains or long-term compounding?')">
+            Ask Copilot AI 💬
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectIpoLot(cardIdx, lots, gmpRupees, lotSize, btn) {
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll('.ipo-lot-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  const profitEl = document.getElementById(`ipo-profit-${cardIdx}`);
+  if (profitEl) {
+    const profit = lots * lotSize * gmpRupees;
+    profitEl.innerText = `+₹${profit.toLocaleString('en-IN')}`;
+  }
+}
+window.selectIpoLot = selectIpoLot;
+
+// ==========================================================================
+// 4D. Direct Mutual Funds & SIP Wealth Machine
+// ==========================================================================
+
+window.mfUniverse = [];
+window.mfCurrentCategory = 'all';
+
+async function renderMutualFundsView() {
+  const container = document.getElementById('mf-cards-container');
+  if (!container) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/mutual-funds`).then(r => r.json()).catch(() => null);
+    if (res && res.funds) {
+      window.mfUniverse = res.funds;
+    }
+  } catch (e) {
+    console.error('Failed to fetch Mutual Funds:', e);
+  }
+
+  filterMfCards();
+}
+window.renderMutualFundsView = renderMutualFundsView;
+
+function filterMfCategory(category, btn) {
+  window.mfCurrentCategory = category;
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll('.adv-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  filterMfCards();
+}
+window.filterMfCategory = filterMfCategory;
+
+function filterMfCards() {
+  const container = document.getElementById('mf-cards-container');
+  if (!container) return;
+
+  const funds = window.mfUniverse || [];
+  const cat = window.mfCurrentCategory || 'all';
+
+  let filtered = funds;
+  if (cat !== 'all') {
+    filtered = funds.filter(f => (f.category || '').toLowerCase().includes(cat.toLowerCase()));
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="padding: 40px; text-align: center; color: var(--text-muted); grid-column: 1/-1;">
+        No funds found in "${escapeHtml(cat)}" category.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map(fund => {
+    const reasons = (fund.why_recommended || []).map(r => `<div style="color: var(--text-secondary); font-size: 11.5px; margin-bottom: 2px;">• ${escapeHtml(r)}</div>`).join('');
+
+    return `
+      <div class="mf-card">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <div style="font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 2px;">${escapeHtml(fund.name)}</div>
+            <div style="font-size: 11.5px; color: var(--text-muted);">
+              🏢 ${escapeHtml(fund.amc || 'Direct')} • <span style="color: #60a5fa;">${escapeHtml(fund.category)}</span>
+            </div>
+          </div>
+          <span class="badge-pill badge-green" style="font-size: 10px; padding: 2px 6px;">${escapeHtml(fund.plan || 'Direct')}</span>
+        </div>
+
+        <div class="mf-return-pills">
+          <div class="mf-cagr-pill">
+            <div class="mf-cagr-lbl">1Y Return</div>
+            <div class="mf-cagr-num">+${fund.cagr_1y || '0.0'}%</div>
+          </div>
+          <div class="mf-cagr-pill">
+            <div class="mf-cagr-lbl">3Y CAGR</div>
+            <div class="mf-cagr-num">+${fund.cagr_3y || '0.0'}%</div>
+          </div>
+          <div class="mf-cagr-pill">
+            <div class="mf-cagr-lbl">5Y CAGR</div>
+            <div class="mf-cagr-num" style="color: #38bdf8;">+${fund.cagr_5y || '0.0'}%</div>
+          </div>
+        </div>
+
+        <div class="ipo-metrics-grid">
+          <div class="ipo-metric-cell">
+            <span class="ipo-metric-label">Expense Ratio:</span>
+            <span class="ipo-metric-val" style="color: #34d399;">${fund.expense_ratio || 0.5}%</span>
+          </div>
+          <div class="ipo-metric-cell">
+            <span class="ipo-metric-label">Sharpe Ratio:</span>
+            <span class="ipo-metric-val">${fund.sharpe_ratio || 1.8}</span>
+          </div>
+          <div class="ipo-metric-cell">
+            <span class="ipo-metric-label">AUM Size:</span>
+            <span class="ipo-metric-val">₹${(fund.aum_cr || 0).toLocaleString('en-IN')} Cr</span>
+          </div>
+          <div class="ipo-metric-cell">
+            <span class="ipo-metric-label">Min. SIP:</span>
+            <span class="ipo-metric-val">₹${fund.min_sip || 500}</span>
+          </div>
+        </div>
+
+        <div style="background: rgba(0,0,0,0.25); padding: 8px 10px; border-radius: 6px; font-size: 11.5px; color: var(--text-secondary);">
+          <div style="font-weight: 700; color: #fbbf24; margin-bottom: 2px;">${escapeHtml(fund.verdict || '🌟 TOP RATED')}</div>
+          ${reasons}
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: auto;">
+          <button class="btn-core" style="flex: 1; font-size: 11.5px; padding: 6px 10px; background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.4); color: #c084fc;" onclick="window.sendQuickPrompt('Compare ${escapeHtml(fund.name)} with its category benchmark. Is it better for a 5-year SIP?')">
+            Analyze with Copilot 💬
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function updateSipCalculation() {
+  const monthly = parseFloat(document.getElementById('sip-range-monthly')?.value || 10000);
+  const years = parseInt(document.getElementById('sip-range-years')?.value || 10);
+  const rate = parseFloat(document.getElementById('sip-range-rate')?.value || 15);
+  const stepUpPct = parseFloat(document.getElementById('sip-range-stepup')?.value || 10) / 100;
+
+  const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+  setTxt('sip-val-monthly', `₹${monthly.toLocaleString('en-IN')} / mo`);
+  setTxt('sip-val-years', `${years} Years`);
+  setTxt('sip-val-rate', `${rate.toFixed(1)}% p.a.`);
+  setTxt('sip-val-stepup', `${(stepUpPct*100).toFixed(0)}% / yr`);
+
+  const monthlyRate = rate / 12 / 100;
+  let totalInvested = 0;
+  let currentCorpus = 0;
+  let currentMonthly = monthly;
+
+  for (let y = 1; y <= years; y++) {
+    for (let m = 1; m <= 12; m++) {
+      totalInvested += currentMonthly;
+      currentCorpus = (currentCorpus + currentMonthly) * (1 + monthlyRate);
+    }
+    currentMonthly = currentMonthly * (1 + stepUpPct);
+  }
+
+  const wealthGain = Math.max(0, currentCorpus - totalInvested);
+  const investedPct = Math.round((totalInvested / currentCorpus) * 100);
+  const gainPct = 100 - investedPct;
+
+  const formatLakhs = (val) => {
+    if (val >= 10000000) return `₹${(val / 10000000).toFixed(2)} Cr`;
+    if (val >= 100000) return `₹${(val / 100000).toFixed(1)} L`;
+    return `₹${Math.round(val).toLocaleString('en-IN')}`;
+  };
+
+  setTxt('sip-result-corpus', formatLakhs(currentCorpus));
+  setTxt('sip-result-invested', formatLakhs(totalInvested));
+  setTxt('sip-result-gain', `+${formatLakhs(wealthGain)}`);
+
+  const barInv = document.getElementById('sip-bar-invested');
+  const barGain = document.getElementById('sip-bar-gain');
+  if (barInv) barInv.style.width = `${investedPct}%`;
+  if (barGain) barGain.style.width = `${gainPct}%`;
+}
+window.updateSipCalculation = updateSipCalculation;
+
+async function selectMfRiskProfile(profile, btn) {
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll('.adv-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  const breakdownEl = document.getElementById('mf-alloc-breakdown');
+  if (!breakdownEl) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/mutual-funds/recommend?risk=${profile}&horizon=5`).then(r => r.json()).catch(() => null);
+    if (res && res.recommended_allocation) {
+      breakdownEl.innerHTML = `
+        <div style="font-weight: 700; color: #34d399; margin-bottom: 6px;">
+          ${escapeHtml(res.strategy_name)} (${escapeHtml(res.expected_cagr_range)})
+        </div>
+        ${res.recommended_allocation.map(a => `
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <span>${escapeHtml(a.fund)}</span>
+            <strong style="font-family: var(--font-mono); color: #38bdf8;">${a.weight_pct}%</strong>
+          </div>
+        `).join('')}
+      `;
+    }
+  } catch (e) {
+    breakdownEl.innerText = 'Unable to fetch dynamic allocation.';
+  }
+}
+window.selectMfRiskProfile = selectMfRiskProfile;
+
+// ==========================================================================
+// 4E. F&O Derivatives & Real-Time Option Chain Laboratory
+// ==========================================================================
+
+window.fnoCurrentSymbol = 'NIFTY';
+
+async function loadFnoOptionChain(symbol = 'NIFTY', btn = null) {
+  window.fnoCurrentSymbol = symbol;
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll('.adv-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.innerText = val; };
+
+  try {
+    const res = await fetch(`${API_BASE}/fno/option-chain?symbol=${encodeURIComponent(symbol)}`).then(r => r.json()).catch(() => null);
+    if (!res) return;
+
+    setTxt('fno-val-spot', `₹${(res.spot_price || 24850).toLocaleString('en-IN')}`);
+    setTxt('fno-val-pcr-oi', `${res.put_call_ratio_oi || 1.24} (${res.sentiment || 'Bullish'})`);
+    setTxt('fno-val-pcr-vol', `${res.put_call_ratio_vol || 1.15}`);
+    setTxt('fno-val-pain', `₹${(res.max_pain_strike || 24800).toLocaleString('en-IN')}`);
+    setTxt('fno-val-support', `₹${(res.major_support_strike || 24500).toLocaleString('en-IN')}`);
+    setTxt('fno-val-resistance', `₹${(res.major_resistance_strike || 25000).toLocaleString('en-IN')}`);
+
+    // Render Option Chain Strike Ladder
+    const tbody = document.getElementById('fno-strikes-tbody');
+    if (tbody && res.strikes) {
+      const maxOi = Math.max(...res.strikes.map(s => Math.max(s.call_oi_lakhs || 0, s.put_oi_lakhs || 0)), 1);
+
+      tbody.innerHTML = res.strikes.map(s => {
+        const isAtm = s.is_atm;
+        const isPain = s.strike_price === res.max_pain_strike;
+        let strikeClass = 'fno-strike-cell';
+        if (isAtm) strikeClass += ' fno-strike-atm';
+        if (isPain) strikeClass += ' fno-strike-pain';
+
+        const callOiPct = Math.min(((s.call_oi_lakhs || 0) / maxOi) * 100, 100);
+        const putOiPct = Math.min(((s.put_oi_lakhs || 0) / maxOi) * 100, 100);
+
+        return `
+          <tr>
+            <td class="fno-oi-bar-cell" style="text-align: left;">
+              <div class="fno-oi-bar-call" style="width: ${callOiPct}%;"></div>
+              <span style="position: relative; z-index: 2; font-weight: 700; color: #fda4af;">${s.call_oi_lakhs || '0.0'}L</span>
+            </td>
+            <td style="color: ${(s.call_change_pct || 0) >= 0 ? '#34d399' : '#f87171'};">${(s.call_change_pct || 0) > 0 ? '+' : ''}${s.call_change_pct || 0}%</td>
+            <td style="font-weight: 700; color: #f8fafc;">₹${s.call_ltp || '0.00'}</td>
+            <td class="${strikeClass}">
+              ${s.strike_price}
+              ${isAtm ? '<span style="display:block; font-size: 9px; color: #93c5fd;">ATM</span>' : ''}
+              ${isPain ? '<span style="display:block; font-size: 9px; color: #fde047;">MAX PAIN</span>' : ''}
+            </td>
+            <td style="font-weight: 700; color: #f8fafc;">₹${s.put_ltp || '0.00'}</td>
+            <td style="color: ${(s.put_change_pct || 0) >= 0 ? '#34d399' : '#f87171'};">${(s.put_change_pct || 0) > 0 ? '+' : ''}${s.put_change_pct || 0}%</td>
+            <td class="fno-oi-bar-cell" style="text-align: right;">
+              <div class="fno-oi-bar-put" style="width: ${putOiPct}%;"></div>
+              <span style="position: relative; z-index: 2; font-weight: 700; color: #86efac;">${s.put_oi_lakhs || '0.0'}L</span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Render Strategy Cards
+    const stratContainer = document.getElementById('fno-strategies-container');
+    if (stratContainer && res.recommended_strategy) {
+      const strat = res.recommended_strategy;
+      stratContainer.innerHTML = `
+        <div class="fno-strategy-card bullish">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 15px; font-weight: 800; color: #34d399;">
+              🟢 ${escapeHtml(strat.name || 'Bull Call Spread')}
+            </div>
+            <span class="badge-pill badge-green" style="font-size: 10px;">PROBABILITY: 74%</span>
+          </div>
+          <div style="font-size: 12.5px; color: var(--text-secondary);">
+            ${escapeHtml(strat.rationale || 'High PCR indicating heavy Put writing support.')}
+          </div>
+          <div class="ipo-metrics-grid">
+            <div class="ipo-metric-cell">
+              <span class="ipo-metric-label">Leg 1 (Buy):</span>
+              <span class="ipo-metric-val" style="color: #60a5fa;">${escapeHtml(strat.legs?.[0]?.description || '24,850 CE')}</span>
+            </div>
+            <div class="ipo-metric-cell">
+              <span class="ipo-metric-label">Leg 2 (Sell):</span>
+              <span class="ipo-metric-val" style="color: #f87171;">${escapeHtml(strat.legs?.[1]?.description || '25,100 CE')}</span>
+            </div>
+            <div class="ipo-metric-cell">
+              <span class="ipo-metric-label">Net Debit:</span>
+              <span class="ipo-metric-val">₹${strat.net_debit_points || 94}</span>
+            </div>
+            <div class="ipo-metric-cell">
+              <span class="ipo-metric-label">Max Profit:</span>
+              <span class="ipo-metric-val" style="color: #34d399;">₹${strat.max_profit_points || 156}</span>
+            </div>
+          </div>
+          <button class="btn-core" style="font-size: 12px; padding: 7px 10px; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); color: #34d399;" onclick="window.sendQuickPrompt('Explain the ${escapeHtml(strat.name)} strategy on ${symbol} with exact lot sizes, capital required, and stop-loss rules.')">
+            Simulate Strategy with Copilot AI 💬
+          </button>
+        </div>
+
+        <div class="fno-strategy-card neutral">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 15px; font-weight: 800; color: #fbbf24;">
+              🟡 Rangebound Iron Condor
+            </div>
+            <span class="badge-pill badge-yellow" style="font-size: 10px;">DELTA-NEUTRAL</span>
+          </div>
+          <div style="font-size: 12.5px; color: var(--text-secondary);">
+            Sell 24,500 PE + Buy 24,300 PE & Sell 25,000 CE + Buy 25,200 CE to capture theta decay.
+          </div>
+          <div class="ipo-metrics-grid">
+            <div class="ipo-metric-cell">
+              <span class="ipo-metric-label">Range Bounds:</span>
+              <span class="ipo-metric-val">24,500 – 25,000</span>
+            </div>
+            <div class="ipo-metric-cell">
+              <span class="ipo-metric-label">Net Credit:</span>
+              <span class="ipo-metric-val" style="color: #34d399;">₹68 / share</span>
+            </div>
+          </div>
+          <button class="btn-core" style="font-size: 12px; padding: 7px 10px; background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.4); color: #fbbf24;" onclick="window.sendQuickPrompt('What is the optimal Iron Condor expiry and strike selection for ${symbol} given India VIX?')">
+            Simulate Iron Condor with Copilot AI 💬
+          </button>
+        </div>
+      `;
+    }
+  } catch (e) {
+    console.error('Failed to load F&O option chain:', e);
+  }
+}
+window.loadFnoOptionChain = loadFnoOptionChain;
+
