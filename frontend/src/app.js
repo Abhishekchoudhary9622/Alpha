@@ -1405,6 +1405,11 @@ async function loadAllAppData() {
     renderScreenerTable(window.stockUniverse);
     renderLedgerTable();
     renderAdvisoryHub();
+    renderIposView();
+    renderMutualFundsView();
+    updateSipCalculation();
+    selectMfRiskProfile('moderate');
+    loadFnoOptionChain('NIFTY');
     initMarketSession();
     loadExchangeChart('CUPID', 1);
   } catch (err) {
@@ -1421,6 +1426,11 @@ async function loadAllAppData() {
     renderScreenerTable(window.stockUniverse);
     renderLedgerTable();
     renderAdvisoryHub();
+    renderIposView();
+    renderMutualFundsView();
+    updateSipCalculation();
+    selectMfRiskProfile('moderate');
+    loadFnoOptionChain('NIFTY');
     initMarketSession();
     loadExchangeChart('CUPID', 1);
   }
