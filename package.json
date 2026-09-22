@@ -1,0 +1,19 @@
+{
+  "name": "alphalens",
+  "version": "1.0.0",
+  "description": "AlphaLens — Institutional Probabilistic Market Intelligence Terminal & Multimodal ML Architecture",
+  "scripts": {
+    "dev": "python run_alphalens.py",
+    "start": "python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload",
+    "test": "python test_system.py"
+  },
+  "keywords": [
+    "fintech",
+    "market-intelligence",
+    "machine-learning",
+    "fastapi",
+    "quantitative-trading"
+  ],
+  "author": "Abhishek Choudhary",
+  "license": "MIT"
+}
