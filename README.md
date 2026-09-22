@@ -1,11 +1,11 @@
 <div align="center">
 
 # ⚡ Alpha (AlphaLens)
-### Institutional Probabilistic Market Intelligence Terminal & Multimodal ML Architecture
+### Institutional Multi-Asset Market Intelligence Terminal, Multimodal ML & Gemini AI Architecture
 
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![Google Gemini](https://img.shields.io/badge/AI-Google%20Gemini%203.6%20Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
+[![Google Gemini](https://img.shields.io/badge/AI%20LLM-Google%20Gemini%203.6%20Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
 [![Scikit-Learn](https://img.shields.io/badge/ML-Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
 [![FinBERT](https://img.shields.io/badge/NLP-FinBERT-FF6F00?style=for-the-badge&logo=huggingface&logoColor=white)](https://huggingface.co)
 [![JavaScript](https://img.shields.io/badge/Frontend-ES6%20%2F%20Vanilla%20CSS-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org)
@@ -13,8 +13,8 @@
 [![Tests](https://img.shields.io/badge/System%20Tests-16%2F16%20Passed%20(100%25)-success?style=for-the-badge)]()
 
 <p align="center">
-  <b>An institutional-grade quantitative forecasting, multi-asset advisory (Equities, IPOs, Mutual Funds, F&O), and AI Copilot intelligence platform engineered for Indian (NSE/BSE) and Global markets.</b><br/>
-  Combines calibrated machine learning ensembles, Google Gemini LLM reasoning, quantile prediction intervals, causal feature attributions (XAI), and multi-broker portfolio integration.
+  <b>An institutional-grade quantitative forecasting, multi-asset advisory (Equities, IPOs, Mutual Funds, F&O Derivatives), and AI Copilot intelligence platform engineered for Indian (NSE/BSE) and Global capital markets.</b><br/>
+  Combines calibrated machine learning ensembles, Google Gemini 3.6 Flash reasoning, quantile prediction intervals, causal feature attributions (XAI), macroeconomic regime clustering, and multi-broker portfolio integration.
 </p>
 
 ---
@@ -25,16 +25,20 @@
 
 - [Executive Summary & Core Philosophy](#-executive-summary--core-philosophy)
 - [System Architecture](#-system-architecture)
-  - [1. End-to-End System Flow](#1-end-to-end-system-flow)
-  - [2. Multimodal ML Pipeline & Modality Fusion](#2-multimodal-ml-pipeline--modality-fusion)
-  - [3. Authentication & Broker Ecosystem Architecture](#3-authentication--broker-ecosystem-architecture)
+  - [1. End-to-End Multi-Asset System Architecture](#1-end-to-end-multi-asset-system-architecture)
+  - [2. Hybrid Intelligence: Google Gemini LLM + Quantitative ML Engine](#2-hybrid-intelligence-google-gemini-llm--quantitative-ml-engine)
+  - [3. Multimodal ML Pipeline & Modality Fusion](#3-multimodal-ml-pipeline--modality-fusion)
+  - [4. Multi-Asset Decision Framework & Advisory Matrices](#4-multi-asset-decision-framework--advisory-matrices)
+  - [5. Authentication, Broker OAuth & Data Gateway](#5-authentication-broker-oauth--data-gateway)
 - [Multi-Asset Intelligence & Key Capabilities](#-multi-asset-intelligence--key-capabilities)
-  - [1. Google Gemini AI Copilot (AlphaBot)](#1-google-gemini-ai-copilot-alphabot)
-  - [2. IPO Intelligence Radar & GMP Tracking](#2-ipo-intelligence-radar--gmp-tracking)
-  - [3. Direct Mutual Funds & Personalized Allocation](#3-direct-mutual-funds--personalized-allocation)
-  - [4. F&O Derivatives & Option Chain Analytics](#4-fo-derivatives--option-chain-analytics)
-  - [5. Multimodal Stock Machine Learning & XAI](#5-multimodal-stock-machine-learning--xai)
-  - [6. Broker OAuth & FinTech Onboarding](#6-broker-oauth--fintech-onboarding)
+  - [1. Google Gemini AI Copilot (AlphaBot / ChatBot)](#1-google-gemini-ai-copilot-alphabot--chatbot)
+  - [2. IPO Intelligence Radar & Grey Market Premium (GMP)](#2-ipo-intelligence-radar--grey-market-premium-gmp)
+  - [3. Direct Mutual Funds & Personalized Portfolio Allocation](#3-direct-mutual-funds--personalized-portfolio-allocation)
+  - [4. F&O Derivatives & Real-Time Option Chain Analytics](#4-fo-derivatives--real-time-option-chain-analytics)
+  - [5. Calibrated Stock Direction Ensemble & Quantile Regressors](#5-calibrated-stock-direction-ensemble--quantile-regressors)
+  - [6. Causal Explainable AI (XAI) & Factor Breakdown](#6-causal-explainable-ai-xai--factor-breakdown)
+  - [7. Quantitative Risk Engine (VaR, CVaR, Concentration HHI)](#7-quantitative-risk-engine-var-cvar-concentration-hhi)
+  - [8. Broker OAuth & CAS Statement Parser Gateway](#8-broker-oauth--cas-statement-parser-gateway)
 - [Empirical Research & Out-of-Sample Performance](#-empirical-research--out-of-sample-performance)
 - [Repository Structure](#-repository-structure)
 - [Quickstart & Installation](#-quickstart--installation)
@@ -47,65 +51,71 @@
 
 ## 💡 Executive Summary & Core Philosophy
 
-Modern financial tools often reduce market intelligence to simplistic, uncalibrated binary directives (*"AI says BUY"*) or unconstrained generative chatbot outputs that lack mathematical rigor. **Alpha / AlphaLens** is built on an institutional quantitative paradigm:
+Modern financial tools often reduce market intelligence to simplistic, uncalibrated binary directives (*"AI says BUY"*) or unconstrained generative chatbot outputs that lack mathematical grounding. **Alpha / AlphaLens** combines **symbolic quantitative modeling** with **generative reasoning** under an institutional paradigm:
 
-$$\text{Market Data} \longrightarrow \text{Multimodal ML} \longrightarrow \text{Evidence} \longrightarrow \text{Calibrated Probability} \longrightarrow \text{Causal Drivers} \longrightarrow \text{Investor Decision}$$
+$$\text{Market Feeds (Stocks, IPOs, MFs, F&O)} \longrightarrow \text{Quant ML + Gemini AI} \longrightarrow \text{Calibrated Evidence} \longrightarrow \text{Actionable Alpha}$$
 
 ### Core Tenets:
-1. **Calibrated Probabilities over Binary Predictions:** Every directional forecast is Platt/Sigmoid calibrated to ensure a predicted 70% win rate empirically maps to a 70% historical realization rate (Brier Score: **0.2407**).
-2. **Quantile Return Prediction Intervals:** Point forecasts are augmented with 80% empirical prediction intervals derived from Pinball Loss Quantile Regressors ($\tau \in \{0.10, 0.50, 0.90\}$).
-3. **Causal Explainability (XAI):** Explicit multi-factor attribution decomposes model rationale into Technical Momentum, FinBERT Sentiment, Volume Accumulation, Benchmark Relative Strength, and Macro Regime Drivers.
-4. **Zero Blackbox Hallucinations:** Advisory tiers (*Strong Buy*, *Accumulate*, *Hold*, *Reduce*, *Avoid*) are deterministically synthesized from calibrated probability matrices and risk ceilings.
+1. **Multi-Asset Spectrum Coverage:** Unified intelligence spanning Spot Equities, Mainboard/SME IPOs (GMP & Subscriptions), Direct Mutual Funds, and Futures & Options (F&O).
+2. **Hybrid Reasoning Architecture:** Google Gemini 3.6 Flash operates on top of calibrated quantitative metrics (Platt Sigmoid probabilities, Brier Score: **0.2407**, PCR, and Max Pain strikes) ensuring zero blackbox hallucinations.
+3. **Quantile Return Prediction Intervals:** Point forecasts are augmented with 80% empirical prediction intervals derived from Pinball Loss Quantile Regressors ($\tau \in \{0.10, 0.50, 0.90\}$).
+4. **Causal Explainability (XAI):** Explicit multi-factor attribution decomposes model rationale into Technical Momentum, FinBERT Sentiment, Volume Accumulation, Benchmark Relative Strength, and Macro Regime Drivers.
 
 ---
 
 ## 🏛️ System Architecture
 
-### 1. End-to-End System Flow
+### 1. End-to-End Multi-Asset System Architecture
 
 ```mermaid
 graph TB
-    subgraph L1["1. Data Ingestion & Market Feeds"]
-        A1["NSE/BSE Daily & Intraday Feeds\n(yfinance & Direct APIs)"]
-        A2["Financial News Headlines & Press\n(FinBERT Sentiment Ingestion)"]
-        A3["Corporate Fundamentals\n(P/E, ROE, ROCE, D/E, Growth)"]
-        A4["Macro Indicators\n(NIFTY 50, Bank NIFTY, India VIX)"]
+    subgraph L1["1. Multi-Asset Data Ingestion Layer"]
+        A1["NSE / BSE Equities Feed\n(5-Year Daily OHLCV & Real-Time)"]
+        A2["IPO Radar & Grey Market\n(Issue Size, Price Band, GMP & Subscriptions)"]
+        A3["Direct Mutual Funds Database\n(1Y/3Y/5Y CAGR, Expense Ratio, AUM, Alpha)"]
+        A4["F&O Derivatives Stream\n(Option Chains, Open Interest, PCR, Max Pain)"]
+        A5["Financial News & Sentiment\n(FinBERT NLP Text Ingestion)"]
+        A6["Macro Indicators\n(NIFTY 50, Bank NIFTY, India VIX)"]
     end
 
-    subgraph L2["2. Feature Engineering & Modality Fusion"]
-        B1["40+ Technical Indicators\n(RSI-14, EMA 20/50/200, MACD, BB, ATR)"]
-        B2["FinBERT NLP Sentiment Scoring\n(0.0 to 1.0 Polarity & Magnitude)"]
-        B3["Macro Regime GMM Clustering\n(Bull Trend, Bear Trend, Volatile, Range)"]
+    subgraph L2["2. Feature Store & Modality Fusion"]
+        B1["40+ Technical Indicators\n(14D RSI, 20/50/200 EMAs, MACD, BB, ATR)"]
+        B2["Macro Regime GMM Clustering\n(Bull Trend, Bear Trend, Volatile, Range)"]
+        B3["Derivative Greek & PCR Matrices\n(Volume PCR, OI PCR, Max Pain Strikes)"]
         B4["Parquet / Vector Feature Store"]
     end
 
-    subgraph L3["3. Quant ML Inference & Calibration Engine"]
+    subgraph L3["3. Hybrid Intelligence Core (ML + Google Gemini)"]
         C1["Histogram Gradient Boosting (HGB)"]
         C2["Random Forest Classifier (RF)"]
         C3["Regularized Logistic Regression (LR)"]
-        C4["Soft-Voting Ensemble &\nPlatt / Sigmoid Calibrator"]
-        C5["Quantile Pinball Regressors\n(10th, 50th, 90th Percentiles)"]
+        C4["Platt / Sigmoid Calibrated Ensemble\n(Brier Score: 0.2407)"]
+        C5["Quantile Pinball Regressors\n(τ = 0.10, 0.50, 0.90)"]
+        C6["Google Gemini 3.6 Flash LLM\n(System Prompt Injected with Live Quant Context)"]
     end
 
-    subgraph L4["4. Risk & Causal Attribution Engine"]
-        D1["Causal Explainability Engine\n(Feature Contribution Breakdown)"]
-        D2["Quantitative Risk Engine\n(95% 1D-VaR, CVaR, Concentration HHI)"]
-        D3["Advisory Decision Matrix\n(Strong Buy, Accumulate, Hold, Reduce, Avoid)"]
+    subgraph L4["4. Domain Advisory & Risk Engines"]
+        D1["Equity Signal Engine\n(Strong Buy, Accumulate, Hold, Avoid)"]
+        D2["IPO Radar Engine\n(Strong Apply, Apply Long-Term, Caution, Avoid)"]
+        D3["Mutual Fund Allocation Engine\n(Conservative, Moderate, Aggressive Portfolios)"]
+        D4["F&O Strategy Builder\n(Bull Call Spreads, Bear Put Spreads, Iron Condors)"]
+        D5["Quantitative Risk Engine\n(95% 1D-VaR, CVaR, Concentration HHI)"]
     end
 
-    subgraph L5["5. Backend Microservices Layer (FastAPI)"]
-        E1["Market & Stock Routes\n(/api/market, /api/stocks)"]
-        E2["Auth & Gateway Engine\n(SMS OTP, Email, OAuth)"]
-        E3["Portfolio Management\n(Live Mark-to-Market P&L)"]
-        E4["Broker & CAS Parser\n(Zerodha, Upstox, CAMS/KFintech)"]
-        E5["Factor Backtester & Audit Ledger\n(Walk-Forward Simulation)"]
+    subgraph L5["5. High-Throughput REST Gateway (FastAPI)"]
+        E1["/api/market & /api/stocks"]
+        E2["/api/ipos & /api/mutual-funds"]
+        E3["/api/fno/option-chain"]
+        E4["/api/chat/message (Gemini Copilot)"]
+        E5["/api/auth/* & /api/user/portfolio/*"]
+        E6["/api/broker/* & /api/backtest"]
     end
 
     subgraph L6["6. Institutional FinTech Terminal (Frontend)"]
-        F1["MetaMint-Inspired Glassmorphic UI"]
-        F2["Dynamic Cubic-Bezier Motion System"]
-        F3["Interactive Desk Strength SVG Meter"]
-        F4["Real-Time Area Pulse Price Charts"]
+        F1["MetaMint Glassmorphic UI"]
+        F2["Floating AI Copilot (AlphaBot)"]
+        F3["Interactive Desk Strength Arc Gauge"]
+        F4["Real-Time Area Price Pulse Charts"]
         F5["Prediction Audit & Evidence Ledger"]
     end
 
@@ -118,14 +128,47 @@ graph TB
 
 ---
 
-### 2. Multimodal ML Pipeline & Modality Fusion
+### 2. Hybrid Intelligence: Google Gemini LLM + Quantitative ML Engine
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User as Investor / Trader
+    participant UI as Terminal Copilot UI
+    participant Backend as FastAPI Gateway (/api/chat/message)
+    participant Pipeline as Live Context Aggregator
+    participant Gemini as Google Gemini 3.6 Flash LLM
+    participant LocalEng as Local Heuristic Fallback
+
+    User->>UI: Types Query (e.g. "Which IPO should I apply for?" or "Compare TCS vs INFY")
+    UI->>Backend: POST /api/chat/message { message, session_id }
+    
+    Backend->>Pipeline: Fetch Live Market Context:
+    Note over Pipeline: • NIFTY 50 & India VIX Regime<br/>• Top Stock Buys & Avoids with Conviction<br/>• Active IPOs with GMP & Apply Verdicts<br/>• Top Mutual Funds (Flexi/Index/Mid/Small)<br/>• F&O Option Chain, PCR & Max Pain Strike
+    Pipeline-->>Backend: Return Structured Context String
+
+    alt Gemini API Key Available
+        Backend->>Gemini: POST generateContent with System Instruction + Quant Context + History
+        Gemini-->>Backend: Return Structured Markdown Analysis
+    else Network / Offline Fallback
+        Backend->>LocalEng: Route to Local Quantitative Knowledge Engine
+        LocalEng-->>Backend: Return Heuristic Financial Analysis
+    end
+
+    Backend-->>UI: Return JSON { reply, stock_chips, suggested_prompts }
+    UI->>User: Render Formatted Response with Emojis, Badges & Interactive Action Pills
+```
+
+---
+
+### 3. Multimodal ML Pipeline & Modality Fusion
 
 ```mermaid
 flowchart LR
     subgraph Modalities["Data Modalities"]
-        T["Technical Price Action\n• 5-Year Daily OHLCV\n• Rolling Volatility & ATR\n• Momentum Oscillators"]
+        T["Technical Price Action\n• 5-Year Daily OHLCV\n• Rolling Volatility & ATR\n• Momentum Oscillators (RSI, MACD)"]
         F["Corporate Fundamentals\n• P/E, P/B, EV/EBITDA\n• ROE & ROCE Profiles\n• YoY Revenue & EPS Growth"]
-        N["News & NLP Signals\n• Financial News Stream\n• FinBERT Sentiment Scores\n• Lexicon Regressors"]
+        N["News & NLP Signals\n• Financial News Stream\n• FinBERT Sentiment Scores\n• Lexicon Polarity Regressors"]
         M["Macroeconomic Regimes\n• NIFTY 50 Momentum\n• India VIX Volatility\n• Gaussian Mixture Models"]
     end
 
@@ -164,7 +207,53 @@ flowchart LR
 
 ---
 
-### 3. Authentication & Broker Ecosystem Architecture
+### 4. Multi-Asset Decision Framework & Advisory Matrices
+
+```mermaid
+flowchart TD
+    subgraph Assets["Multi-Asset Decision Engine"]
+        EQ["📈 Equities"]
+        IPO["🚀 IPO Radar"]
+        MF["💎 Mutual Funds"]
+        FNO["⚡ F&O Derivatives"]
+    end
+
+    subgraph EQ_Matrix["Equities Matrix"]
+        EQ_SB["🟢 STRONG BUY (80%+ Conviction)"]
+        EQ_ACC["🟢 ACCUMULATE (65%-79%)"]
+        EQ_HLD["🟡 HOLD / WATCH (45%-64%)"]
+        EQ_RED["🟠 REDUCE (Resistance / Overbought)"]
+        EQ_AVD["🔴 AVOID (Technical Breakdown)"]
+    end
+
+    subgraph IPO_Matrix["IPO Matrix"]
+        IPO_SA["🟢 STRONG APPLY (GMP > 50% & Strong Moat)"]
+        IPO_LT["🟢 APPLY LONG TERM (Sovereign / Compounder)"]
+        IPO_CAU["🟡 CAUTION (High Burn / Low GMP)"]
+        IPO_AVD["🔴 STRICT AVOID (Overvalued SME / Weak Financials)"]
+    end
+
+    subgraph MF_Matrix["Mutual Funds Matrix"]
+        MF_CON["🛡️ Conservative: 50% Index + 50% Balanced Advantage (12-14% CAGR)"]
+        MF_MOD["⚖️ Moderate: 40% Flexi + 30% Index + 20% Mid + 10% Small (15-17% CAGR)"]
+        MF_AGG["🚀 Aggressive: Multi-Cap Alpha Acceleration (18-22% CAGR)"]
+    end
+
+    subgraph FNO_Matrix["F&O Strategies"]
+        FNO_BCS["🟢 Bull Call Spread (PCR > 1.20)"]
+        FNO_BPS["🔴 Bear Put Spread (PCR < 0.85)"]
+        FNO_IC["🟡 Iron Condor (Rangebound / VIX < 13)"]
+    end
+
+    EQ --> EQ_Matrix
+    IPO --> IPO_Matrix
+    MF --> MF_Matrix
+    FNO --> FNO_Matrix
+```
+
+---
+
+### 5. Authentication, Broker OAuth & Data Gateway
 
 ```mermaid
 sequenceDiagram
@@ -215,44 +304,60 @@ sequenceDiagram
 
 ---
 
-## 🚀 Key Features & Capabilities
+## 🚀 Multi-Asset Intelligence & Key Capabilities
 
-### 1. Authentic Multi-Factor Onboarding & Security
-- **Indian Mobile SMS OTP (`+91`):** Direct SMS OTP delivery via Fast2SMS / Twilio with fallback test helpers.
-- **Email & Password Authentication:** SHA-256 salted password hashing, email verification OTPs, and password reset workflows.
-- **Isolated Sandbox Demonstration Mode:** Instant 1-click sandbox access pre-loaded with institutional demonstration holdings, completely segregated from real production user accounts.
-- **Zero Mock Seeding for Real Users:** New registered accounts start with a strictly verified empty portfolio (₹0.00).
+### 1. Google Gemini AI Copilot (AlphaBot / ChatBot)
+- **Hybrid LLM & Quant Analytics:** Combines **Google Gemini 3.6 Flash** with real-time exchange feeds, option chain PCRs, IPO GMPs, and calibrated ML models.
+- **Natural Language Financial Q&A:** Answers queries on stock outlooks, personal finance, Indian taxation, portfolio rebalancing, and macro stress tests.
+- **Contextual Suggestions:** Dynamically generates follow-up prompt chips and clickable stock pills with real-time pricing and advisory tags.
 
-### 2. Deep Investment Connection Gateway
-- **Broker OAuth 2.0 Integration:** Institutional authorization flow for **Zerodha Kite Connect**, **Upstox Pro API**, and **Angel One SmartAPI**.
-- **Consolidated Account Statement (CAS) Parser:** Parses CAMS and KFintech mutual fund statements (extracts Folio numbers, Scheme names, Units, Purchase NAV, Current NAV).
-- **Account Aggregator (AA) Consent:** Regulated Sahamati ecosystem consent workflow.
-- **Manual Holding Management:** Real-time stock ticker, buy price, purchase date, and quantity tracker.
+### 2. IPO Intelligence Radar & Grey Market Premium (GMP)
+- **Live GMP Tracking & Subscriptions:** Real-time Grey Market Premium (GMP / GMP %), Price Band, Lot Size, Issue Size, and QIB/HNI/Retail subscription metrics.
+- **Disciplined Verdicts:**
+  - 🟢 **`STRONG APPLY`** *(e.g., Bajaj Housing Finance — +117% GMP listing pop & core compounder)*.
+  - 🟢 **`APPLY FOR LONG TERM`** *(e.g., NTPC Green Energy — Sovereign green transition play)*.
+  - 🟡 **`CAUTION / HIGH RISK`** *(e.g., Swiggy — High quick-commerce cash burn; limited listing pop)*.
+  - 🔴 **`AVOID`** *(e.g., Overvalued SME IPOs with exorbitant P/E multiples)*.
 
-### 3. Multimodal ML Directional & Quantile Return Engines
-- **Soft-Voting Ensemble:** Combines HistGradientBoosting, Random Forests, and L2 Regularized Logistic Regression.
-- **Platt / Sigmoid Probability Calibration:** Calibrates raw ensemble probabilities into reliable probabilities.
-- **Quantile Return Regressor:** Pinball loss quantile estimation provides median expected return alongside 80% confidence bounds.
-- **Gaussian Mixture Macro Regimes:** Classifies broader macroeconomic conditions into `BULL_TREND`, `BEAR_TREND`, `HIGH_VOLATILITY`, or `RANGEBOUND`.
+### 3. Direct Mutual Funds & Personalized Portfolio Allocation
+- **Curated Category Rankings:**
+  - **Flexi Cap:** Parag Parikh Flexi Cap (`24.5% 5Y CAGR`, `0.62%` Expense Ratio), JM Flexicap (`26.8% 5Y CAGR`).
+  - **Large Cap Index:** UTI Nifty 50 Index (`0.18%` Expense Ratio, low tracking error).
+  - **Mid Cap:** Motilal Oswal Midcap (`34.2% 3Y CAGR`).
+  - **Small Cap:** Quant Small Cap (`38.6% 5Y CAGR`), Nippon India Small Cap.
+  - **ELSS Tax Saver (80C):** Mirae Asset ELSS Tax Saver (3-year lock-in).
+  - **Defensive Hybrid:** ICICI Prudential Balanced Advantage Fund.
+- **Custom Asset Allocation:** Personalized fund allocations for Conservative, Moderate, and Aggressive risk profiles.
 
-### 4. Transparent Explainable AI (XAI) Causal Drivers
-Every asset forecast includes a transparent breakdown:
+### 4. F&O Derivatives & Real-Time Option Chain Analytics
+- **Put-Call Ratio (PCR OI & Volume):** Real-time sentiment indicator highlighting institutional Put writing support floors.
+- **Max Pain Strike:** Expiry equilibrium calculation.
+- **Major Support & Resistance Walls:** Highest Put and Call Open Interest (OI) strike identification.
+- **Automated Strategy Synthesis:** Actionable Bull Call Spreads, Bear Put Spreads, and Iron Condors with exact strikes, net debit, max profit, and risk:reward ratios.
+
+### 5. Calibrated Stock Direction Ensemble & Quantile Regressors
+- **Soft-Voting Ensemble:** Combines HistGradientBoosting, Random Forests, and Regularized Logistic Regression.
+- **Platt / Sigmoid Calibration:** Ensures a predicted 70% win probability empirically corresponds to a 70% realization rate (Brier Score: `0.2407`).
+- **Quantile Return Regressor:** Pinball loss quantile estimation provides median expected return alongside 80% confidence bounds ($[Q_{10}, Q_{90}]$).
+- **Macroeconomic Regime Detection:** Segmenting states into `BULL_TREND`, `BEAR_TREND`, `HIGH_VOLATILITY`, and `RANGEBOUND` via Gaussian Mixture Models.
+
+### 6. Causal Explainable AI (XAI) & Factor Breakdown
+Every holding and forecast includes an explicit factor attribution breakdown:
 - **Momentum:** 14-day RSI and 20-day / 50-day EMA alignment.
 - **Sentiment:** FinBERT financial news sentiment score (0.0 to 1.0).
-- **Volume Accumulation:** 10-day rolling volume relative surges.
+- **Volume Accumulation:** 10-day rolling volume surges.
 - **Benchmark Relative Strength:** Alpha generation relative to NIFTY 50.
 - **Sector Tailwinds:** Macroeconomic sector momentum.
 
-### 5. Institutional Factor Screener, Backtester & Audit Ledger
-- **Walk-Forward Simulation Engine:** 5-year historical backtest against NIFTY 50 factoring in execution slippage (0.02%) and brokerage (0.03%).
-- **Prediction Audit Ledger:** 600+ transparent historical predictions showing predicted probability, realized outcome, Brier calibration score, and directional accuracy.
-- **Natural Language Financial Search:** Semantic query engine parsing complex multi-factor queries (*"Find high ROE banking stocks with bullish momentum"*).
+### 7. Quantitative Risk Engine (VaR, CVaR, Concentration HHI)
+- **1-Day 95% Parametric & Historical Value-at-Risk (VaR)**.
+- **Conditional VaR (CVaR / Expected Shortfall)**.
+- **Herfindahl-Hirschman Concentration Index (HHI)** for sector and asset diversification.
 
-### 6. MetaMint-Inspired High-Fidelity UI & Motion System
-- **Staggered CSS Motion:** `cubic-bezier(0.16, 1, 0.3, 1)` easing transitions.
-- **Dynamic Number Counters (`animateNumber`):** Smooth numeric transitions on market points, balances, and P&L metrics.
-- **Interactive SVG Semi-Circle Strength Gauge:** Real-time animated confidence meter.
-- **Interactive Area Pulse Charts:** Gradient area visualizer with multi-timeframe toggles (7D, 1M, 3M).
+### 8. Broker OAuth & CAS Statement Parser Gateway
+- **Broker OAuth 2.0:** Direct read-only connection with **Zerodha Kite Connect**, **Upstox Pro API**, and **Angel One SmartAPI**.
+- **Consolidated Account Statement (CAS) Parser:** Parses CAMS and KFintech mutual fund statements (extracts Folio numbers, Scheme names, Units, Purchase NAV, Current NAV).
+- **Account Aggregator (AA):** Regulated Sahamati ecosystem consent workflow.
 
 ---
 
@@ -291,7 +396,7 @@ AlphaLens/
 ├── backend/
 │   ├── api/
 │   │   ├── auth_routes.py         # Authentication, OTP, OAuth & user routes
-│   │   └── routes.py              # Market, stocks, portfolio, backtest & search routes
+│   │   └── routes.py              # Market, stocks, IPOs, mutual funds, F&O, backtest routes
 │   ├── ml/                        # ML runtime interfaces
 │   ├── pipeline/
 │   │   └── live_pipeline.py       # Live market simulator & streaming data sync
@@ -301,9 +406,12 @@ AlphaLens/
 │   │   ├── backtest_engine.py     # 5-year factor backtest simulation engine
 │   │   ├── broker_service.py      # Zerodha, Upstox & Angel One OAuth service
 │   │   ├── cas_parser_service.py  # CAMS & KFintech CAS statement parser
-│   │   ├── chatbot_service.py     # Explainable financial conversational engine
+│   │   ├── chatbot_service.py     # Google Gemini AI LLM Copilot & Quantitative Reasoning
 │   │   ├── explanation_engine.py  # Causal XAI feature attribution engine
+│   │   ├── fno_service.py         # F&O derivatives, Option Chain, PCR & strategy engine
+│   │   ├── ipo_service.py         # IPO intelligence, GMP tracking & recommendation engine
 │   │   ├── market_data_service.py # Real-time yfinance market ingestion & cache
+│   │   ├── mutual_fund_service.py # Direct mutual fund rankings & portfolio allocator
 │   │   ├── portfolio_service.py   # Multi-asset portfolio valuation & P&L engine
 │   │   ├── risk_engine.py         # Parametric/Historical 95% VaR, CVaR & HHI risk
 │   │   ├── search_engine.py       # Semantic natural language financial search
@@ -323,7 +431,7 @@ AlphaLens/
 ├── frontend/
 │   ├── assets/                    # 3D visuals and graphic assets
 │   ├── src/
-│   │   └── app.js                 # Complete reactive client application & motion system
+│   │   └── app.js                 # Reactive client application & motion system
 │   ├── styles/
 │   │   └── main.css               # Glassmorphic institutional CSS design system
 │   └── index.html                 # Main single-page institutional terminal
@@ -343,9 +451,10 @@ AlphaLens/
 │   └── walk_forward_validation.py # Strict temporal 5-fold cross-validation
 ├── .env.example                   # Environment configuration template
 ├── .gitignore                     # Git ignore rules for secrets and caches
+├── package.json                   # NPM script wrappers (dev, start, test)
 ├── requirements.txt               # Complete Python package dependencies
 ├── run_alphalens.py               # Unified 1-click startup runner
-├── test_system.py                 # 13 automated system, auth & security test suites
+├── test_system.py                 # 16 automated system, asset & AI test suites
 └── WALKTHROUGH.md                 # System walkthrough & implementation verification
 ```
 
@@ -379,21 +488,22 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 5. Configure Environment Variables (Optional)
-Copy `.env.example` to `.env` if configuring real SMS / Email delivery or broker credentials:
+### 5. Configure Environment Variables
+Copy `.env.example` to `.env` and add your **Google Gemini API Key** and optional SMS/Email/Broker credentials:
 ```bash
 cp .env.example .env
 ```
-*(Note: AlphaLens runs out-of-the-box in standalone mode with full console OTP fallbacks if third-party credentials are omitted).*
 
-### 6. Launch the Unified Terminal
-Run the automated runner to verify datasets, check models, and launch the platform:
+### 6. Launch the Platform
+Start via npm:
 ```bash
-python run_alphalens.py
+npm run dev
 ```
 
-Alternatively, start via Uvicorn directly:
+Or via Python:
 ```bash
+python run_alphalens.py
+# or
 python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
@@ -404,10 +514,12 @@ Open your browser at:
 
 ## 🧪 Automated Verification & Test Suite
 
-AlphaLens includes a comprehensive 16-suite automated test suite covering market ingestion, authentication, authorization, CAS parsing, broker OAuth, IPO intelligence, mutual fund rankings, F&O derivatives, and Gemini AI Copilot reasoning:
+AlphaLens includes a comprehensive **16-suite automated test suite** covering market ingestion, authentication, authorization, CAS parsing, broker OAuth, IPO intelligence, mutual fund rankings, F&O derivatives, and Gemini AI Copilot reasoning:
 
 ```bash
 python test_system.py
+# or
+npm test
 ```
 
 ### Test Suite Output:
