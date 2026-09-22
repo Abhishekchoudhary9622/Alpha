@@ -5,15 +5,16 @@
 
 [![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![Google Gemini](https://img.shields.io/badge/AI-Google%20Gemini%203.6%20Flash-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
 [![Scikit-Learn](https://img.shields.io/badge/ML-Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org)
 [![FinBERT](https://img.shields.io/badge/NLP-FinBERT-FF6F00?style=for-the-badge&logo=huggingface&logoColor=white)](https://huggingface.co)
 [![JavaScript](https://img.shields.io/badge/Frontend-ES6%20%2F%20Vanilla%20CSS-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/System%20Tests-13%2F13%20Passed%20(100%25)-success?style=for-the-badge)]()
+[![Tests](https://img.shields.io/badge/System%20Tests-16%2F16%20Passed%20(100%25)-success?style=for-the-badge)]()
 
 <p align="center">
-  <b>An institutional-grade quantitative forecasting and portfolio risk intelligence platform engineered for Indian (NSE/BSE) and Global equity markets.</b><br/>
-  Combines calibrated machine learning ensembles, quantile return prediction intervals, causal feature attributions (XAI), macroeconomic regime clustering, and multi-broker portfolio integration.
+  <b>An institutional-grade quantitative forecasting, multi-asset advisory (Equities, IPOs, Mutual Funds, F&O), and AI Copilot intelligence platform engineered for Indian (NSE/BSE) and Global markets.</b><br/>
+  Combines calibrated machine learning ensembles, Google Gemini LLM reasoning, quantile prediction intervals, causal feature attributions (XAI), and multi-broker portfolio integration.
 </p>
 
 ---
@@ -27,7 +28,13 @@
   - [1. End-to-End System Flow](#1-end-to-end-system-flow)
   - [2. Multimodal ML Pipeline & Modality Fusion](#2-multimodal-ml-pipeline--modality-fusion)
   - [3. Authentication & Broker Ecosystem Architecture](#3-authentication--broker-ecosystem-architecture)
-- [Key Features & Capabilities](#-key-features--capabilities)
+- [Multi-Asset Intelligence & Key Capabilities](#-multi-asset-intelligence--key-capabilities)
+  - [1. Google Gemini AI Copilot (AlphaBot)](#1-google-gemini-ai-copilot-alphabot)
+  - [2. IPO Intelligence Radar & GMP Tracking](#2-ipo-intelligence-radar--gmp-tracking)
+  - [3. Direct Mutual Funds & Personalized Allocation](#3-direct-mutual-funds--personalized-allocation)
+  - [4. F&O Derivatives & Option Chain Analytics](#4-fo-derivatives--option-chain-analytics)
+  - [5. Multimodal Stock Machine Learning & XAI](#5-multimodal-stock-machine-learning--xai)
+  - [6. Broker OAuth & FinTech Onboarding](#6-broker-oauth--fintech-onboarding)
 - [Empirical Research & Out-of-Sample Performance](#-empirical-research--out-of-sample-performance)
 - [Repository Structure](#-repository-structure)
 - [Quickstart & Installation](#-quickstart--installation)
@@ -397,7 +404,7 @@ Open your browser at:
 
 ## 🧪 Automated Verification & Test Suite
 
-AlphaLens includes a comprehensive 13-suite automated test suite covering market ingestion, authentication, authorization, CAS parsing, broker OAuth, and ML inference:
+AlphaLens includes a comprehensive 16-suite automated test suite covering market ingestion, authentication, authorization, CAS parsing, broker OAuth, IPO intelligence, mutual fund rankings, F&O derivatives, and Gemini AI Copilot reasoning:
 
 ```bash
 python test_system.py
@@ -426,8 +433,11 @@ python test_system.py
 [PASS] 12a. /api/user/portfolio/add verified (Manual asset entry).
 [PASS] 12b. /api/user/portfolio/remove verified.
 [PASS] 13. Walk-forward Backtest, Natural Language Search & Ledger verified.
+[PASS] 14. /api/ipos verified (6 active/upcoming IPOs with GMP and Apply/Avoid verdicts).
+[PASS] 15. /api/mutual-funds & /api/mutual-funds/recommend verified (9 direct funds ranked).
+[PASS] 16. /api/fno/option-chain and /api/chat/message (Gemini + Quant AI Copilot) verified.
 ===========================================================================
-  ALL 13 PRODUCTION FINTECH SYSTEM & SECURITY TEST SUITES PASSED (100%)
+  ALL 16 PRODUCTION FINTECH SYSTEM, ASSET & AI TEST SUITES PASSED (100%)
 ===========================================================================
 ```
 
@@ -444,6 +454,17 @@ python test_system.py
 | `GET` | `/api/search?q={query}` | Semantic natural language search for stocks and financial queries. |
 | `GET` | `/api/backtest?strategy={strat}` | Walk-forward backtest simulation results against NIFTY 50 benchmark. |
 | `GET` | `/api/predictions/ledger` | Historical prediction audit ledger with accuracy & Brier calibration scores. |
+
+### 🚀 IPOs, Mutual Funds & F&O Derivatives
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/ipos` | Live & upcoming IPO radar with Grey Market Premium (GMP) and Apply/Avoid verdicts. |
+| `GET` | `/api/mutual-funds` | Top direct mutual funds across categories (Flexi Cap, Large Cap Index, Mid/Small Cap). |
+| `GET` | `/api/mutual-funds/recommend` | Custom portfolio fund allocation based on risk tolerance (`?risk=moderate&horizon=5`). |
+| `GET` | `/api/fno/option-chain` | Real-time Option Chain metrics, Put-Call Ratio (PCR), Max Pain, and strategy builder. |
+| `POST` | `/api/chat/message` | AI Copilot (Gemini 3.6 Flash + Quant engine) conversational endpoint. |
+| `GET` | `/api/chat/history` | Retrieves active session conversation history. |
+| `POST` | `/api/chat/clear` | Resets conversation session history. |
 
 ### Authentication & Security
 | Method | Endpoint | Description |

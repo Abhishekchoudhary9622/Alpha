@@ -1734,18 +1734,19 @@
         <div class="copilot-msg-avatar">⚡</div>
         <div class="copilot-msg-content">
           <div class="copilot-msg-text">
-            👋 <strong>Hi! I'm AlphaBot, your AI Financial Copilot.</strong>
+            👋 <strong>Hi! I'm AlphaBot (ChatBot), your AI Financial & Market Intelligence Copilot.</strong>
             <p style="margin: 6px 0 0 0; font-size: 12px; color: var(--text-secondary);">
-              I can analyze real-time predictions, suggest Top Buys & Stocks to Avoid, run portfolio stress tests, and explain quantitative models.
+              Powered by Google Gemini and live quantitative models. Ask me about IPO apply/avoid verdicts, top mutual funds, F&O option chains, stock predictions, or tax planning.
             </p>
           </div>
           <!-- Quick Prompt Buttons -->
           <div class="copilot-quick-prompts">
-            <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('🎯 Which stocks should I buy today?')">🎯 Top Buys Today</button>
+            <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('🚀 Which IPO should I apply for today?')">🚀 IPO Radar & GMP</button>
+            <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('💎 Which Mutual Fund is best for me?')">💎 Mutual Funds Guide</button>
+            <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('⚡ NIFTY Option Chain & F&O Strategy')">⚡ F&O & Derivatives</button>
+            <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('🎯 Which stocks should I buy today?')">🎯 Top Stock Buys</button>
             <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('⚠️ What stocks should I avoid?')">⚠️ Stocks to Avoid</button>
-            <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('⚡ Prediction for Reliance')">⚡ Reliance ML Forecast</button>
             <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('💼 Analyze my portfolio risk')">💼 Portfolio Diagnostics</button>
-            <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('⚖️ Compare TCS and INFY')">⚖️ Compare TCS vs INFY</button>
           </div>
         </div>
       </div>
@@ -1760,7 +1761,7 @@
         type="text" 
         id="copilot-input-field" 
         class="copilot-input" 
-        placeholder="Ask anything about stocks, predictions, risk..." 
+        placeholder="Ask anything about Stocks, IPOs, Mutual Funds, F&O, Tax, or Risk..." 
         autocomplete="off"
       >
       <button type="submit" class="copilot-send-btn" id="copilot-send-btn" title="Send Message">

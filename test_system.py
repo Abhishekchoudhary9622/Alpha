@@ -231,9 +231,40 @@ def run_tests():
     assert res.status_code == 200
     print("[PASS] 13. Walk-forward Backtest, Natural Language Search & Ledger verified.")
 
+    # 14. Test IPO Radar & Recommendations (/api/ipos)
+    res = client.get("/api/ipos")
+    assert res.status_code == 200
+    ipos_data = res.json()
+    assert "ipos" in ipos_data and len(ipos_data["ipos"]) >= 4
+    assert "summary" in ipos_data
+    print(f"[PASS] 14. /api/ipos verified ({len(ipos_data['ipos'])} active/upcoming IPOs with GMP and Apply/Avoid verdicts).")
+
+    # 15. Test Mutual Fund Intelligence & Recommendation (/api/mutual-funds)
+    res = client.get("/api/mutual-funds")
+    assert res.status_code == 200
+    mf_data = res.json()
+    assert "funds" in mf_data and len(mf_data["funds"]) >= 5
+    res_mf_rec = client.get("/api/mutual-funds/recommend?risk=moderate&horizon=5")
+    assert res_mf_rec.status_code == 200
+    assert len(res_mf_rec.json()["recommended_allocation"]) >= 3
+    print(f"[PASS] 15. /api/mutual-funds & /api/mutual-funds/recommend verified ({len(mf_data['funds'])} direct funds ranked).")
+
+    # 16. Test F&O Option Chain Analytics & AI Copilot Chat (/api/fno/option-chain, /api/chat/message)
+    res = client.get("/api/fno/option-chain?symbol=NIFTY")
+    assert res.status_code == 200
+    fno_data = res.json()
+    assert "put_call_ratio_oi" in fno_data and "recommended_strategy" in fno_data
+
+    res_chat = client.post("/api/chat/message", json={"message": "Which IPO should I apply for?", "session_id": "test_e2e"})
+    assert res_chat.status_code == 200
+    chat_res = res_chat.json()
+    assert "reply" in chat_res and len(chat_res["reply"]) > 50
+    print("[PASS] 16. /api/fno/option-chain and /api/chat/message (Gemini + Quant AI Copilot) verified.")
+
     print("=" * 75)
-    print("  ALL 13 PRODUCTION FINTECH SYSTEM & SECURITY TEST SUITES PASSED (100%)")
+    print("  ALL 16 PRODUCTION FINTECH SYSTEM, ASSET & AI TEST SUITES PASSED (100%)")
     print("=" * 75)
+
 
 
 if __name__ == "__main__":

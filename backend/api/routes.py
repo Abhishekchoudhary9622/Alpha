@@ -207,6 +207,46 @@ def chat_clear(payload: Dict[str, Any] = None):
     return {"success": True, "message": "Chat history reset."}
 
 
+# -----------------------------------------------------------------------------
+# 🚀 IPO, Mutual Funds & F&O Derivatives Endpoints
+# -----------------------------------------------------------------------------
+
+@router.get("/ipos")
+def get_ipos():
+    """Returns active, upcoming, and recent IPOs with GMP and recommendations."""
+    from backend.services.ipo_service import ipo_service
+    return {
+        "ipos": ipo_service.get_all_ipos(),
+        "summary": ipo_service.get_ipo_recommendation_summary()
+    }
+
+
+@router.get("/mutual-funds")
+def get_mutual_funds(category: Optional[str] = None):
+    """Returns top direct mutual funds with performance metrics and risk tiers."""
+    from backend.services.mutual_fund_service import mutual_fund_service
+    if category:
+        funds = mutual_fund_service.get_funds_by_category(category)
+    else:
+        funds = mutual_fund_service.get_all_funds()
+    return {"funds": funds}
+
+
+@router.get("/mutual-funds/recommend")
+def recommend_mutual_funds(risk: str = Query("moderate"), horizon: int = Query(5)):
+    """Provides tailored mutual fund portfolio allocation based on risk and horizon."""
+    from backend.services.mutual_fund_service import mutual_fund_service
+    return mutual_fund_service.recommend_portfolio(risk_profile=risk, horizon_years=horizon)
+
+
+@router.get("/fno/option-chain")
+def get_fno_option_chain(symbol: str = Query("NIFTY")):
+    """Returns real-time F&O option chain metrics, PCR, Max Pain, and strategy."""
+    from backend.services.fno_service import fno_service
+    return fno_service.get_index_option_chain_summary(symbol=symbol)
+
+
+
 def pd_series_from_stock(stock_dict: Dict[str, Any]):
     import pandas as pd
     tech = stock_dict.get("technicals", {})
