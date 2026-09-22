@@ -1,0 +1,61 @@
+# Environment and Secrets
+.env
+.env.local
+*.env
+*.key
+*.pem
+
+# Python & Caching
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Database and Local State
+data/users.db
+data/users.db-journal
+data/temp.js
+scratch/
+
+# Archives & Backups
+*.zip
+*.tar.gz
+*.rar
+AlphaLens_*.zip
+
+# Large generated CSV datasets (Parquet equivalents are tracked in data/processed/)
+data/processed/stock_features.csv
+data/processed/training_dataset.csv
+
+# OS & Editor Artifacts
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo

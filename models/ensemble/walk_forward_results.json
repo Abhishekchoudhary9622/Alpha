@@ -1,0 +1,69 @@
+{
+  "mean_accuracy": 57.54,
+  "mean_precision": 56.77,
+  "mean_recall": 82.69,
+  "mean_f1_score": 67.32,
+  "mean_brier_score": 0.2417,
+  "folds": [
+    {
+      "fold": 1,
+      "train_period": "2020-07-30 to 2021-08-05",
+      "test_period": "2021-08-06 to 2022-08-12",
+      "train_samples": 11172,
+      "test_samples": 11172,
+      "accuracy": 57.98,
+      "precision": 58.35,
+      "recall": 93.93,
+      "f1_score": 71.98,
+      "brier_score": 0.2416
+    },
+    {
+      "fold": 2,
+      "train_period": "2020-07-30 to 2022-08-12",
+      "test_period": "2022-08-15 to 2023-08-21",
+      "train_samples": 22344,
+      "test_samples": 11172,
+      "accuracy": 58.39,
+      "precision": 57.56,
+      "recall": 94.2,
+      "f1_score": 71.46,
+      "brier_score": 0.2393
+    },
+    {
+      "fold": 3,
+      "train_period": "2020-07-30 to 2023-08-21",
+      "test_period": "2023-08-22 to 2024-08-27",
+      "train_samples": 33516,
+      "test_samples": 11172,
+      "accuracy": 55.92,
+      "precision": 54.8,
+      "recall": 76.25,
+      "f1_score": 63.77,
+      "brier_score": 0.2444
+    },
+    {
+      "fold": 4,
+      "train_period": "2020-07-30 to 2024-08-27",
+      "test_period": "2024-08-28 to 2025-09-03",
+      "train_samples": 44688,
+      "test_samples": 11172,
+      "accuracy": 56.69,
+      "precision": 55.93,
+      "recall": 73.31,
+      "f1_score": 63.45,
+      "brier_score": 0.2437
+    },
+    {
+      "fold": 5,
+      "train_period": "2020-07-30 to 2025-09-03",
+      "test_period": "2025-09-04 to 2026-09-10",
+      "train_samples": 55860,
+      "test_samples": 11172,
+      "accuracy": 58.71,
+      "precision": 56.42,
+      "recall": 73.13,
+      "f1_score": 63.7,
+      "brier_score": 0.2393
+    }
+  ]
+}

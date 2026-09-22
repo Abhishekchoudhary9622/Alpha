@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlphaLens — Institutional FinTech Market Intelligence Terminal</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Chart.js with animation support -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  
+  <link rel="stylesheet" href="/static/styles/main.css?v=20260921_REALTIME_CHART_OVERHAUL">
+  <!-- Google Identity Services (GIS) SDK -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+
+  <!-- =====================================================================
+       1. FINAX LUXURY LANDING & SIGNUP GATEWAY (Matches Dribbble Design)
+       ===================================================================== -->
+  <div id="gateway-screen">
+    <!-- Top Navigation Bar -->
+    <header class="finax-navbar">
+      <div class="finax-nav-inner">
+        <!-- Logo Brand -->
+        <div class="finax-brand" onclick="window.scrollToTop()">
+          <div class="finax-logo-icon">α</div>
+          <span class="finax-brand-name">FinaX</span>
+          <span class="finax-brand-sub">AlphaLens</span>
+        </div>
+
+        <!-- Center Links -->
+        <nav class="finax-nav-links">
+          <a href="#features" class="finax-nav-link" onclick="window.scrollLandingSection('features')">Features</a>
+          <a href="#why-us" class="finax-nav-link" onclick="window.scrollLandingSection('why-us')">Why Us</a>
+          <a href="#terminal" class="finax-nav-link" onclick="window.enterAsDemoInvestor()">Terminal</a>
+          <a href="#security" class="finax-nav-link" onclick="window.scrollLandingSection('security')">Security</a>
+        </nav>
+
+        <!-- Right Action Controls -->
+        <div class="finax-nav-right">
+          <div class="finax-nav-search-pill" style="position: relative;">
+            <span class="finax-search-icon">🔍</span>
+            <input type="text" id="landing-search-input" placeholder="Search markets, tickers..." oninput="window.handleSearchInput(event)" onkeydown="window.handleLandingSearch(event)" onfocus="window.handleSearchInput(event)" autocomplete="off">
+            <div class="search-autocomplete-dropdown" id="search-dropdown" style="display: none;"></div>
+          </div>
+          <button type="button" class="btn-finax-login-pill" id="btn-topbar-login" onclick="window.openAuthModal('email-login')">
+            Login
+          </button>
+          <button type="button" class="btn-finax-signup-pill" id="btn-topbar-signup" onclick="window.openAuthModal('email-signup')">
+            Sign Up
+          </button>
+          <div id="topbar-user-badge" style="display: none; align-items: center; gap: 10px;">
+            <div class="topbar-user-chip">
+              <span class="topbar-avatar" id="topbar-avatar-initials">AN</span>
+              <span class="topbar-username" id="topbar-display-name">Investor</span>
+            </div>
+            <button type="button" class="btn-topbar-logout" onclick="window.logoutTerminal()">Log Out</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Hero Section -->
+    <main class="finax-hero-section">
+      <!-- Glow Aura Effect (Radial Electric Blue) -->
+      <div class="finax-glow-aura"></div>
+
+      <div class="finax-hero-content">
+        <!-- Customer Proof Badge -->
+        <div class="finax-badge-container">
+          <span class="finax-badge-dash"></span>
+          <div class="finax-customer-badge">
+            <span class="badge-sparkle">✦</span>
+            <span>3M+ Happy Customers</span>
+          </div>
+          <span class="finax-badge-dash"></span>
+        </div>
+
+        <!-- Main Hero Title -->
+        <h1 class="finax-hero-headline">
+          Smart <span class="finax-inline-emoji">🎲</span> Financial Solution<br>
+          For The Digital World <span class="finax-inline-emoji">💎</span>
+        </h1>
+
+        <!-- Hero Subtitle -->
+        <p class="finax-hero-subhead">
+          Join over 250,000 users in securing the digital frontier — experience seamless portfolio intelligence with institutional-grade risk models, broker APIs, and real-time quantitative execution.
+        </p>
+
+        <!-- Dual Action Buttons -->
+        <div class="finax-hero-cta-row">
+          <button type="button" class="btn-finax-hero-primary" onclick="window.openAuthModal('email-signup')">
+            Join Now
+          </button>
+          <button type="button" class="btn-finax-hero-secondary" onclick="window.enterAsDemoInvestor()">
+            Explore Sandbox ⚡
+          </button>
+        </div>
+
+        <!-- 3D Feature Cards Grid (Exact Dribbble Cards) -->
+        <div class="finax-cards-grid" id="features">
+          <!-- Card 1: Trusted Partner -->
+          <div class="finax-hero-card" onclick="window.openAuthModal('email-signup')">
+            <div class="finax-card-visual-box">
+              <img src="/static/assets/trusted_3d.jpg" alt="Trusted Partner 3D" class="finax-card-img" loading="eager">
+              <div class="finax-card-pill-tag">Institutional Tier</div>
+            </div>
+            <div class="finax-card-body">
+              <h3 class="finax-card-title">Trusted Partner</h3>
+              <p class="finax-card-text">
+                From seamless transactions to personalized financial solutions — experience banking designed around your needs.
+              </p>
+              <div class="finax-card-meta-row">
+                <span class="meta-tag">🔒 Zero-Knowledge Security</span>
+                <span class="meta-cta-link">Start Free →</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Smart Banking -->
+          <div class="finax-hero-card" onclick="window.openAuthModal('email-signup')">
+            <div class="finax-card-visual-box">
+              <img src="/static/assets/banking_3d.jpg" alt="Smart Banking 3D" class="finax-card-img" loading="eager">
+              <div class="finax-card-pill-tag">Smart Ingestion</div>
+            </div>
+            <div class="finax-card-body">
+              <h3 class="finax-card-title">Smart Banking</h3>
+              <p class="finax-card-text">
+                Manage your accounts, payments, and financial goal with fast, secure, and easy-to-use digital banking services.
+              </p>
+              <div class="finax-card-meta-row">
+                <span class="meta-tag">⚡ Broker & CAS Connected</span>
+                <span class="meta-cta-link">Connect Now →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trust & Security Metrics Strip -->
+        <div class="finax-trust-strip" id="security">
+          <div class="trust-item">
+            <span class="trust-val">99.98%</span>
+            <span class="trust-lbl">Model Availability</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <span class="trust-val">250K+</span>
+            <span class="trust-lbl">Active Traders</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <span class="trust-val">₹48,200Cr</span>
+            <span class="trust-lbl">Assets Analyzed</span>
+          </div>
+          <div class="trust-divider"></div>
+          <div class="trust-item">
+            <span class="trust-val">256-bit</span>
+            <span class="trust-lbl">End-to-End Encryption</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- =====================================================================
+       2. MULTI-STEP "CONNECT INVESTMENTS" ONBOARDING MODAL
+       ===================================================================== -->
+  <div class="modal-overlay" id="onboarding-modal">
+    <div class="modal-window" style="max-width: 620px;">
+      <div class="modal-top">
+        <div>
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Portfolio Connection</div>
+          <div style="font-size: 18px; font-weight: 700;">Connect your investments</div>
+        </div>
+        <button class="modal-close" onclick="window.skipToTerminal()">✕</button>
+      </div>
+
+      <div class="modal-content">
+        <!-- Step 1: Investment Method Selector -->
+        <div id="onboard-step-select" class="onboarding-wizard-step active">
+          <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 14px;">
+            Connect your live portfolio to calculate calibrated ML forecasts, factor attribution, and risk models:
+          </div>
+
+          <div class="invest-methods-grid">
+            <!-- Method 1: Broker API -->
+            <div class="invest-method-card" onclick="window.showOnboardingMethod('broker')">
+              <span class="invest-card-icon">🏦</span>
+              <span class="invest-card-title">Connect Broker API</span>
+              <span class="invest-card-desc">OAuth integration for Zerodha Kite, Upstox Pro, or Angel One.</span>
+            </div>
+
+            <!-- Method 2: CAS PDF / Statement Parser -->
+            <div class="invest-method-card" onclick="window.showOnboardingMethod('cas')">
+              <span class="invest-card-icon">📄</span>
+              <span class="invest-card-title">Import CAS Statement</span>
+              <span class="invest-card-desc">Upload CAMS / KFintech consolidated mutual fund statement PDF.</span>
+            </div>
+
+            <!-- Method 3: Account Aggregator (AA) -->
+            <div class="invest-method-card" onclick="window.showOnboardingMethod('aa')">
+              <span class="invest-card-icon">📊</span>
+              <span class="invest-card-title">Account Aggregator</span>
+              <span class="invest-card-desc">Sahamati consent gateway for verified financial data fetch.</span>
+            </div>
+
+            <!-- Method 4: Manual Portfolio -->
+            <div class="invest-method-card" onclick="window.showOnboardingMethod('manual')">
+              <span class="invest-card-icon">🔵</span>
+              <span class="invest-card-title">Manual Portfolio</span>
+              <span class="invest-card-desc">Add stock tickers and purchase prices manually.</span>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 16px;">
+            <button class="btn-core" style="font-size: 12px; padding: 6px 14px;" onclick="window.skipToTerminal()">
+              ⚡ Explore with Default Sample Portfolio →
+            </button>
+          </div>
+        </div>
+
+        <!-- Sub-View: Method 1 — Broker OAuth -->
+        <div id="onboard-sub-broker" class="onboarding-wizard-step">
+          <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">Connect your Brokerage (OAuth Flow):</div>
+          <div style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px;">
+            You are allowing AlphaLens to read your permitted holdings and positions. No broker passwords are ever stored.
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px;">
+            <div class="invest-method-card" style="flex-direction: row; justify-content: space-between; align-items: center; padding: 12px;" onclick="window.executeBrokerOAuth('zerodha')">
+              <div>
+                <strong style="color: var(--green);">🟢 Zerodha Kite Connect</strong>
+                <div style="font-size: 11px; color: var(--text-muted);">Permissions: Holdings, Positions, Funds</div>
+              </div>
+              <button class="btn-core btn-primary" style="font-size: 11px; padding: 4px 10px;">Authorize Access →</button>
+            </div>
+            <div class="invest-method-card" style="flex-direction: row; justify-content: space-between; align-items: center; padding: 12px;" onclick="window.executeBrokerOAuth('upstox')">
+              <div>
+                <strong style="color: var(--blue);">🔵 Upstox Pro API</strong>
+                <div style="font-size: 11px; color: var(--text-muted);">Permissions: Long-term Holdings & Portfolios</div>
+              </div>
+              <button class="btn-core btn-primary" style="font-size: 11px; padding: 4px 10px;">Authorize Access →</button>
+            </div>
+            <div class="invest-method-card" style="flex-direction: row; justify-content: space-between; align-items: center; padding: 12px;" onclick="window.executeBrokerOAuth('angelone')">
+              <div>
+                <strong style="color: var(--yellow);">🟠 Angel One SmartAPI</strong>
+                <div style="font-size: 11px; color: var(--text-muted);">Permissions: Live Holdings & Funds</div>
+              </div>
+              <button class="btn-core btn-primary" style="font-size: 11px; padding: 4px 10px;">Authorize Access →</button>
+            </div>
+          </div>
+          <button class="btn-core" onclick="window.showOnboardingMethod('select')">← Back to Methods</button>
+        </div>
+
+        <!-- Sub-View: Method 2 — CAS PDF & Drag & Drop Upload -->
+        <div id="onboard-sub-cas" class="onboarding-wizard-step">
+          <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">Import CAS Statement (PDF / Text):</div>
+          <div style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px;">
+            Upload your CAMS or KFintech Consolidated Account Statement. Our parser extracts folios, units, and NAVs automatically.
+          </div>
+
+          <!-- Hidden File Input -->
+          <input type="file" id="cas-file-input" accept=".pdf,.csv,.txt" style="display: none;" onchange="window.handleCASFileSelected(event)">
+
+          <!-- Drag and Drop Dropzone -->
+          <div class="cas-dropzone-real" id="cas-dropzone-box" onclick="document.getElementById('cas-file-input').click()">
+            <div style="font-size: 32px; margin-bottom: 6px;">📄</div>
+            <strong style="font-size: 13.5px; color: var(--text-primary);" id="cas-dropzone-title">Drop your CAS PDF statement here</strong>
+            <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 4px;">or click to browse from your computer (PDF, CSV, TXT)</div>
+          </div>
+
+          <!-- Password Prompt for Encrypted PDFs (Hidden by default) -->
+          <div id="cas-password-box" style="display: none; margin-top: 10px; background: var(--bg-input); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border-light);">
+            <label style="display: block; font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px;">PDF Password (usually your PAN)</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="password" id="in-cas-password" placeholder="e.g. ABCDE1234F" style="flex: 1; background: var(--bg-card); border: 1px solid var(--border-light); color: #fff; padding: 8px 10px; border-radius: var(--radius-sm); font-family: var(--font-mono); outline: none;">
+              <button type="button" class="btn-core btn-primary" onclick="window.submitCASWithPassword()">Decrypt & Parse →</button>
+            </div>
+          </div>
+
+          <!-- Upload / Parse Progress State -->
+          <div id="cas-upload-progress" class="cas-upload-progress-box" style="display: none;">
+            <div style="display: flex; justify-content: space-between; font-size: 11.5px;">
+              <span id="cas-progress-label">Uploading & Parsing Statement...</span>
+              <span id="cas-progress-pct" class="font-mono">45%</span>
+            </div>
+            <div class="cas-progress-bar-track">
+              <div class="cas-progress-bar-fill" id="cas-progress-bar" style="width: 45%;"></div>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px;">
+            <button class="btn-core" onclick="window.showOnboardingMethod('select')">← Back to Methods</button>
+            <button class="btn-core" style="font-size: 11px; padding: 4px 10px;" onclick="window.executeCASParseSample()">⚡ Or parse sample CAMS statement</button>
+          </div>
+        </div>
+
+        <!-- Sub-View: Method 3 — Account Aggregator (AA) -->
+        <div id="onboard-sub-aa" class="onboarding-wizard-step">
+          <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">Sahamati Account Aggregator (AA) Consent Flow:</div>
+          <div style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px;">
+            Regulated consent framework to securely fetch financial data from financial information providers.
+          </div>
+
+          <form onsubmit="window.submitAAConsent(event)">
+            <div style="margin-bottom: 10px;">
+              <label style="display: block; font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px;">Identifier (Mobile or PAN)</label>
+              <input type="text" id="in-aa-pan" style="width: 100%; background: var(--bg-input); border: 1px solid var(--border-light); color: #fff; padding: 8px 12px; border-radius: var(--radius-md); outline: none;" value="ABCDE1234F" required>
+            </div>
+            <div style="margin-bottom: 14px;">
+              <label style="display: block; font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px;">Consent Approval OTP</label>
+              <input type="text" id="in-aa-otp" style="width: 100%; background: var(--bg-input); border: 1px solid var(--border-light); color: #fff; padding: 8px 12px; border-radius: var(--radius-md); outline: none;" value="581925" required>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn-core" style="flex: 1;" onclick="window.showOnboardingMethod('select')">← Back</button>
+              <button type="submit" class="btn-core btn-primary" style="flex: 1;">Authorize Consent & Fetch →</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       3. DESKTOP TERMINAL APP SHELL (Sidebar + Main Workspace)
+       ===================================================================== -->
+  <div id="terminal-screen">
+
+    <!-- Left Sidebar -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-brand" onclick="window.switchTerminalView('dashboard')">
+          <div class="sidebar-brand-icon">α</div>
+          <span class="sidebar-brand-name">AlphaLens</span>
+        </div>
+        <div class="sidebar-status-pill">
+          <span class="status-dot"></span>
+          <span>NSE LIVE</span>
+        </div>
+      </div>
+
+      <!-- Navigation Menu -->
+      <nav class="sidebar-menu">
+        <div class="sidebar-section-title">Terminal Views</div>
+        
+        <div class="sidebar-item active" id="nav-dashboard" onclick="window.switchTerminalView('dashboard')">
+          <span class="sidebar-item-icon">📊</span>
+          <span>Dashboard</span>
+        </div>
+
+        <div class="sidebar-item" id="nav-advisory" onclick="window.switchTerminalView('advisory')">
+          <span class="sidebar-item-icon">🎯</span>
+          <span>Buy / Avoid Advisory</span>
+          <span class="badge-pill badge-green" style="margin-left: auto; font-size: 9px; padding: 1px 5px;">AI PICKS</span>
+        </div>
+
+        <div class="sidebar-item" id="nav-copilot" onclick="window.toggleCopilot(true)">
+          <span class="sidebar-item-icon">💬</span>
+          <span>AI Copilot</span>
+          <span class="badge-pill badge-blue" style="margin-left: auto; font-size: 9px; padding: 1px 5px;">LIVE BOT</span>
+        </div>
+        
+        <div class="sidebar-item" id="nav-portfolio" onclick="window.switchTerminalView('portfolio')">
+          <span class="sidebar-item-icon">💼</span>
+          <span>Portfolio & Risk</span>
+        </div>
+        
+        <div class="sidebar-item" id="nav-equities" onclick="window.switchTerminalView('equities')">
+          <span class="sidebar-item-icon">📈</span>
+          <span>Active Equities</span>
+        </div>
+        
+        <div class="sidebar-item" id="nav-screener" onclick="window.switchTerminalView('screener')">
+          <span class="sidebar-item-icon">🔍</span>
+          <span>Factor Screener</span>
+        </div>
+        
+        <div class="sidebar-item" id="nav-backtest" onclick="window.switchTerminalView('backtest')">
+          <span class="sidebar-item-icon">🧪</span>
+          <span>Strategy Backtest</span>
+        </div>
+
+        <div class="sidebar-section-title" style="margin-top: 10px;">Audit & Research</div>
+
+        <div class="sidebar-item" id="nav-ledger" onclick="window.switchTerminalView('ledger')">
+          <span class="sidebar-item-icon">📜</span>
+          <span>Prediction Ledger</span>
+        </div>
+
+        <div class="sidebar-item" id="nav-paper" onclick="window.switchTerminalView('paper')">
+          <span class="sidebar-item-icon">📄</span>
+          <span>Model Whitepaper</span>
+        </div>
+      </nav>
+
+      <!-- Sidebar Footer User Profile -->
+      <div class="sidebar-footer">
+        <div class="user-profile-widget" onclick="window.openOnboardingModal()" title="Manage Portfolio Connection">
+          <div class="sidebar-avatar" id="side-user-avatar">AS</div>
+          <div class="user-meta-col">
+            <span class="user-meta-name" id="side-user-name">Aniket Sharma</span>
+            <span class="user-meta-tier">Connected Investor</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 4px;">
+          <button class="sidebar-action-btn" onclick="window.toggleTheme()" title="Toggle Theme">
+            <span id="side-theme-icon">☀️</span>
+          </button>
+          <button class="sidebar-action-btn" onclick="window.logoutTerminal()" title="Sign Out">
+            🚪
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace -->
+    <main class="app-workspace">
+      
+      <!-- Top Bar -->
+      <header class="workspace-topbar">
+        <div class="search-command-box" style="position: relative;">
+          <span class="search-icon-pos">🔍</span>
+          <input 
+            type="text" 
+            id="terminal-search-input" 
+            placeholder="Search ANY stock (e.g. 'Suzlon', 'IREDA', 'Apple', 'Reliance'), or ask ('Which stocks to buy?', 'Compare TCS & INFY')"
+            autocomplete="off"
+            oninput="window.handleTerminalSearchInput(event)"
+          >
+          <div class="search-autocomplete-dropdown" id="terminal-search-dropdown" style="display: none;"></div>
+        </div>
+
+        <div class="topbar-right-indices">
+          <div class="topbar-index-item">
+            <span style="color: var(--text-muted);">NIFTY:</span>
+            <span id="top-nifty-val" style="color: var(--text-primary); font-weight: 600;">24,850.20</span>
+            <span class="badge-pill badge-green" id="top-nifty-pct">+0.82%</span>
+          </div>
+          <div class="topbar-index-item">
+            <span style="color: var(--text-muted);">BANK NIFTY:</span>
+            <span id="top-bn-val" style="color: var(--text-primary); font-weight: 600;">52,340.00</span>
+            <span class="badge-pill badge-green" id="top-bn-pct">+0.64%</span>
+          </div>
+          <div class="topbar-index-item">
+            <span style="color: var(--text-muted);">VIX:</span>
+            <span id="top-vix-val" style="color: var(--text-primary); font-weight: 600;">13.80</span>
+            <span class="badge-pill badge-yellow">NORMAL</span>
+          </div>
+          <div class="topbar-index-item">
+            <span class="badge-pill badge-blue" id="top-regime-pill">BULL TREND</span>
+          </div>
+          <!-- Market Hours / 24/7 Simulation Toggle Widget -->
+          <div class="market-session-toggle-pill" id="market-session-widget" onclick="window.toggleMarketSessionMode()" title="Toggle between 24/7 Live Simulation and Official Market Close">
+            <span class="session-pulse-dot simulation-mode" id="session-dot"></span>
+            <span class="session-main-text font-mono" id="session-badge-text">24/7 SIMULATION LIVE</span>
+            <span class="session-sub-text" id="session-sub-text">Active Ticks</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Live Macro Marquee Ticker Strip -->
+      <div class="macro-ticker-strip">
+        <div class="macro-ticker-inner" id="macro-ticker-content">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Sandbox Demonstration Mode Indicator Bar -->
+      <div id="sandbox-indicator-bar" class="sandbox-banner" style="display: none;">
+        <div>
+          <span>🧪 <strong>Interactive Sandbox Demonstration Mode</strong> — Simulating probabilistic AI forecasts with sample assets. Real personal data is never connected in Sandbox.</span>
+        </div>
+        <button class="btn-sandbox-switch" onclick="window.logoutTerminal()">Switch to Live Account</button>
+      </div>
+
+      <!-- Scrollable Main View Panels -->
+      <div class="workspace-content">
+        <!-- Natural Query Results Box -->
+        <div id="search-results-overlay" style="display: none; margin-bottom: 18px;"></div>
+
+        <!-- ===================================================================
+             PANEL 1: DASHBOARD (ULTRA INSTITUTIONAL QUANT DESK)
+             =================================================================== -->
+        <section id="panel-dashboard" class="view-panel active">
+          <!-- Row 1: Index Mini Cards with Sparklines & Day Range -->
+          <div class="indices-cards-row">
+            <!-- NIFTY 50 -->
+            <div class="index-mini-card" onclick="window.loadExchangeChart('NIFTY', 30)">
+              <div class="index-card-header">
+                <span class="index-card-lbl">NIFTY 50</span>
+                <span class="index-status-dot pulse-green"></span>
+              </div>
+              <div class="index-card-main-row">
+                <span class="index-card-val" id="dash-n50-val">24,850.20</span>
+                <span class="badge-pill badge-green" id="dash-n50-badge">+0.82%</span>
+              </div>
+              <div class="index-sparkline-wrap">
+                <svg class="index-sparkline-svg" id="sparkline-n50" viewBox="0 0 120 28" preserveAspectRatio="none"></svg>
+              </div>
+              <div class="index-range-row">
+                <span class="range-bound" id="dash-n50-low">24,680</span>
+                <div class="range-track"><div class="range-fill" id="dash-n50-range" style="width: 78%;"></div></div>
+                <span class="range-bound" id="dash-n50-high">24,890</span>
+              </div>
+            </div>
+
+            <!-- BANK NIFTY -->
+            <div class="index-mini-card" onclick="window.loadExchangeChart('BANKNIFTY', 30)">
+              <div class="index-card-header">
+                <span class="index-card-lbl">BANK NIFTY</span>
+                <span class="index-status-dot pulse-green"></span>
+              </div>
+              <div class="index-card-main-row">
+                <span class="index-card-val" id="dash-bn-val">52,340.00</span>
+                <span class="badge-pill badge-green" id="dash-bn-badge">+0.64%</span>
+              </div>
+              <div class="index-sparkline-wrap">
+                <svg class="index-sparkline-svg" id="sparkline-bn" viewBox="0 0 120 28" preserveAspectRatio="none"></svg>
+              </div>
+              <div class="index-range-row">
+                <span class="range-bound" id="dash-bn-low">51,950</span>
+                <div class="range-track"><div class="range-fill" id="dash-bn-range" style="width: 65%;"></div></div>
+                <span class="range-bound" id="dash-bn-high">52,480</span>
+              </div>
+            </div>
+
+            <!-- SENSEX -->
+            <div class="index-mini-card" onclick="window.loadExchangeChart('SENSEX', 30)">
+              <div class="index-card-header">
+                <span class="index-card-lbl">SENSEX</span>
+                <span class="index-status-dot pulse-green"></span>
+              </div>
+              <div class="index-card-main-row">
+                <span class="index-card-val" id="dash-sn-val">81,420.00</span>
+                <span class="badge-pill badge-green" id="dash-sn-badge">+0.71%</span>
+              </div>
+              <div class="index-sparkline-wrap">
+                <svg class="index-sparkline-svg" id="sparkline-sn" viewBox="0 0 120 28" preserveAspectRatio="none"></svg>
+              </div>
+              <div class="index-range-row">
+                <span class="range-bound" id="dash-sn-low">80,910</span>
+                <div class="range-track"><div class="range-fill" id="dash-sn-range" style="width: 72%;"></div></div>
+                <span class="range-bound" id="dash-sn-high">81,590</span>
+              </div>
+            </div>
+
+            <!-- INDIA VIX -->
+            <div class="index-mini-card">
+              <div class="index-card-header">
+                <span class="index-card-lbl">INDIA VIX (VOLATILITY)</span>
+                <span class="index-status-dot pulse-yellow"></span>
+              </div>
+              <div class="index-card-main-row">
+                <span class="index-card-val" id="dash-vix-val">13.80</span>
+                <span class="badge-pill badge-yellow" id="dash-vix-badge">-2.40%</span>
+              </div>
+              <div class="index-sparkline-wrap">
+                <svg class="index-sparkline-svg" id="sparkline-vix" viewBox="0 0 120 28" preserveAspectRatio="none"></svg>
+              </div>
+              <div class="index-range-row">
+                <span class="range-bound" id="dash-vix-low">13.10</span>
+                <div class="range-track"><div class="range-fill" id="dash-vix-range" style="width: 38%; background: #f59e0b;"></div></div>
+                <span class="range-bound" id="dash-vix-high">14.65</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: Groww-Style Real-Time Stock Station (Chart + Quick Order Ticket) -->
+          <div class="groww-terminal-row">
+            <!-- Left: High Precision Quant Chart Station -->
+            <div class="groww-chart-station">
+              <!-- Groww Header: Symbol Icon, Name, Price & Change -->
+              <div class="groww-chart-header">
+                <div class="groww-stock-meta-left">
+                  <div class="groww-stock-avatar" id="groww-stock-avatar">
+                    <span>💘</span>
+                  </div>
+                  <div class="groww-stock-name-col">
+                    <div class="groww-stock-symbol-row">
+                      <span class="groww-stock-symbol" id="chart-active-ticker">CUPID</span>
+                      <span class="groww-stock-exchange">· NSE <span style="font-size: 10px;">⇅</span></span>
+                      <span class="badge-pill badge-green" id="chart-active-verdict">AI: STRONG BUY</span>
+                    </div>
+                    <div class="groww-stock-corp-name" id="chart-active-name">Cupid Limited</div>
+                    <div class="groww-stock-price-line">
+                      <span class="groww-live-price font-mono" id="chart-active-price">₹265.00</span>
+                      <span class="groww-live-change font-mono" id="chart-active-chg">-14.15 (5.07%) 1D</span>
+                      <span class="chart-meta-divider">•</span>
+                      <span class="groww-live-tick font-mono" id="chart-live-time">Live Tick: 15:30:00 IST</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right Header Actions & Quick Ticker Switcher -->
+                <div class="groww-header-actions">
+                  <div class="groww-quick-tickers" id="chart-quick-tickers">
+                    <button type="button" class="groww-ticker-chip active" onclick="window.loadExchangeChart('CUPID', 1, this)">CUPID</button>
+                    <button type="button" class="groww-ticker-chip" onclick="window.loadExchangeChart('RELIANCE', 1, this)">RELIANCE</button>
+                    <button type="button" class="groww-ticker-chip" onclick="window.loadExchangeChart('TCS', 1, this)">TCS</button>
+                    <button type="button" class="groww-ticker-chip" onclick="window.loadExchangeChart('HDFCBANK', 1, this)">HDFCBANK</button>
+                    <button type="button" class="groww-ticker-chip" onclick="window.loadExchangeChart('INFY', 1, this)">INFY</button>
+                    <button type="button" class="groww-ticker-chip" onclick="window.loadExchangeChart('SUZLON', 1, this)">SUZLON</button>
+                    <button type="button" class="groww-ticker-chip" onclick="window.loadExchangeChart('IREDA', 1, this)">IREDA</button>
+                    <button type="button" class="groww-ticker-chip" onclick="window.loadExchangeChart('ZOMATO', 1, this)">ZOMATO</button>
+                    <button type="button" class="groww-ticker-chip chip-index" onclick="window.loadExchangeChart('NIFTY', 1, this)">NIFTY 50</button>
+                    <button type="button" class="groww-ticker-chip chip-index" onclick="window.loadExchangeChart('BANKNIFTY', 1, this)">BANK NIFTY</button>
+                  </div>
+                  <div class="groww-icon-btns-row">
+                    <button type="button" class="groww-icon-btn depth-btn-action" title="View Level-2 Market Depth (5 Best Bids & Asks)" onclick="window.openDepthModal()">📊 Market Depth</button>
+                    <button type="button" class="groww-icon-btn" title="Create Price Alert" onclick="window.triggerToast('Alert set for ' + (window.currentStockTicker || 'CUPID'))">🔔</button>
+                    <button type="button" class="groww-icon-btn" title="Add to Watchlist" onclick="window.triggerToast('Added ' + (window.currentStockTicker || 'CUPID') + ' to Watchlist')">🔖</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Chart Types, Indicators & Overlays Toolbar -->
+              <div class="groww-toolbar-row">
+                <!-- Left: Chart Style Types -->
+                <div class="chart-type-selector-group">
+                  <button type="button" class="chart-type-pill active" id="btn-chart-type-area" onclick="window.setChartType('area', this)">📈 Area</button>
+                  <button type="button" class="chart-type-pill" id="btn-chart-type-candle" onclick="window.setChartType('candle', this)">🕯️ Candle</button>
+                  <button type="button" class="chart-type-pill" id="btn-chart-type-heikin" onclick="window.setChartType('heikin', this)">📊 Heikin-Ashi</button>
+                  <button type="button" class="chart-type-pill" id="btn-chart-type-line" onclick="window.setChartType('line', this)">〰️ Line</button>
+                </div>
+
+                <!-- Center/Right: Technical Overlays -->
+                <div class="chart-indicators-strip">
+                  <span class="indicator-strip-label">Overlays:</span>
+                  <button type="button" class="indicator-pill active" id="btn-ind-20ema" onclick="window.toggleChartIndicator('ema20', this)">20 EMA</button>
+                  <button type="button" class="indicator-pill active" id="btn-ind-50sma" onclick="window.toggleChartIndicator('sma50', this)">50 SMA</button>
+                  <button type="button" class="indicator-pill active" id="btn-ind-200sma" onclick="window.toggleChartIndicator('sma200', this)">200 SMA</button>
+                  <button type="button" class="indicator-pill active" id="btn-ind-bollinger" onclick="window.toggleChartIndicator('bollinger', this)">Bollinger (2σ)</button>
+                  <button type="button" class="indicator-pill active" id="btn-ind-vwap" onclick="window.toggleChartIndicator('vwap', this)">VWAP</button>
+                  <button type="button" class="indicator-pill active" id="btn-ind-volume" onclick="window.toggleChartIndicator('volume', this)">Volume</button>
+                </div>
+              </div>
+
+              <!-- Top Dynamic Legend HUD Ribbon (Updates on Hover) -->
+              <div class="chart-hud-legend-bar" id="chart-hud-legend">
+                <span class="hud-item"><span class="hud-lbl">O:</span> <strong id="hud-val-open" class="font-mono">₹278.60</strong></span>
+                <span class="hud-item"><span class="hud-lbl">H:</span> <strong id="hud-val-high" class="font-mono text-green">₹288.50</strong></span>
+                <span class="hud-item"><span class="hud-lbl">L:</span> <strong id="hud-val-low" class="font-mono text-red">₹258.00</strong></span>
+                <span class="hud-item"><span class="hud-lbl">C:</span> <strong id="hud-val-close" class="font-mono">₹265.00</strong></span>
+                <span class="hud-item"><span class="hud-lbl">Vol:</span> <strong id="hud-val-vol" class="font-mono text-blue">8.42M</strong></span>
+                <span class="hud-item"><span class="hud-lbl">VWAP:</span> <strong id="hud-val-vwap" class="font-mono" style="color: #fb923c;">₹268.40</strong></span>
+                <span class="hud-item"><span class="hud-lbl">EMA20:</span> <strong id="hud-val-ema20" class="font-mono" style="color: #fbbf24;">₹266.10</strong></span>
+                <span class="hud-item"><span class="hud-lbl">SMA50:</span> <strong id="hud-val-sma50" class="font-mono" style="color: #38bdf8;">₹270.80</strong></span>
+                <span class="hud-item"><span class="hud-lbl">Chg:</span> <strong id="hud-val-chg" class="font-mono text-red">-5.07%</strong></span>
+              </div>
+
+              <!-- High Precision Canvas (with Hover Crosshair & Real-Time Renderers) -->
+              <div class="chart-canvas-wrap groww-canvas-wrap">
+                <canvas id="market-area-chart"></canvas>
+              </div>
+
+              <!-- Groww Bottom Timeframe Navigation Strip -->
+              <div class="groww-bottom-strip">
+                <div class="groww-timeframe-group">
+                  <button type="button" class="groww-tf-btn active" onclick="window.switchChartTimeframe(1, this)">1D</button>
+                  <button type="button" class="groww-tf-btn" onclick="window.switchChartTimeframe(7, this)">1W</button>
+                  <button type="button" class="groww-tf-btn" onclick="window.switchChartTimeframe(30, this)">1M</button>
+                  <button type="button" class="groww-tf-btn" onclick="window.switchChartTimeframe(90, this)">3M</button>
+                  <button type="button" class="groww-tf-btn" onclick="window.switchChartTimeframe(180, this)">6M</button>
+                  <button type="button" class="groww-tf-btn" onclick="window.switchChartTimeframe(365, this)">1Y</button>
+                  <button type="button" class="groww-tf-btn" onclick="window.switchChartTimeframe(1095, this)">3Y</button>
+                  <button type="button" class="groww-tf-btn" onclick="window.switchChartTimeframe(1825, this)">5Y</button>
+                  <button type="button" class="groww-tf-btn" onclick="window.switchChartTimeframe(3650, this)">All</button>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                  <button type="button" class="groww-depth-btn" onclick="window.openDepthModal(window.currentStockTicker || 'CUPID')">
+                    📊 Level-2 Depth
+                  </button>
+                  <button type="button" class="groww-terminal-link-btn" onclick="window.openStockModal(window.currentStockTicker || 'CUPID')">
+                    Terminal ↗
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Groww Quick Order Ticket Station -->
+            <div class="groww-order-ticket" id="groww-order-ticket">
+              <!-- Order Header -->
+              <div class="order-ticket-header">
+                <div class="order-stock-title" id="order-ticket-title">Cupid</div>
+                <div class="order-stock-sub">
+                  <span id="order-nse-line">NSE <span class="font-mono" id="order-nse-price">₹265.00</span> (<span class="font-mono text-red" id="order-nse-pct">-5.07%</span>)</span>
+                  <span>·</span>
+                  <span id="order-bse-line">BSE <span class="font-mono" id="order-bse-price">₹265.05</span></span>
+                  <span class="order-depth-link" onclick="window.triggerToast('Viewing NSE Level-2 Market Depth...')">Depth</span>
+                </div>
+              </div>
+
+              <!-- Buy / Sell Mode Tabs -->
+              <div class="order-action-tabs">
+                <button type="button" class="order-tab-btn buy-tab active" id="order-tab-buy" onclick="window.switchOrderTab('BUY')">BUY</button>
+                <button type="button" class="order-tab-btn sell-tab" id="order-tab-sell" onclick="window.switchOrderTab('SELL')">SELL</button>
+              </div>
+
+              <!-- Order Product Types -->
+              <div class="order-type-row">
+                <div class="order-type-pills">
+                  <button type="button" class="order-type-btn active" id="order-type-delivery" onclick="window.switchOrderType('Delivery', this)">Delivery</button>
+                  <button type="button" class="order-type-btn" id="order-type-intraday" onclick="window.switchOrderType('Intraday', this)">Intraday</button>
+                  <button type="button" class="order-type-btn" id="order-type-mtf" onclick="window.switchOrderType('MTF 1.25x', this)">MTF 1.25x</button>
+                </div>
+                <!-- Quick Preset Quantity Chips -->
+                <div class="order-qty-presets">
+                  <button type="button" class="qty-chip" onclick="window.setOrderQuantity(20)">20</button>
+                  <button type="button" class="qty-chip" onclick="window.setOrderQuantity(30)">30</button>
+                  <button type="button" class="qty-chip" onclick="window.setOrderQuantity(40)">40</button>
+                </div>
+              </div>
+
+              <!-- Quantity Input Row -->
+              <div class="order-input-field-group">
+                <div class="order-input-label-row">
+                  <label for="in-order-qty">Qty NSE <span style="font-size: 10px; color: var(--text-muted);">⇅</span></label>
+                </div>
+                <div class="order-stepper-wrap">
+                  <button type="button" class="btn-stepper" onclick="window.adjustOrderQty(-10)">−</button>
+                  <input type="number" id="in-order-qty" class="order-numeric-input font-mono" value="20" min="1" step="1" oninput="window.calcOrderMargin()">
+                  <button type="button" class="btn-stepper" onclick="window.adjustOrderQty(10)">+</button>
+                </div>
+              </div>
+
+              <!-- Price Limit Input Row -->
+              <div class="order-input-field-group">
+                <div class="order-input-label-row">
+                  <label for="in-order-price">Price Limit <span style="font-size: 10px; color: var(--text-muted);">⇅</span></label>
+                  <button type="button" class="order-market-toggle" id="btn-market-toggle" onclick="window.toggleMarketOrder()">Limit</button>
+                </div>
+                <div class="order-price-wrap">
+                  <input type="number" id="in-order-price" class="order-numeric-input font-mono" value="265.00" step="0.05" oninput="window.calcOrderMargin()">
+                </div>
+              </div>
+
+              <!-- Valuation & Balance Row -->
+              <div class="order-valuation-box">
+                <div class="order-val-line">
+                  <span class="order-val-lbl">Balance :</span>
+                  <span class="order-val-num font-mono" id="order-user-balance">₹4,50,000.00</span>
+                </div>
+                <div class="order-val-line">
+                  <span class="order-val-lbl">Approx req. :</span>
+                  <span class="order-val-num font-mono" id="order-approx-req">₹5,300.00</span>
+                </div>
+              </div>
+
+              <!-- Primary Execution Button -->
+              <button type="button" class="btn-execute-order buy-mode" id="btn-execute-order" onclick="window.executeGrowwOrder()">
+                Buy
+              </button>
+            </div>
+          </div>
+
+          <!-- Row 3: Live Market Pulse & Top Probabilistic Setups -->
+          <div class="dashboard-grid-bottom">
+            <!-- Left: Top High-Conviction Model Outlooks -->
+            <div class="setups-card-box">
+              <div class="card-glass-header">
+                <div class="card-glass-title-row">
+                  <div class="card-icon-pill">🎯</div>
+                  <div>
+                    <span class="card-glass-title">Top Probabilistic Signals</span>
+                    <div class="card-glass-sub">Calibrated 7-Day Multi-Factor Forecasts</div>
+                  </div>
+                </div>
+                <button type="button" class="card-header-link-btn" onclick="window.switchTerminalView('advisory')">View All Advisory →</button>
+              </div>
+              <div id="dash-setups-list" class="setups-cards-grid">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- Right: Real-time Factor Strength Table -->
+            <div class="sector-strength-card">
+              <div class="card-glass-header">
+                <div class="card-glass-title-row">
+                  <div class="card-icon-pill">📊</div>
+                  <div>
+                    <span class="card-glass-title">Sector Flow & Momentum Matrix</span>
+                    <div class="card-glass-sub">Real-Time Institutional Inflows</div>
+                  </div>
+                </div>
+                <span class="badge-pill badge-green">LIVE TRACKING</span>
+              </div>
+              <div id="dash-sector-matrix" class="sector-matrix-list">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             PANEL 2: MY PORTFOLIO & RISK (DEEP ML ENGINE & ATTRIBUTION)
+             =================================================================== -->
+        <section id="panel-portfolio" class="view-panel">
+          
+          <!-- Empty Portfolio State (For New Real Users) -->
+          <div id="port-empty-state" class="portfolio-empty-hero" style="display: none;">
+            <div class="empty-hero-icon">💼</div>
+            <div class="empty-hero-title">No Investments Connected Yet</div>
+            <div class="empty-hero-desc">
+              Connect your mutual funds, equity portfolios, or demat statements to unlock institutional multi-factor machine learning forecasts, stress testing, and real-time causal risk attribution.
+            </div>
+
+            <div class="empty-actions-grid">
+              <div class="empty-action-card" onclick="window.openOnboardingModal(); window.showOnboardingMethod('cas');">
+                <span class="empty-action-icon">📄</span>
+                <div class="empty-action-title">Upload CAS Statement PDF</div>
+                <div class="empty-action-desc">Upload CAMS / KFintech consolidated mutual funds statement with instant PAN decryption.</div>
+              </div>
+
+              <div class="empty-action-card" onclick="window.openOnboardingModal(); window.showOnboardingMethod('broker');">
+                <span class="empty-action-icon">🏦</span>
+                <div class="empty-action-title">Connect Broker API</div>
+                <div class="empty-action-desc">Direct OAuth integration for Zerodha Kite Connect, Upstox Pro, or Angel One.</div>
+              </div>
+
+              <div class="empty-action-card" onclick="window.openAddHoldingModal();">
+                <span class="empty-action-icon">➕</span>
+                <div class="empty-action-title">Add Asset Manually</div>
+                <div class="empty-action-desc">Enter stock tickers, shares, and purchase costs for immediate mark-to-market valuation.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Real Portfolio Filled Content -->
+          <div id="port-filled-state">
+            <!-- Real Portfolio Summary Banner -->
+            <div class="portfolio-hero-banner">
+              <div>
+                <div style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px;">Connected Investment Valuation</div>
+                <div class="portfolio-balance-val" id="port-total-balance">₹3,21,840.00</div>
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 600; font-family: var(--font-mono);">
+                  <span class="val-pos" id="port-total-pnl">+₹37,340.00</span>
+                  <span class="badge-pill badge-green" id="port-total-pct">+13.12% Overall Return</span>
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="btn-core btn-primary" onclick="window.syncLivePortfolio()">⚡ Refresh Live Prices</button>
+                <button class="btn-core" onclick="window.openOnboardingModal()">🔗 Connect Broker / CAS</button>
+                <button class="btn-core" onclick="window.openAddHoldingModal()">➕ Add Stock</button>
+              </div>
+            </div>
+
+            <!-- Quick Stats Row -->
+            <div class="portfolio-stats-grid">
+              <div class="portfolio-stat-card">
+                <div style="font-size: 10.5px; color: var(--text-muted); text-transform: uppercase;">Total Invested</div>
+                <div style="font-size: 18px; font-weight: 700; font-family: var(--font-mono);" id="port-stat-invested">₹2,84,500</div>
+              </div>
+              <div class="portfolio-stat-card">
+                <div style="font-size: 10.5px; color: var(--text-muted); text-transform: uppercase;">Current Value</div>
+                <div style="font-size: 18px; font-weight: 700; font-family: var(--font-mono); color: var(--text-primary);" id="port-stat-current">₹3,21,840</div>
+              </div>
+              <div class="portfolio-stat-card">
+                <div style="font-size: 10.5px; color: var(--text-muted); text-transform: uppercase;">Overall Return</div>
+                <div style="font-size: 18px; font-weight: 700; font-family: var(--font-mono);" class="val-pos" id="port-stat-return">+₹37,340 (+13.12%)</div>
+              </div>
+              <div class="portfolio-stat-card">
+                <div style="font-size: 10.5px; color: var(--text-muted); text-transform: uppercase;">1-Day 95% VaR</div>
+                <div style="font-size: 18px; font-weight: 700; font-family: var(--font-mono);" class="val-neg" id="port-stat-var">-₹4,820 (-1.69%)</div>
+              </div>
+            </div>
+
+            <!-- Equities / Mutual Funds Tabs -->
+            <div class="portfolio-tabs-row">
+              <button class="portfolio-tab-btn active" id="port-tab-btn-eq" onclick="window.switchPortfolioSubTab('equities')">
+                📈 Equities & Holdings
+              </button>
+              <button class="portfolio-tab-btn" id="port-tab-btn-mf" onclick="window.switchPortfolioSubTab('mf')">
+                📊 Mutual Funds (CAS / AA)
+              </button>
+              <button class="portfolio-tab-btn" id="port-tab-btn-risk" onclick="window.switchPortfolioSubTab('risk')">
+                🛡️ Risk & Allocation
+              </button>
+            </div>
+
+            <!-- Tab 1: Equities Holdings with Deep ML Attribution -->
+            <div id="port-view-equities">
+              <div id="port-holdings-ml-container">
+                <!-- Rendered dynamically with Deep ML Cards -->
+              </div>
+            </div>
+
+            <!-- Tab 2: Mutual Funds View -->
+            <div id="port-view-mf" style="display: none;">
+              <div class="sector-strength-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                  <span style="font-size: 12.5px; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Verified Mutual Fund Folios (CAS & AA)</span>
+                  <button class="btn-core" style="font-size: 11px; padding: 4px 10px;" onclick="window.openOnboardingModal()">📄 Import Another CAS PDF</button>
+                </div>
+                <div class="table-wrap">
+                  <table class="terminal-table">
+                    <thead>
+                      <tr>
+                        <th>Scheme Name</th>
+                        <th>Folio</th>
+                        <th>Category</th>
+                        <th>Units</th>
+                        <th>Avg NAV</th>
+                        <th>Current NAV</th>
+                        <th>Current Value</th>
+                        <th>P&L</th>
+                        <th>1Y ML Forecast</th>
+                      </tr>
+                    </thead>
+                    <tbody id="port-mf-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 3: Risk Decomposition & Sector Donut -->
+            <div id="port-view-risk" style="display: none;">
+              <div class="dashboard-grid-2col" style="margin-bottom: 18px;">
+                <div class="sector-strength-card">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Sector Diversification</span>
+                    <span class="badge-pill badge-blue">Weights</span>
+                  </div>
+                  <div style="height: 180px; position: relative; margin-top: 10px;">
+                    <canvas id="portfolio-sector-canvas"></canvas>
+                  </div>
+                  <div id="port-sector-legend" style="margin-top: 10px; font-size: 11.5px;"></div>
+                </div>
+
+                <div class="sector-strength-card">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <span style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Parametric VaR & Factor Risk</span>
+                    <span class="badge-pill badge-yellow">95% Confidence</span>
+                  </div>
+                  <table style="width: 100%; font-size: 12.5px; border-collapse: collapse;">
+                    <tr style="border-bottom: 1px solid var(--border-light);"><td style="padding: 5px 0; color: var(--text-muted);">Overall Risk Rating</td><td style="text-align: right;"><span class="badge-pill badge-yellow">MEDIUM</span></td></tr>
+                    <tr style="border-bottom: 1px solid var(--border-light);"><td style="padding: 5px 0; color: var(--text-muted);">Concentration Risk</td><td style="text-align: right;"><span class="badge-pill badge-yellow">BALANCED</span></td></tr>
+                    <tr style="border-bottom: 1px solid var(--border-light);"><td style="padding: 5px 0; color: var(--text-muted);">1-Day 95% VaR</td><td style="text-align: right;" class="font-mono val-neg">-₹4,820 (-1.69%)</td></tr>
+                    <tr style="border-bottom: 1px solid var(--border-light);"><td style="padding: 5px 0; color: var(--text-muted);">Conditional VaR (CVaR)</td><td style="text-align: right;" class="font-mono val-neg">-₹6,025 (-2.11%)</td></tr>
+                    <tr><td style="padding: 5px 0; color: var(--text-muted);">Portfolio Beta vs NIFTY</td><td style="text-align: right;" class="font-mono">1.04</td></tr>
+                  </table>
+
+                  <div style="margin-top: 12px; padding: 10px; background-color: var(--bg-input); border-radius: var(--radius-md); font-size: 11.5px; color: var(--text-secondary);">
+                    <strong>💡 Active Portfolio Insights:</strong>
+                    <ul id="port-insights-list" style="padding-left: 18px; margin-top: 4px; line-height: 1.5;"></ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Macro Stress Test -->
+              <div class="sector-strength-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                  <span style="font-size: 12px; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Macroeconomic Stress Engine</span>
+                  <span style="font-size: 11px; color: var(--text-muted);">Simulate instant macro shocks</span>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px;">
+                  <button class="btn-core" onclick="window.runStressScenario('nifty_drop_5pct')">📉 NIFTY Drops -5.0%</button>
+                  <button class="btn-core" onclick="window.runStressScenario('crude_oil_spike_10pct')">🛢️ Crude Spikes +10%</button>
+                  <button class="btn-core" onclick="window.runStressScenario('rate_cut_25bps')">🏦 RBI Cuts 25 bps</button>
+                </div>
+                <div id="stress-scenario-result" style="display: none; background: var(--bg-input); padding: 12px; border-radius: var(--radius-md); border-left: 3px solid var(--blue);"></div>
+              </div>
+            </div>
+          </div><!-- end port-filled-state -->
+
+          <!-- Academic Disclaimer Banner -->
+          <div class="academic-disclaimer-banner">
+            <span>⚠️</span>
+            <span><strong>Academic & Quantitative Disclaimer:</strong> Model outputs represent statistical forecasts derived from historical price action and multi-factor regressions. They are not a guarantee of future returns or investment advice.</span>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             PANEL 2: AI BUY / AVOID ADVISORY HUB (CUSTOMER RECOMMENDATIONS)
+             =================================================================== -->
+        <section id="panel-advisory" class="view-panel">
+          <!-- Advisory Hero Banner -->
+          <div class="advisory-hero-banner">
+            <div class="advisory-hero-left">
+              <div class="advisory-badge-pill">
+                <span class="badge-sparkle">✦</span>
+                <span>AI Customer Stock Advisory Hub</span>
+              </div>
+              <h2 class="advisory-headline">Real-Time Buy & Avoid Recommendations</h2>
+              <p class="advisory-subhead">
+                Actionable investment & swing trade guidance for retail & institutional investors. Every suggestion integrates trend structure (SMA 20/50/200), RSI momentum sweet-spots, balance sheet valuation, and probabilistic ML conviction.
+              </p>
+            </div>
+            <div class="advisory-hero-stats">
+              <div class="adv-stat-box green" onclick="window.filterAdvisoryCategory('buys')">
+                <span class="adv-stat-num" id="adv-stat-buys">28</span>
+                <span class="adv-stat-lbl">Top Buy Picks</span>
+              </div>
+              <div class="adv-stat-box red" onclick="window.filterAdvisoryCategory('avoids')">
+                <span class="adv-stat-num" id="adv-stat-avoids">14</span>
+                <span class="adv-stat-lbl">Stocks to Avoid</span>
+              </div>
+              <div class="adv-stat-box yellow" onclick="window.filterAdvisoryCategory('holds')">
+                <span class="adv-stat-num" id="adv-stat-holds">51</span>
+                <span class="adv-stat-lbl">Neutral / Watch</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Filter Bar -->
+          <div class="advisory-filter-bar">
+            <div class="advisory-tabs-group">
+              <button class="adv-tab-btn active" id="adv-tab-all" onclick="window.filterAdvisoryCategory('all', this)">
+                All Equities (<span id="adv-count-all">93</span>)
+              </button>
+              <button class="adv-tab-btn" id="adv-tab-buys" onclick="window.filterAdvisoryCategory('buys', this)">
+                🟢 Top Buy Picks (<span id="adv-count-buys">28</span>)
+              </button>
+              <button class="adv-tab-btn" id="adv-tab-avoids" onclick="window.filterAdvisoryCategory('avoids', this)">
+                🔴 Stocks to Avoid (<span id="adv-count-avoids">14</span>)
+              </button>
+              <button class="adv-tab-btn" id="adv-tab-breakouts" onclick="window.filterAdvisoryCategory('breakouts', this)">
+                🚀 Momentum Breakouts (<span id="adv-count-breakouts">10</span>)
+              </button>
+              <button class="adv-tab-btn" id="adv-tab-value" onclick="window.filterAdvisoryCategory('value', this)">
+                💎 Value Accumulation (<span id="adv-count-value">10</span>)
+              </button>
+            </div>
+            <div class="adv-search-box">
+              <span>🔍</span>
+              <input type="text" id="adv-filter-input" placeholder="Filter picks by ticker or sector..." oninput="window.filterAdvisoryCards(this.value)">
+            </div>
+          </div>
+
+          <!-- Recommendations Grid Container -->
+          <div class="advisory-cards-grid" id="advisory-cards-container">
+            <div style="padding: 40px; text-align: center; color: var(--text-muted);">
+              Loading real-time AI advisory signals & customer recommendations...
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             PANEL 3: ACTIVE EQUITIES & WATCHLIST
+             =================================================================== -->
+        <section id="panel-equities" class="view-panel">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div>
+              <h2 style="font-size: 15px; font-weight: 700; color: var(--text-primary);">Tracked NSE Equities — Calibrated ML Signals</h2>
+              <div style="font-size: 12px; color: var(--text-muted);">Multimodal signals combining momentum, FinBERT sentiment, and regime clustering.</div>
+            </div>
+            <button class="btn-core" onclick="window.switchTerminalView('screener')">Open Factor Screener →</button>
+          </div>
+
+          <div class="equities-cards-grid" id="equities-cards-container"></div>
+        </section>
+
+        <!-- ===================================================================
+             PANEL 4: FACTOR SCREENER
+             =================================================================== -->
+        <section id="panel-screener" class="view-panel">
+          <div class="sector-strength-card" style="margin-bottom: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
+              <div>
+                <span style="font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Multi-Factor Quantitative Screener</span>
+                <div style="font-size: 11.5px; color: var(--text-muted);">Filter equities across momentum, news sentiment, advisory verdict, and risk profile.</div>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <select id="screen-verdict" class="btn-core" onchange="window.runScreenerFilter()">
+                  <option value="ALL">All Advisory Verdicts</option>
+                  <option value="STRONG BUY">Strong Buy Picks</option>
+                  <option value="ACCUMULATE">Accumulate / Buy</option>
+                  <option value="HOLD">Hold / Watch</option>
+                  <option value="AVOID">Stocks to Avoid</option>
+                </select>
+                <select id="screen-mom" class="btn-core" onchange="window.runScreenerFilter()">
+                  <option value="ALL">All Momentum</option>
+                  <option value="Strong">Strong Momentum</option>
+                  <option value="Moderate">Moderate Momentum</option>
+                  <option value="Weak">Weak Momentum</option>
+                </select>
+                <select id="screen-sent" class="btn-core" onchange="window.runScreenerFilter()">
+                  <option value="ALL">All Sentiment</option>
+                  <option value="Positive">Positive Sentiment</option>
+                  <option value="Neutral">Neutral Sentiment</option>
+                  <option value="Negative">Negative Sentiment</option>
+                </select>
+                <select id="screen-risk" class="btn-core" onchange="window.runScreenerFilter()">
+                  <option value="ALL">All Risk Levels</option>
+                  <option value="Low">Low Risk</option>
+                  <option value="Medium">Medium Risk</option>
+                  <option value="High">High Risk</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="terminal-table">
+                <thead>
+                  <tr>
+                    <th>Ticker</th>
+                    <th>Sector</th>
+                    <th>Price (INR)</th>
+                    <th>1D Change</th>
+                    <th>Model Signal</th>
+                    <th>Probability</th>
+                    <th>Momentum</th>
+                    <th>FinBERT Sentiment</th>
+                    <th>P/E</th>
+                    <th>ROE</th>
+                    <th>Risk</th>
+                  </tr>
+                </thead>
+                <tbody id="screener-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             PANEL 5: STRATEGY BACKTESTER
+             =================================================================== -->
+        <section id="panel-backtest" class="view-panel">
+          <div class="sector-strength-card" style="margin-bottom: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;">
+              <div>
+                <span style="font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Walk-Forward Strategy Backtest Lab</span>
+                <div style="font-size: 11.5px; color: var(--text-muted);">5-fold chronological validation with zero lookahead bias and simulated slippage.</div>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <select id="bt-strat-select" class="btn-core">
+                  <option value="finsight_signal">FinSight Probabilistic Ensemble</option>
+                  <option value="momentum">Price Momentum (20D SMA)</option>
+                  <option value="sentiment">FinBERT News Sentiment</option>
+                  <option value="technical">RSI / MACD Technical Breakout</option>
+                  <option value="buy_and_hold">Equal-Weight Buy & Hold</option>
+                </select>
+                <input type="number" id="bt-capital-input" class="btn-core" value="100000" style="width: 110px;" title="Capital">
+                <button class="btn-core btn-primary" onclick="window.executeBacktest()">Run Backtest</button>
+              </div>
+            </div>
+
+            <div class="indices-cards-row" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 18px;">
+              <div class="index-mini-card">
+                <span class="index-card-lbl">Final Portfolio Value</span>
+                <span class="index-card-val val-pos" id="bt-final-val">₹2,48,650</span>
+                <span style="font-size: 11px; color: var(--text-muted);" id="bt-init-lbl">Initial: ₹1,00,000</span>
+              </div>
+              <div class="index-mini-card">
+                <span class="index-card-lbl">Strategy CAGR</span>
+                <span class="index-card-val val-pos" id="bt-cagr-val">+20.4%</span>
+                <span style="font-size: 11px; color: var(--text-muted);" id="bt-bm-val">Benchmark NIFTY: +13.8%</span>
+              </div>
+              <div class="index-mini-card">
+                <span class="index-card-lbl">Risk Adjusted Return</span>
+                <div style="font-size: 18px; font-weight: 700; color: var(--text-primary);" id="bt-stats-val">1.84 Sharpe • 64.2% Win</div>
+                <span style="font-size: 11px; color: var(--text-muted);">Max Drawdown: -12.4%</span>
+              </div>
+            </div>
+
+            <div style="height: 250px; position: relative;">
+              <canvas id="backtest-canvas"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             PANEL 6: PREDICTION AUDIT LEDGER
+             =================================================================== -->
+        <section id="panel-ledger" class="view-panel">
+          <div class="sector-strength-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <div>
+                <span style="font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Verifiable Historical Prediction Audit Log</span>
+                <div style="font-size: 11.5px; color: var(--text-muted);">600 out-of-sample predictions with empirical forward outcomes.</div>
+              </div>
+              <span class="badge-pill badge-blue">Out-of-Sample Verified</span>
+            </div>
+
+            <div class="indices-cards-row" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 16px;">
+              <div class="index-mini-card">
+                <span class="index-card-lbl">Directional Accuracy</span>
+                <span class="index-card-val val-pos" id="ledger-acc-stat">59.7%</span>
+                <span style="font-size: 11px; color: var(--text-muted);">Out-of-sample empirical hit rate</span>
+              </div>
+              <div class="index-mini-card">
+                <span class="index-card-lbl">Precision / Recall / F1</span>
+                <span class="index-card-val" id="ledger-scores-stat" style="font-size: 18px;">58.2% / 79.2% / 67.1%</span>
+                <span style="font-size: 11px; color: var(--text-muted);">Cross-validated performance</span>
+              </div>
+              <div class="index-mini-card">
+                <span class="index-card-lbl">Calibration (Brier Score)</span>
+                <span class="index-card-val" id="ledger-brier-stat" style="font-size: 18px; color: var(--blue);">0.2407</span>
+                <span style="font-size: 11px; color: var(--text-muted);">Sigmoid / Platt calibrated</span>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="terminal-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Stock</th>
+                    <th>Price at Pred</th>
+                    <th>Prediction</th>
+                    <th>Probability</th>
+                    <th>Expected Return</th>
+                    <th>Actual Return</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="ledger-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===================================================================
+             PANEL 7: RESEARCH WHITEPAPER
+             =================================================================== -->
+        <section id="panel-paper" class="view-panel">
+          <div class="sector-strength-card" style="max-width: 920px; margin: 0 auto; line-height: 1.8;">
+            <h2 style="font-size: 19px; font-weight: 700; margin-bottom: 4px;">AlphaLens: An Explainable Multimodal Quantitative ML Framework</h2>
+            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 18px;">Quantitative Machine Learning Research Release</div>
+
+            <h3 style="font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">System Philosophy</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 14px; font-size: 13px;">
+              AlphaLens operates under the fundamental thesis that machine learning delivers maximal value in financial decision making when functioning as an evidence-based probability and risk engine rather than an overt chatbot interface. By combining technical momentum, FinBERT financial NLP sentiment, fundamental ratios, and Gaussian Mixture Model (GMM) market regime clustering under strict walk-forward cross-validation (zero lookahead leakage), AlphaLens produces well-calibrated probability distributions with transparent causal feature attributions.
+            </p>
+
+            <h3 style="font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">Mathematical Ensemble Architecture</h3>
+            <ul style="color: var(--text-secondary); padding-left: 20px; font-size: 13px;">
+              <li><strong>Soft-Voting Calibrated Ensemble:</strong> HistGradientBoosting + Random Forest + Logistic Regression with Platt Sigmoid calibration: $\hat{P}(y=1 \mid \mathbf{x}) = \frac{1}{1 + \exp(A \cdot f(\mathbf{x}) + B)}$.</li>
+              <li><strong>Quantile Return Bands:</strong> 10th, 50th, and 90th percentile regressors optimizing pinball loss for empirical bounds.</li>
+              <li><strong>Causal Attribution Engine:</strong> Dynamic multi-factor decomposition answering <em>"Why is it moving?"</em> and <em>"What changed since yesterday?"</em>.</li>
+            </ul>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- =====================================================================
+       MODALS
+       ===================================================================== -->
+  
+  <!-- MODAL 1: Stock Deep Dive -->
+  <div class="modal-overlay" id="stock-modal">
+    <div class="modal-window">
+      <div class="modal-top">
+        <div>
+          <div style="font-size: 11px; text-transform: uppercase; color: var(--text-muted);" id="m-stock-sector">Sector</div>
+          <div style="font-size: 18px; font-weight: 700;" id="m-stock-title">RELIANCE — Reliance Industries Ltd</div>
+        </div>
+        <button class="modal-close" onclick="window.closeStockModal()">✕</button>
+      </div>
+
+      <div class="modal-content">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;">
+          <div>
+            <div style="font-size: 26px; font-weight: 700; font-family: var(--font-mono);" id="m-stock-price">₹2,845.00</div>
+            <div style="font-size: 13.5px; font-weight: 600;" id="m-stock-chg" class="val-pos">+1.82%</div>
+          </div>
+          <span class="badge-pill badge-green" id="m-stock-badge">Positive Outlook</span>
+        </div>
+
+        <!-- Dedicated Customer Advisory Card -->
+        <div class="modal-advisory-card" id="m-advisory-container" style="margin-bottom: 16px;">
+          <div class="m-adv-header">
+            <div class="m-adv-verdict-row">
+              <span class="m-adv-label">AI ADVISORY VERDICT:</span>
+              <span class="badge-pill badge-strong-buy" id="m-adv-verdict">STRONG BUY</span>
+              <span class="m-adv-conviction" id="m-adv-conviction">88% Conviction</span>
+            </div>
+            <div class="m-adv-suitability" id="m-adv-suitability">Suitable for Growth & Momentum Investors</div>
+          </div>
+          <div class="m-adv-action-summary" id="m-adv-action-summary">
+            Aggressive accumulation recommended on dips near entry zone.
+          </div>
+          <div class="m-adv-metrics-grid">
+            <div class="m-adv-metric">
+              <span class="m-metric-lbl">Ideal Entry Zone</span>
+              <span class="m-metric-val font-mono" id="m-adv-entry">₹1,210 – ₹1,235</span>
+            </div>
+            <div class="m-adv-metric">
+              <span class="m-metric-lbl">Target Price 1</span>
+              <span class="m-metric-val font-mono val-pos" id="m-adv-target1">₹1,420.00 (+15.4%)</span>
+            </div>
+            <div class="m-adv-metric">
+              <span class="m-metric-lbl">Stop Loss Level</span>
+              <span class="m-metric-val font-mono val-neg" id="m-adv-stoploss">₹1,165.00 (-4.8%)</span>
+            </div>
+            <div class="m-adv-metric">
+              <span class="m-metric-lbl">Risk : Reward</span>
+              <span class="m-metric-val font-mono" id="m-adv-rr">1 : 3.2</span>
+            </div>
+          </div>
+          <div class="m-adv-bullets-row">
+            <div class="m-adv-bull-col">
+              <span class="m-col-title">🟢 Why Buy / Bullish Catalysts:</span>
+              <ul id="m-adv-bull-ul" class="m-adv-ul"></ul>
+            </div>
+            <div class="m-adv-bear-col">
+              <span class="m-col-title">⚠️ Key Risks / What to Watch:</span>
+              <ul id="m-adv-bear-ul" class="m-adv-ul"></ul>
+            </div>
+          </div>
+          <div id="m-adv-alt-box" class="m-adv-alt-box" style="display: none;">
+            <span>💡 <strong>Safer Alternative:</strong> <span id="m-adv-alt-text"></span></span>
+          </div>
+        </div>
+
+        <div class="sector-strength-card" style="margin-bottom: 16px; padding: 12px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 11.5px;">
+            <span style="font-weight: 600; color: var(--text-secondary);">Price History & 20-Day SMA</span>
+            <div class="timeframe-pill-group">
+              <button class="timeframe-pill-btn" onclick="window.loadStockHistoryChart(window.currentStockTicker, 7)">7D</button>
+              <button class="timeframe-pill-btn active" onclick="window.loadStockHistoryChart(window.currentStockTicker, 30)">1M</button>
+              <button class="timeframe-pill-btn" onclick="window.loadStockHistoryChart(window.currentStockTicker, 90)">3M</button>
+            </div>
+          </div>
+          <div style="height: 200px; position: relative;">
+            <canvas id="stock-price-canvas"></canvas>
+          </div>
+        </div>
+
+        <div class="equity-outlook-box positive" id="m-outlook-box" style="margin-bottom: 16px; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; font-size: 11px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 2px;">
+            <span>Model Outlook</span>
+            <span>Next Trading Session</span>
+          </div>
+          <div style="font-size: 18px; font-weight: 700; margin-bottom: 2px;" id="m-outlook-dir">Positive</div>
+          <div style="font-size: 13px; font-weight: 600; color: var(--green);" id="m-outlook-prob">72% probability of positive movement</div>
+          <div style="display: flex; gap: 20px; margin-top: 8px; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border-light); padding-top: 6px;">
+            <div>Expected Return: <strong class="val-pos" id="m-exp-ret">+1.2%</strong></div>
+            <div>Prediction Interval: <strong style="color: var(--text-primary);" id="m-pred-int">-0.8% → +3.1%</strong></div>
+          </div>
+        </div>
+
+        <div class="dashboard-grid-2col" style="margin-bottom: 16px;">
+          <div class="sector-strength-card" style="padding: 12px;">
+            <span style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">Evidence Breakdown</span>
+            <table style="width: 100%; font-size: 11.5px; margin-top: 6px;">
+              <tr style="border-bottom: 1px solid var(--border-light);"><td style="padding: 3px 0; color: var(--text-muted);">Momentum</td><td style="text-align: right; font-weight: 600;" id="m-ev-mom">Strong</td></tr>
+              <tr style="border-bottom: 1px solid var(--border-light);"><td style="padding: 3px 0; color: var(--text-muted);">Trend</td><td style="text-align: right; font-weight: 600;" id="m-ev-trend">Positive</td></tr>
+              <tr style="border-bottom: 1px solid var(--border-light);"><td style="padding: 3px 0; color: var(--text-muted);">Volume</td><td style="text-align: right; font-weight: 600;" id="m-ev-vol">Above average</td></tr>
+              <tr style="border-bottom: 1px solid var(--border-light);"><td style="padding: 3px 0; color: var(--text-muted);">Market Trend</td><td style="text-align: right; font-weight: 600;" id="m-ev-mkt">Positive</td></tr>
+              <tr style="border-bottom: 1px solid var(--border-light);"><td style="padding: 3px 0; color: var(--text-muted);">News Sentiment</td><td style="text-align: right; font-weight: 600;" id="m-ev-news">Positive</td></tr>
+              <tr><td style="padding: 3px 0; color: var(--text-muted);">Volatility</td><td style="text-align: right; font-weight: 600;" id="m-ev-vola">Medium</td></tr>
+            </table>
+          </div>
+
+          <div class="sector-strength-card" style="padding: 12px;">
+            <span style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">Downside Risk Factors</span>
+            <div style="font-size: 12px; margin: 4px 0;">Risk Level: <strong class="badge-pill badge-yellow" id="m-risk-level">MEDIUM</strong></div>
+            <ul id="m-downside-ul" style="font-size: 11.5px; color: var(--text-secondary); padding-left: 16px; line-height: 1.5;"></ul>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-core" style="flex: 1;" onclick="window.openWhyMoving(window.currentStockTicker)">💡 Why is it moving?</button>
+          <button class="btn-core" style="flex: 1;" onclick="window.openWhatChanged(window.currentStockTicker)">🔄 What changed since yesterday?</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Why Moving & What Changed Details -->
+  <div class="modal-overlay" id="details-modal">
+    <div class="modal-window" style="max-width: 560px;">
+      <div class="modal-top">
+        <div style="font-size: 15px; font-weight: 700;" id="details-modal-title">Causal Attribution</div>
+        <button class="modal-close" onclick="window.closeDetailsModal()">✕</button>
+      </div>
+      <div class="modal-content" id="details-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: Add Custom Stock Holding -->
+  <div class="modal-overlay" id="add-holding-modal">
+    <div class="modal-window" style="max-width: 400px;">
+      <div class="modal-top">
+        <div style="font-size: 15px; font-weight: 700;">Add Stock Holding</div>
+        <button class="modal-close" onclick="window.closeAddHoldingModal()">✕</button>
+      </div>
+      <div class="modal-content">
+        <form onsubmit="window.submitAddHolding(event)">
+          <div style="margin-bottom: 12px;">
+            <label style="display: block; font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px;">Select Equities</label>
+            <select id="in-add-ticker" class="btn-core" style="width: 100%;" onchange="window.updateDefaultBuyPrice(this.value)">
+              <optgroup label="🔥 Nifty 50 Bluechips">
+                <option value="RELIANCE">RELIANCE — Reliance Industries</option>
+                <option value="TCS">TCS — Tata Consultancy Services</option>
+                <option value="HDFCBANK">HDFCBANK — HDFC Bank</option>
+                <option value="INFY">INFY — Infosys Ltd</option>
+                <option value="ICICIBANK">ICICIBANK — ICICI Bank</option>
+                <option value="BHARTIARTL">BHARTIARTL — Bharti Airtel</option>
+                <option value="SBIN">SBIN — State Bank of India</option>
+                <option value="ITC">ITC — ITC Ltd</option>
+                <option value="LT">LT — Larsen & Toubro</option>
+                <option value="BAJFINANCE">BAJFINANCE — Bajaj Finance</option>
+                <option value="KOTAKBANK">KOTAKBANK — Kotak Mahindra Bank</option>
+                <option value="HINDUNILVR">HINDUNILVR — Hindustan Unilever</option>
+                <option value="AXISBANK">AXISBANK — Axis Bank</option>
+                <option value="ASIANPAINT">ASIANPAINT — Asian Paints</option>
+                <option value="MARUTI">MARUTI — Maruti Suzuki</option>
+                <option value="SUNPHARMA">SUNPHARMA — Sun Pharma</option>
+                <option value="TITAN">TITAN — Titan Company</option>
+                <option value="ULTRACEMCO">ULTRACEMCO — UltraTech Cement</option>
+                <option value="TATAMOTORS">TATAMOTORS — Tata Motors</option>
+                <option value="TATASTEEL">TATASTEEL — Tata Steel</option>
+                <option value="NTPC">NTPC — NTPC Limited</option>
+                <option value="ONGC">ONGC — Oil & Natural Gas Corp</option>
+                <option value="POWERGRID">POWERGRID — Power Grid Corp</option>
+                <option value="JSWSTEEL">JSWSTEEL — JSW Steel</option>
+                <option value="M&M">M&M — Mahindra & Mahindra</option>
+                <option value="ADANIENT">ADANIENT — Adani Enterprises</option>
+                <option value="ADANIPORTS">ADANIPORTS — Adani Ports & SEZ</option>
+                <option value="COALINDIA">COALINDIA — Coal India</option>
+                <option value="HCLTECH">HCLTECH — HCL Technologies</option>
+                <option value="BAJAJFINSV">BAJAJFINSV — Bajaj Finserv</option>
+                <option value="GRASIM">GRASIM — Grasim Industries</option>
+                <option value="TECHM">TECHM — Tech Mahindra</option>
+                <option value="WIPRO">WIPRO — Wipro Ltd</option>
+                <option value="HEROMOTOCO">HEROMOTOCO — Hero MotoCorp</option>
+                <option value="EICHERMOT">EICHERMOT — Eicher Motors (Royal Enfield)</option>
+                <option value="DRREDDY">DRREDDY — Dr. Reddy's Laboratories</option>
+                <option value="CIPLA">CIPLA — Cipla Ltd</option>
+                <option value="DIVISLAB">DIVISLAB — Divi's Laboratories</option>
+                <option value="APOLLOHOSP">APOLLOHOSP — Apollo Hospitals</option>
+                <option value="BPCL">BPCL — Bharat Petroleum</option>
+                <option value="BRITANNIA">BRITANNIA — Britannia Industries</option>
+                <option value="INDUSINDBK">INDUSINDBK — IndusInd Bank</option>
+                <option value="NESTLEIND">NESTLEIND — Nestle India</option>
+                <option value="SBILIFE">SBILIFE — SBI Life Insurance</option>
+                <option value="HDFCLIFE">HDFCLIFE — HDFC Life Insurance</option>
+                <option value="TATAPOWER">TATAPOWER — Tata Power</option>
+                <option value="TATACONSUM">TATACONSUM — Tata Consumer</option>
+              </optgroup>
+              <optgroup label="🚀 Midcap & New-Age Tech">
+                <option value="ZOMATO">ZOMATO — Zomato Ltd</option>
+                <option value="PAYTM">PAYTM — One97 Communications</option>
+                <option value="JIOFIN">JIOFIN — Jio Financial Services</option>
+                <option value="PERSISTENT">PERSISTENT — Persistent Systems</option>
+                <option value="KPITTECH">KPITTECH — KPIT Technologies</option>
+                <option value="COFORGE">COFORGE — Coforge Ltd</option>
+                <option value="LTIM">LTIM — LTIMindtree</option>
+                <option value="POLICYBZR">POLICYBZR — PB Fintech</option>
+                <option value="NYKAA">NYKAA — FSN E-Commerce</option>
+                <option value="TRENT">TRENT — Trent (Zudio / Westside)</option>
+                <option value="DMART">DMART — Avenue Supermarts</option>
+              </optgroup>
+              <optgroup label="🛡️ Aerospace, Defense & PSU">
+                <option value="HAL">HAL — Hindustan Aeronautics</option>
+                <option value="BEL">BEL — Bharat Electronics</option>
+                <option value="IRFC">IRFC — Indian Railway Finance</option>
+                <option value="IRCTC">IRCTC — IRCTC Ltd</option>
+                <option value="PNB">PNB — Punjab National Bank</option>
+                <option value="BANKBARODA">BANKBARODA — Bank of Baroda</option>
+                <option value="CANBK">CANBK — Canara Bank</option>
+                <option value="RECLTD">RECLTD — REC Limited</option>
+                <option value="PFC">PFC — Power Finance Corp</option>
+              </optgroup>
+              <optgroup label="🏭 Infrastructure, Energy & Industrials">
+                <option value="DLF">DLF — DLF Limited</option>
+                <option value="SIEMENS">SIEMENS — Siemens Ltd</option>
+                <option value="HAVELLS">HAVELLS — Havells India</option>
+                <option value="POLYCAB">POLYCAB — Polycab India</option>
+                <option value="INDIGO">INDIGO — InterGlobe Aviation</option>
+                <option value="SHREECEM">SHREECEM — Shree Cement</option>
+                <option value="AMBUJACEM">AMBUJACEM — Ambuja Cements</option>
+                <option value="IOC">IOC — Indian Oil Corporation</option>
+                <option value="GAIL">GAIL — GAIL (India) Ltd</option>
+                <option value="VEDL">VEDL — Vedanta Limited</option>
+                <option value="NMDC">NMDC — NMDC Limited</option>
+                <option value="SAIL">SAIL — Steel Authority of India</option>
+                <option value="JINDALSTEL">JINDALSTEL — Jindal Steel & Power</option>
+                <option value="TATACHEM">TATACHEM — Tata Chemicals</option>
+                <option value="PIDILITIND">PIDILITIND — Pidilite Industries</option>
+                <option value="MAXHEALTH">MAXHEALTH — Max Healthcare</option>
+                <option value="LUPIN">LUPIN — Lupin Ltd</option>
+                <option value="CHOLAFIN">CHOLAFIN — Cholamandalam Investment</option>
+                <option value="TVSMOTOR">TVSMOTOR — TVS Motor Company</option>
+              </optgroup>
+              <optgroup label="🪙 Commodities (MCX Spot)">
+                <option value="GOLD">GOLD — Gold 24K MCX Spot</option>
+                <option value="SILVER">SILVER — Silver MCX Spot 1KG</option>
+                <option value="CRUDE">CRUDE — Crude Oil WTI Index</option>
+              </optgroup>
+            </select>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <label style="display: block; font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px;">Quantity (Shares)</label>
+            <input type="number" id="in-add-shares" style="width: 100%; background: var(--bg-input); border: 1px solid var(--border-light); color: #fff; padding: 8px 12px; border-radius: var(--radius-md); outline: none;" min="1" value="25" required>
+          </div>
+          <div style="margin-bottom: 14px;">
+            <label style="display: block; font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 4px;">Avg Buy Price (INR)</label>
+            <input type="number" id="in-add-price" style="width: 100%; background: var(--bg-input); border: 1px solid var(--border-light); color: #fff; padding: 8px 12px; border-radius: var(--radius-md); outline: none;" min="1" step="0.05" value="2750.00" required>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn-core" style="flex: 1;" onclick="window.closeAddHoldingModal()">Cancel</button>
+            <button type="submit" class="btn-core btn-primary" style="flex: 1;">Save Holding</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       Google OAuth Account Selector Modal (Matches Figma Google Sign-In UI)
+       ===================================================================== -->
+  <div id="modal-google-account-chooser" class="modal-overlay" style="display: none; z-index: 100000;">
+    <div class="google-modal-box">
+      <!-- Google Brand Header -->
+      <div class="google-modal-header">
+        <div style="display: flex; align-items: center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" style="margin-right: 10px;">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <span style="font-size: 16px; font-weight: 500; color: #e8eaed;">accounts.google.com</span>
+        </div>
+        <button type="button" class="google-close-x" onclick="window.closeGoogleAccountChooser()">&times;</button>
+      </div>
+
+      <div style="padding: 20px 24px 24px;">
+        <div style="font-size: 22px; font-weight: 400; color: #ffffff; margin-bottom: 4px;">Choose an account</div>
+        <div style="font-size: 13.5px; color: #9aa0a6; margin-bottom: 22px;">to continue to <strong style="color: #8ab4f8; font-weight: 500;">FinaX AlphaLens</strong></div>
+
+        <!-- Google Accounts List -->
+        <div class="google-accounts-list">
+          <div class="google-account-item" onclick="window.selectGoogleAccount('choudharyabhishek656@gmail.com', 'Abhishek Choudhary')">
+            <div class="google-avatar-circle" style="background: #1a73e8;">A</div>
+            <div class="google-account-info">
+              <div class="google-acc-name">Abhishek Choudhary</div>
+              <div class="google-acc-email">choudharyabhishek656@gmail.com</div>
+            </div>
+            <span class="google-status-pill">Signed In</span>
+          </div>
+
+          <div class="google-account-item" onclick="window.selectGoogleAccount('aniket.investor@gmail.com', 'Aniket Sharma')">
+            <div class="google-avatar-circle" style="background: #8e24aa;">A</div>
+            <div class="google-account-info">
+              <div class="google-acc-name">Aniket Sharma</div>
+              <div class="google-acc-email">aniket.investor@gmail.com</div>
+            </div>
+          </div>
+
+          <div class="google-account-item" onclick="window.promptCustomGoogleEmail()">
+            <div class="google-avatar-circle" style="background: rgba(255,255,255,0.08); border: 1px dashed rgba(255,255,255,0.3); color: #8ab4f8; font-size: 18px;">+</div>
+            <div class="google-account-info">
+              <div class="google-acc-name" style="color: #8ab4f8;">Use another account</div>
+              <div class="google-acc-email">Enter any Google or Gmail address</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px; font-size: 11.5px; color: #80868b; line-height: 1.5;">
+          To continue, Google will share your name, email address, and profile picture with FinaX AlphaLens. Before using this app, review its <a href="#security" style="color: #8ab4f8; text-decoration: none;" onclick="window.closeGoogleAccountChooser()">Privacy Policy</a> and Terms of Service.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive LeetCode-Style Authentication Modal Dialog -->
+  <div class="finax-auth-modal-backdrop" id="auth-modal-container" style="display: none; z-index: 10000;" onclick="window.handleAuthBackdropClick(event)">
+    <div class="leetcode-auth-card">
+      <!-- Close Button -->
+      <button type="button" class="leetcode-modal-close" onclick="window.closeAuthModal()" title="Close">✕</button>
+
+      <!-- Brand Logo Header -->
+      <div class="leetcode-brand-header">
+        <div class="leetcode-logo-icon">α</div>
+        <h2 class="leetcode-brand-title">AlphaLens</h2>
+      </div>
+
+      <!-- State 1: Sign In -->
+      <div id="auth-state-email-login" class="auth-state-block">
+        <form onsubmit="window.submitEmailLogin(event); return false;">
+          <div class="leetcode-field-group">
+            <input type="text" id="in-email-user" class="leetcode-input" placeholder="Username or E-mail" required>
+          </div>
+          <div class="leetcode-field-group">
+            <input type="password" id="in-email-pwd" class="leetcode-input" placeholder="Password" required>
+          </div>
+
+          <!-- Cloudflare Turnstile Verification Badge (LeetCode Style) -->
+          <div class="leetcode-cloudflare-badge">
+            <div class="leetcode-cloudflare-left">
+              <div class="leetcode-check-icon">✓</div>
+              <span>Success!</span>
+            </div>
+            <div class="leetcode-cloudflare-right">
+              <span style="font-weight: 700; color: #f48024; letter-spacing: 0.5px;">CLOUDFLARE</span>
+              <span>Privacy • Terms</span>
+            </div>
+          </div>
+
+          <button type="submit" class="leetcode-btn-primary">
+            Sign In
+          </button>
+        </form>
+
+        <div class="leetcode-terms-caption">
+          By continuing, you agree to <a href="#security" onclick="window.closeAuthModal()">Terms</a> & <a href="#security" onclick="window.closeAuthModal()">Privacy Policy</a>.
+        </div>
+
+        <div class="leetcode-actions-row">
+          <button type="button" class="leetcode-link-btn" onclick="window.switchGatewayMode('forgot-password')">Forgot Password?</button>
+          <button type="button" class="leetcode-link-btn highlight" onclick="window.switchGatewayMode('email-signup')">Sign Up</button>
+        </div>
+
+        <div class="leetcode-social-caption">or you can sign in with</div>
+
+        <!-- Circular Social Icon Row -->
+        <div class="leetcode-social-row">
+          <button type="button" class="leetcode-social-circle" title="Sign in with Google" onclick="window.triggerGoogleSignIn()">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.62z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+          </button>
+          <button type="button" class="leetcode-social-circle" title="Sign in with Apple" onclick="window.triggerGoogleSignIn()">
+            <svg width="18" height="18" fill="#ffffff" viewBox="0 0 24 24">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.09c.67-.82 1.13-1.96.99-3.09-1 .04-2.19.67-2.88 1.47-.61.71-1.14 1.87-.99 2.98 1.11.09 2.23-.55 2.88-1.36z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- State 2: Sign Up -->
+      <div id="auth-state-email-signup" class="auth-state-block" style="display: none;">
+        <form onsubmit="window.submitEmailSignUp(event); return false;">
+          <div class="leetcode-field-group">
+            <input type="text" id="in-signup-name" class="leetcode-input" placeholder="Full Name" required>
+          </div>
+          <div class="leetcode-field-group">
+            <input type="text" id="in-signup-email" class="leetcode-input" placeholder="E-mail address" required>
+          </div>
+          <div class="leetcode-field-group">
+            <input type="password" id="in-signup-pwd" class="leetcode-input" placeholder="Password (min 6 characters)" minlength="6" required>
+          </div>
+
+          <button type="submit" class="leetcode-btn-primary">
+            Create Account
+          </button>
+        </form>
+
+        <div class="leetcode-actions-row" style="justify-content: center; margin-top: 16px;">
+          <button type="button" class="leetcode-link-btn highlight" onclick="window.switchGatewayMode('email-login')">Already have an account? Sign In</button>
+        </div>
+      </div>
+
+      <!-- State 3: Email Verification -->
+      <div id="auth-state-email-verify" class="auth-state-block" style="display: none;">
+        <div style="font-size: 13px; color: #a0a0a0; text-align: center; margin-bottom: 14px;">
+          Enter the 6-digit code sent to <strong id="disp-email-target" style="color: #fff;">user@example.com</strong>
+        </div>
+        <form onsubmit="window.submitEmailVerifyOtp(event); return false;">
+          <div style="margin-bottom: 14px;">
+            <input type="text" id="in-email-otp" class="leetcode-input" style="text-align: center; letter-spacing: 6px; font-size: 18px;" maxlength="6" placeholder="• • • • • •" required>
+          </div>
+          <button type="submit" class="leetcode-btn-primary">
+            Verify Email & Continue →
+          </button>
+        </form>
+      </div>
+
+      <!-- State 4: Forgot Password -->
+      <div id="auth-state-forgot-password" class="auth-state-block" style="display: none;">
+        <div style="font-size: 13px; color: #a0a0a0; text-align: center; margin-bottom: 14px;">
+          Enter your email to receive a password reset code
+        </div>
+        <form id="form-forgot-request" onsubmit="window.submitForgotPassword(event); return false;">
+          <div class="leetcode-field-group">
+            <input type="text" id="in-forgot-target" class="leetcode-input" placeholder="E-mail address" required>
+          </div>
+          <button type="submit" class="leetcode-btn-primary">
+            Send Reset Code →
+          </button>
+        </form>
+        <form id="form-forgot-confirm" style="display: none; margin-top: 12px;" onsubmit="window.submitResetPassword(event); return false;">
+          <div class="leetcode-field-group">
+            <input type="text" id="in-reset-code" class="leetcode-input" placeholder="6-digit Reset Code" maxlength="6" required>
+          </div>
+          <div class="leetcode-field-group">
+            <input type="password" id="in-reset-new-pwd" class="leetcode-input" placeholder="New Password" minlength="6" required>
+          </div>
+          <button type="submit" class="leetcode-btn-primary">
+            Update Password & Sign In →
+          </button>
+        </form>
+        <div class="leetcode-actions-row" style="justify-content: center; margin-top: 14px;">
+          <button type="button" class="leetcode-link-btn" onclick="window.switchGatewayMode('email-login')">← Back to Sign In</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       🤖 ALPHALENS AI COPILOT FLOATING CHATBOT WIDGET
+       ===================================================================== -->
+  <button type="button" class="copilot-launcher-btn" id="copilot-launcher-btn" onclick="window.toggleCopilot()" title="Open AlphaLens AI Copilot">
+    <div class="copilot-launcher-glow"></div>
+    <span class="copilot-launcher-icon">💬</span>
+    <span class="copilot-launcher-text">AI Copilot</span>
+    <span class="copilot-pulse-dot"></span>
+  </button>
+
+  <!-- Copilot Floating Window -->
+  <div class="copilot-window" id="copilot-window" style="display: none;">
+    <!-- Copilot Header -->
+    <div class="copilot-header">
+      <div class="copilot-brand">
+        <div class="copilot-avatar">⚡</div>
+        <div class="copilot-header-info">
+          <div class="copilot-header-title">AlphaBot <span class="badge-pill badge-green" style="font-size: 8.5px; padding: 1px 4px;">LIVE AI</span></div>
+          <div class="copilot-header-status">Market Intelligence & ML Advisory</div>
+        </div>
+      </div>
+      <div class="copilot-header-actions">
+        <button type="button" class="copilot-action-icon" onclick="window.clearCopilotChat()" title="Reset Conversation">🗑️</button>
+        <button type="button" class="copilot-action-icon" onclick="window.toggleCopilot(false)" title="Close">✕</button>
+      </div>
+    </div>
+
+    <!-- Copilot Messages Container -->
+    <div class="copilot-messages-container" id="copilot-messages">
+      <!-- Default Welcome Message -->
+      <div class="copilot-msg bot-msg">
+        <div class="copilot-msg-avatar">⚡</div>
+        <div class="copilot-msg-content">
+          <div class="copilot-msg-text">
+            👋 <strong>Hi! I'm AlphaBot, your AI Financial Copilot.</strong>
+            <p style="margin: 6px 0 0 0; font-size: 12px; color: var(--text-secondary);">
+              I can analyze real-time predictions, suggest Top Buys & Stocks to Avoid, run portfolio stress tests, and explain quantitative models.
+            </p>
+          </div>
+          <!-- Quick Prompt Buttons -->
+          <div class="copilot-quick-prompts">
+            <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('🎯 Which stocks should I buy today?')">🎯 Top Buys Today</button>
+            <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('⚠️ What stocks should I avoid?')">⚠️ Stocks to Avoid</button>
+            <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('⚡ Prediction for Reliance')">⚡ Reliance ML Forecast</button>
+            <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('💼 Analyze my portfolio risk')">💼 Portfolio Diagnostics</button>
+            <button type="button" class="copilot-quick-pill" onclick="window.sendQuickPrompt('⚖️ Compare TCS and INFY')">⚖️ Compare TCS vs INFY</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Suggested Follow-Up Prompt Strip -->
+    <div class="copilot-suggestions-strip" id="copilot-suggestions-strip" style="display: none;"></div>
+
+    <!-- Copilot Input Bar -->
+    <form class="copilot-input-bar" id="copilot-input-form" onsubmit="window.handleCopilotSubmit(event); return false;">
+      <input 
+        type="text" 
+        id="copilot-input-field" 
+        class="copilot-input" 
+        placeholder="Ask anything about stocks, predictions, risk..." 
+        autocomplete="off"
+      >
+      <button type="submit" class="copilot-send-btn" id="copilot-send-btn" title="Send Message">
+        ➤
+      </button>
+    </form>
+  </div>
+
+  <!-- Level-2 Market Depth Modal -->
+  <div class="modal-overlay" id="depth-modal" onclick="if(event.target===this) window.closeDepthModal()">
+    <div class="modal-window depth-modal-window">
+      <div class="modal-top">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 18px;">📊</span>
+          <span style="font-size: 15px; font-weight: 700; color: #fff;">NSE Level-2 Market Depth: <span id="depth-stock-ticker" style="color: #00d09c;">CUPID</span></span>
+        </div>
+        <button type="button" class="modal-close" onclick="window.closeDepthModal()">✕</button>
+      </div>
+      <div class="modal-content" style="padding: 16px;">
+        <div class="depth-ratio-bar-wrap">
+          <div class="depth-ratio-labels">
+            <span class="text-green font-mono" id="depth-buy-ratio">Buy 54.2%</span>
+            <span class="font-mono" id="depth-spread-label" style="font-size: 11px; color: #94a3b8;">Spread: ₹0.08 (0.03%)</span>
+            <span class="text-red font-mono" id="depth-sell-ratio">Sell 45.8%</span>
+          </div>
+          <div class="depth-ratio-progress">
+            <div class="depth-ratio-buy" id="depth-progress-buy" style="width: 54.2%;"></div>
+            <div class="depth-ratio-sell" id="depth-progress-sell" style="width: 45.8%;"></div>
+          </div>
+        </div>
+        
+        <div class="depth-grid-2col">
+          <!-- Bids Column (Green) -->
+          <div class="depth-table-col bids-col">
+            <div class="depth-col-header text-green">
+              <span>Orders</span>
+              <span>Qty</span>
+              <span>Bid Price</span>
+            </div>
+            <div class="depth-rows-list" id="depth-bids-list">
+              <!-- Populated dynamically -->
+            </div>
+            <div class="depth-total-row">
+              <span>Total Bids:</span>
+              <strong id="depth-total-bid-qty" class="font-mono text-green">148,250</strong>
+            </div>
+          </div>
+          
+          <!-- Asks Column (Red) -->
+          <div class="depth-table-col asks-col">
+            <div class="depth-col-header text-red">
+              <span>Ask Price</span>
+              <span>Qty</span>
+              <span>Orders</span>
+            </div>
+            <div class="depth-rows-list" id="depth-asks-list">
+              <!-- Populated dynamically -->
+            </div>
+            <div class="depth-total-row">
+              <span>Total Asks:</span>
+              <strong id="depth-total-ask-qty" class="font-mono text-red">125,480</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Toast Notification -->
+  <div class="toast-bar" id="global-toast"></div>
+
+  <!-- Application Logic -->
+  <script src="/static/src/app.js?v=20260921_ZERO_DROP_FIX_V5"></script>
+</body>
+</html>

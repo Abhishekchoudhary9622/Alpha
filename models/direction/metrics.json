@@ -1,0 +1,51 @@
+{
+  "directional_accuracy": 58.12,
+  "precision": 56.13,
+  "recall": 74.84,
+  "f1_score": 64.15,
+  "roc_auc": 0.625,
+  "brier_score": 0.2405,
+  "test_sample_size": 13440,
+  "calibration": {
+    "prob_true": [
+      0.2472,
+      0.3902,
+      0.5286,
+      0.6648,
+      0.9167
+    ],
+    "prob_pred": [
+      0.3819,
+      0.4575,
+      0.548,
+      0.6285,
+      0.7085
+    ]
+  },
+  "feature_importances": {
+    "dist_sma_20": 0.1829,
+    "bollinger_pct": 0.1828,
+    "rsi_14": 0.1116,
+    "macd_hist": 0.11,
+    "india_vix": 0.0826,
+    "nifty_return_5d": 0.0479,
+    "dist_sma_50": 0.0465,
+    "nifty_return_1d": 0.044,
+    "macd": 0.0409,
+    "atr_pct": 0.0309,
+    "macd_signal": 0.0231,
+    "dist_sma_200": 0.0196,
+    "news_sentiment": 0.0151,
+    "volatility_60d": 0.0126,
+    "volatility_20d": 0.012,
+    "volume_ratio": 0.0088,
+    "beta": 0.0047,
+    "pe_ratio": 0.0042,
+    "revenue_growth_yoy": 0.0041,
+    "roce": 0.0039,
+    "roe": 0.0037,
+    "eps_growth_yoy": 0.0033,
+    "debt_equity": 0.0031,
+    "news_count": 0.0016
+  }
+}

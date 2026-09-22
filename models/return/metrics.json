@@ -1,0 +1,7 @@
+{
+  "mae_percent": 1.251,
+  "rmse_percent": 1.667,
+  "interval_80pct_coverage": 80.52,
+  "avg_interval_width": 3.935,
+  "test_samples": 13440
+}
