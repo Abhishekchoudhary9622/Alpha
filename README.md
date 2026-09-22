@@ -311,13 +311,24 @@ sequenceDiagram
 - **Natural Language Financial Q&A:** Answers queries on stock outlooks, personal finance, Indian taxation, portfolio rebalancing, and macro stress tests.
 - **Contextual Suggestions:** Dynamically generates follow-up prompt chips and clickable stock pills with real-time pricing and advisory tags.
 
-### 2. IPO Intelligence Radar & Grey Market Premium (GMP)
-- **Live GMP Tracking & Subscriptions:** Real-time Grey Market Premium (GMP / GMP %), Price Band, Lot Size, Issue Size, and QIB/HNI/Retail subscription metrics.
-- **Disciplined Verdicts:**
-  - 🟢 **`STRONG APPLY`** *(e.g., Bajaj Housing Finance — +117% GMP listing pop & core compounder)*.
-  - 🟢 **`APPLY FOR LONG TERM`** *(e.g., NTPC Green Energy — Sovereign green transition play)*.
-  - 🟡 **`CAUTION / HIGH RISK`** *(e.g., Swiggy — High quick-commerce cash burn; limited listing pop)*.
-  - 🔴 **`AVOID`** *(e.g., Overvalued SME IPOs with exorbitant P/E multiples)*.
+### 2. Groww-Style Master-Detail IPO Dashboard & Real GMP Engine
+- **Groww Layout Fidelity (`groww.in/ipo`):**
+  - **Master Table:** Filter tabs (`Open`, `Closed`, `Upcoming`, `Applied`), Issue type filter (`All`, `Mainboard`, `SME`), Company avatar & badges, Closing date (with `Last day` alerts), and Overall subscription counters.
+  - **Detail Pane:** Interactive right-side detail card featuring company profile, price band (`₹140 - ₹148`), lot size, issue size, live Grey Market Premium (`+₹28 / +18.9% GMP POP`), subscription demand progress gauges (QIB, HNI/NII, Retail), and AI multi-factor conviction score.
+  - **1-Click Simulated UPI Bidding Drawer:** Interactive lot selector (`1 Lot`, `2 Lots`, `5 Lots`, `13 Lots Max`), cut-off price selector, UPI ID input (`user@okhdfcbank`), and instantaneous mandate submission with application tracking in the `Applied` tab.
+- **Current Real Market Catalog:**
+  - 🟢 **Varmora Granito Ltd** (Mainboard · Open · Closes 24 Sep · ₹140-148 · +18.9% GMP)
+  - 🟢 **ArMee Infotech Ltd** (Mainboard · Pre-apply · Closes 25 Sep · ₹350-375 · +17.3% GMP)
+  - 🟢 **Swastika Infra Ltd** (Mainboard · Pre-apply · Closes 25 Sep · ₹175-185 · +22.7% GMP)
+  - 🟡 **Elevate Campuses Ltd** (Mainboard · Pre-apply · Closes 25 Sep · ₹280-295 · +18.6% GMP)
+  - 🟡 **Adroit Industries Ltd** (Mainboard · Pre-apply · Closes 25 Sep · ₹230-242 · +14.5% GMP)
+  - 🟢 **A-One Steels Ltd** (Mainboard · Pre-apply · Closes 28 Sep · ₹210-225 · +21.3% GMP)
+  - 🔥 **Robokidz Eduventures Ltd** (SME · Open Last Day · 67.21x Subscribed · ₹100-106 · +49.1% GMP)
+  - 🔴 **FX Multitech Ltd** (SME · Open Last Day · 0.43x Subscribed · ₹140-148 · +8.1% GMP · Strict Avoid)
+  - 🌟 **Bajaj Housing Finance Ltd** (Mainboard · Closed · Listed @ ₹150 / +114% Gain)
+  - 🌟 **Premier Energies Ltd** (Mainboard · Closed · Listed @ ₹991 / +120% Gain)
+  - 🟢 **NTPC Green Energy Ltd** (Mainboard · Upcoming Mega · ₹10000 Cr Issue · +25.9% GMP)
+  - 🟡 **Swiggy Ltd** (Mainboard · Upcoming Tech · ₹11327 Cr Issue · +4.6% GMP)
 
 ### 3. Direct Mutual Funds & Personalized Portfolio Allocation
 - **Curated Category Rankings:**

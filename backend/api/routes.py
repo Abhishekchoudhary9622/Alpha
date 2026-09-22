@@ -6,7 +6,7 @@ universal real-time ticker lookup, and AI customer buy/avoid advisory recommenda
 """
 
 import json
-from fastapi import APIRouter, Query, HTTPException
+from fastapi import APIRouter, Query, HTTPException, Body
 from typing import Dict, Any, Optional
 
 from backend.pipeline.live_pipeline import live_pipeline
@@ -219,6 +219,25 @@ def get_ipos():
         "ipos": ipo_service.get_all_ipos(),
         "summary": ipo_service.get_ipo_recommendation_summary()
     }
+
+
+@router.get("/ipos/applied")
+def get_applied_ipos():
+    """Returns list of user's active/past IPO applications."""
+    from backend.services.ipo_service import ipo_service
+    return {"applied": ipo_service.get_applied_ipos()}
+
+
+@router.post("/ipos/apply")
+def submit_ipo_bid(payload: Dict[str, Any] = Body(...)):
+    """Simulates 1-click UPI IPO application and mandate blocking."""
+    from backend.services.ipo_service import ipo_service
+    ipo_id = payload.get("ipo_id")
+    lots = int(payload.get("lots", 1))
+    upi_id = payload.get("upi_id", "user@okhdfcbank")
+    cut_off = bool(payload.get("cut_off", True))
+    return ipo_service.apply_for_ipo(ipo_id=ipo_id, lots=lots, upi_id=upi_id, cut_off=cut_off)
+
 
 
 @router.get("/mutual-funds")

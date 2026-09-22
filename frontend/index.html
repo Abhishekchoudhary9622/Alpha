@@ -12,7 +12,7 @@
   <!-- Chart.js with animation support -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   
-  <link rel="stylesheet" href="/static/styles/main.css?v=20260923_CLEAN_MINIMAL_V2">
+  <link rel="stylesheet" href="/static/styles/main.css?v=20260923_GROWW_IPO_V3">
   <!-- Google Identity Services (GIS) SDK -->
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
@@ -1057,56 +1057,90 @@
         </section>
 
         <!-- ===================================================================
-             PANEL: IPO INTELLIGENCE RADAR & LIVE GMP PREDICTOR
+             PANEL: GROWW-STYLE REAL-TIME IPO DASHBOARD (MASTER-DETAIL VIEW)
              =================================================================== -->
         <section id="panel-ipos" class="view-panel">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
-            <div>
-              <div style="display: flex; align-items: center; gap: 8px;">
-                <h2 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 0;">🚀 IPO Intelligence Radar</h2>
-                <span class="badge-pill badge-green" style="font-size: 10px; padding: 2px 7px;">LIVE GMP FEEDS</span>
-              </div>
-              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Real-time Grey Market Premiums, subscription demand, and listing gain forecasts</div>
+          <div class="groww-ipo-container">
+            <!-- Header Title -->
+            <div class="groww-ipo-header-row">
+              <h1 class="groww-ipo-title">IPO Dashboard</h1>
             </div>
-            <div style="display: flex; gap: 8px;">
-              <div class="multiasset-stat-tile green" onclick="window.filterIpoCategory('apply')" style="padding: 6px 14px; min-width: 80px;">
-                <span class="stat-tile-val" id="ipo-stat-apply" style="font-size: 16px;">2</span>
-                <span class="stat-tile-lbl" style="font-size: 10px;">Apply</span>
-              </div>
-              <div class="multiasset-stat-tile blue" onclick="window.filterIpoCategory('longterm')" style="padding: 6px 14px; min-width: 80px;">
-                <span class="stat-tile-val" id="ipo-stat-longterm" style="font-size: 16px;">1</span>
-                <span class="stat-tile-lbl" style="font-size: 10px;">Long-Term</span>
-              </div>
-              <div class="multiasset-stat-tile yellow" onclick="window.filterIpoCategory('caution')" style="padding: 6px 14px; min-width: 80px;">
-                <span class="stat-tile-val" id="ipo-stat-caution" style="font-size: 16px;">1</span>
-                <span class="stat-tile-lbl" style="font-size: 10px;">Caution</span>
-              </div>
-              <div class="multiasset-stat-tile red" onclick="window.filterIpoCategory('avoid')" style="padding: 6px 14px; min-width: 80px;">
-                <span class="stat-tile-val" id="ipo-stat-avoid" style="font-size: 16px;">2</span>
-                <span class="stat-tile-lbl" style="font-size: 10px;">Avoid</span>
-              </div>
-            </div>
-          </div>
 
-          <!-- Filter Bar -->
-          <div class="advisory-filter-bar" style="margin-bottom: 16px;">
-            <div class="advisory-tabs-group">
-              <button class="adv-tab-btn active" id="ipo-tab-all" onclick="window.filterIpoCategory('all', this)">All IPOs (<span id="ipo-count-all">6</span>)</button>
-              <button class="adv-tab-btn" id="ipo-tab-apply" onclick="window.filterIpoCategory('apply', this)">🟢 Strong Apply</button>
-              <button class="adv-tab-btn" id="ipo-tab-gmp" onclick="window.filterIpoCategory('high-gmp', this)">🔥 High GMP (&gt;40%)</button>
-              <button class="adv-tab-btn" id="ipo-tab-mainboard" onclick="window.filterIpoCategory('mainboard', this)">🏛️ Mainboard</button>
-              <button class="adv-tab-btn" id="ipo-tab-sme" onclick="window.filterIpoCategory('sme', this)">⚡ SME</button>
+            <!-- Top Filter Tabs: Open, Closed, Upcoming, Applied -->
+            <div class="groww-ipo-tabs-row">
+              <div class="groww-ipo-tabs">
+                <button type="button" class="groww-tab-pill active" id="ipo-tab-btn-open" onclick="window.switchIpoTab('open', this)">Open</button>
+                <button type="button" class="groww-tab-pill" id="ipo-tab-btn-closed" onclick="window.switchIpoTab('closed', this)">Closed</button>
+                <button type="button" class="groww-tab-pill" id="ipo-tab-btn-upcoming" onclick="window.switchIpoTab('upcoming', this)">Upcoming</button>
+                <button type="button" class="groww-tab-pill" id="ipo-tab-btn-applied" onclick="window.switchIpoTab('applied', this)">Applied <span class="groww-applied-badge" id="ipo-applied-count-badge">1</span></button>
+              </div>
             </div>
-            <div class="adv-search-box">
-              <span>🔍</span>
-              <input type="text" id="ipo-filter-input" placeholder="Search IPOs..." oninput="window.filterIpoSearch(this.value)">
-            </div>
-          </div>
 
-          <!-- IPO Cards Container -->
-          <div class="ipo-cards-grid" id="ipo-cards-container">
-            <div style="padding: 40px; text-align: center; color: var(--text-muted); grid-column: 1/-1;">
-              Loading real-time IPO intelligence...
+            <!-- Subfilter: IPO type dropdown -->
+            <div class="groww-ipo-type-row">
+              <div class="groww-ipo-type-dropdown-wrap">
+                <label for="ipo-type-filter" class="groww-type-lbl">IPO type:</label>
+                <select id="ipo-type-filter" class="groww-type-select" onchange="window.switchIpoTypeFilter(this.value)">
+                  <option value="all">All</option>
+                  <option value="Mainboard">Mainboard</option>
+                  <option value="SME">SME</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Split Layout: Left Table + Right Detail Card -->
+            <div class="groww-ipo-split-grid">
+              <!-- Left Master Table -->
+              <div class="groww-ipo-master-pane">
+                <div class="groww-ipo-table-wrap">
+                  <table class="groww-ipo-table" id="groww-ipo-table">
+                    <thead>
+                      <tr>
+                        <th style="width: 44%;">Company</th>
+                        <th style="width: 22%;">Closing date</th>
+                        <th style="width: 20%;">Overall subscription</th>
+                        <th style="width: 14%; text-align: right;"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="groww-ipo-tbody">
+                      <tr>
+                        <td colspan="4" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                          Loading real-time IPO issues...
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Right Detail Pane -->
+              <div class="groww-ipo-detail-pane">
+                <!-- Empty Placeholder State (exact match to Groww screenshot) -->
+                <div class="groww-ipo-empty-card" id="groww-ipo-empty-card">
+                  <div class="groww-empty-graphic">
+                    <svg width="100" height="70" viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="10" y="8" width="18" height="12" rx="6" stroke="#4f46e5" stroke-width="2.5" fill="none"/>
+                      <rect x="36" y="8" width="54" height="12" rx="6" stroke="#4f46e5" stroke-width="2.5" fill="none"/>
+                      
+                      <rect x="6" y="28" width="22" height="16" rx="8" fill="#6366f1"/>
+                      <rect x="34" y="28" width="58" height="16" rx="8" fill="#818cf8"/>
+                      <!-- Pointer Cursor Icon -->
+                      <path d="M86 36 L96 46 L91 47 L94 54 L90 56 L87 49 L83 52 Z" fill="#6366f1" stroke="#ffffff" stroke-width="1.2"/>
+
+                      <rect x="10" y="52" width="18" height="12" rx="6" stroke="#4f46e5" stroke-width="2.5" fill="none"/>
+                      <rect x="36" y="52" width="54" height="12" rx="6" stroke="#4f46e5" stroke-width="2.5" fill="none"/>
+                    </svg>
+                  </div>
+                  <div class="groww-empty-text">
+                    Select an IPO to view details or click on "Apply" to apply for IPO
+                  </div>
+                </div>
+
+                <!-- Dynamic Selected IPO Detail Card & 1-Click UPI Bidding Drawer -->
+                <div class="groww-ipo-selected-card" id="groww-ipo-selected-card" style="display: none;">
+                  <!-- Populated dynamically via selectIpoDetail() -->
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -2143,6 +2177,6 @@
   <div class="toast-bar" id="global-toast"></div>
 
   <!-- Application Logic -->
-  <script src="/static/src/app.js?v=20260923_CLEAN_MINIMAL_V2"></script>
+  <script src="/static/src/app.js?v=20260923_GROWW_IPO_V3"></script>
 </body>
 </html>

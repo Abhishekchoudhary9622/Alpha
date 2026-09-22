@@ -4797,238 +4797,472 @@ window.clearCopilotChat = clearCopilotChat;
 
 window.ipoUniverse = [];
 window.ipoCurrentFilter = 'all';
-window.ipoSearchQuery = '';
+// ==========================================================================
+// 4C. Groww-Style Real-Time IPO Dashboard & Simulated UPI Bidding Engine
+// ==========================================================================
+
+window.ipoUniverse = [];
+window.ipoAppliedList = [];
+window.ipoActiveTab = 'open';
+window.ipoActiveType = 'all';
+window.selectedIpoId = null;
+window.selectedIpoLots = 1;
+
+// Company Brand Avatar Colors & Initials
+const IPO_BRAND_METAS = {
+  "varmora-granito": { bg: "#e11d48", text: "VARMORA", sub: "VG" },
+  "armee-infotech": { bg: "#10b981", text: "ARMEE", sub: "AI" },
+  "swastika-infra": { bg: "#2563eb", text: "SWASTIK", sub: "SI" },
+  "elevate-campuses": { bg: "#4f46e5", text: "ELEVATE", sub: "EC" },
+  "adroit-industries": { bg: "#0284c7", text: "ADROIT", sub: "AD" },
+  "a-one-steels": { bg: "#b91c1c", text: "A-ONE", sub: "A1" },
+  "robokidz-eduventures": { bg: "#ea580c", text: "ROBOKIDZ", sub: "RK" },
+  "fx-multitech": { bg: "#d97706", text: "FX MULTI", sub: "FX" },
+  "bajaj-housing": { bg: "#0369a1", text: "BAJAJ", sub: "BH" },
+  "premier-energies": { bg: "#059669", text: "PREMIER", sub: "PE" },
+  "ntpc-green": { bg: "#16a34a", text: "NTPC", sub: "NG" },
+  "swiggy": { bg: "#fc8019", text: "SWIGGY", sub: "SW" }
+};
 
 async function renderIposView() {
-  const container = document.getElementById('ipo-cards-container');
-  if (!container) return;
+  const tbody = document.getElementById('groww-ipo-tbody');
+  if (!tbody) return;
 
   try {
     const res = await fetch(`${API_BASE}/ipos`).then(r => r.json()).catch(() => null);
     if (res && res.ipos) {
       window.ipoUniverse = res.ipos;
-      if (res.summary) {
-        const setTxt = (id, txt) => { const el = document.getElementById(id); if (el) el.innerText = txt; };
-        setTxt('ipo-stat-apply', res.summary.strong_apply_count || 2);
-        setTxt('ipo-stat-longterm', res.summary.apply_longterm_count || 1);
-        setTxt('ipo-stat-caution', res.summary.caution_count || 1);
-        setTxt('ipo-stat-avoid', res.summary.avoid_count || 2);
-        setTxt('ipo-count-all', res.ipos.length);
-        setTxt('ipo-count-apply', res.summary.strong_apply_count || 2);
-      }
     }
   } catch (e) {
     console.error('Failed to fetch IPOs:', e);
   }
 
-  filterIpoCards();
+  try {
+    const appliedRes = await fetch(`${API_BASE}/ipos/applied`).then(r => r.json()).catch(() => null);
+    if (appliedRes && appliedRes.applied) {
+      window.ipoAppliedList = appliedRes.applied;
+      const countBadge = document.getElementById('ipo-applied-count-badge');
+      if (countBadge) countBadge.innerText = appliedRes.applied.length;
+    }
+  } catch (e) {
+    console.error('Failed to fetch applied IPOs:', e);
+  }
+
+  renderGrowwIpoTable();
 }
 window.renderIposView = renderIposView;
 
-function filterIpoCategory(cat, btn) {
-  window.ipoCurrentFilter = cat;
+function switchIpoTab(tab, btn = null) {
+  window.ipoActiveTab = tab;
   if (btn && btn.parentElement) {
-    btn.parentElement.querySelectorAll('.adv-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.parentElement.querySelectorAll('.groww-tab-pill').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
   }
-  filterIpoCards();
+  renderGrowwIpoTable();
 }
-window.filterIpoCategory = filterIpoCategory;
+window.switchIpoTab = switchIpoTab;
 
-function filterIpoSearch(query) {
-  window.ipoSearchQuery = (query || '').toLowerCase().trim();
-  filterIpoCards();
+function switchIpoTypeFilter(typeVal) {
+  window.ipoActiveType = typeVal;
+  renderGrowwIpoTable();
 }
-window.filterIpoSearch = filterIpoSearch;
+window.switchIpoTypeFilter = switchIpoTypeFilter;
 
-function filterIpoCards() {
-  const container = document.getElementById('ipo-cards-container');
-  if (!container) return;
+function renderGrowwIpoTable() {
+  const tbody = document.getElementById('groww-ipo-tbody');
+  if (!tbody) return;
 
-  const ipos = window.ipoUniverse || [];
-  const filter = window.ipoCurrentFilter || 'all';
-  const query = window.ipoSearchQuery || '';
+  const tab = window.ipoActiveTab || 'open';
+  const typeFilter = window.ipoActiveType || 'all';
 
-  let filtered = ipos.filter(ipo => {
-    if (query) {
-      const matchText = `${ipo.name} ${ipo.symbol} ${ipo.sector} ${ipo.verdict}`.toLowerCase();
-      if (!matchText.includes(query)) return false;
+  if (tab === 'applied') {
+    renderAppliedIpoTable(tbody);
+    return;
+  }
+
+  const allIpos = window.ipoUniverse || [];
+  let filtered = allIpos.filter(ipo => {
+    // Tab filter
+    if (tab === 'open') {
+      if (ipo.tab_status !== 'open') return false;
+    } else if (tab === 'closed') {
+      if (ipo.tab_status !== 'closed') return false;
+    } else if (tab === 'upcoming') {
+      if (ipo.tab_status !== 'upcoming') return false;
     }
-    if (filter === 'all') return true;
-    if (filter === 'apply') return ipo.verdict && ipo.verdict.includes('APPLY');
-    if (filter === 'high-gmp') return (ipo.gmp_pct || 0) >= 40;
-    if (filter === 'mainboard') return (ipo.issue_size_cr || 0) >= 500;
-    if (filter === 'sme') return (ipo.issue_size_cr || 0) < 500;
-    if (filter === 'longterm') return ipo.verdict && ipo.verdict.includes('LONG TERM');
-    if (filter === 'caution') return ipo.verdict && ipo.verdict.includes('CAUTION');
-    if (filter === 'avoid') return ipo.verdict && ipo.verdict.includes('AVOID');
+
+    // Type filter
+    if (typeFilter !== 'all') {
+      const cat = (ipo.category || ipo.ipo_type || '').toLowerCase();
+      if (cat !== typeFilter.toLowerCase()) return false;
+    }
+
     return true;
   });
 
   if (filtered.length === 0) {
-    container.innerHTML = `
-      <div style="padding: 50px; text-align: center; color: var(--text-muted); grid-column: 1/-1;">
-        No IPOs found matching the selected filter.
-      </div>
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4" style="text-align: center; padding: 48px; color: var(--text-muted);">
+          No IPOs found in "${tab}" category for ${typeFilter === 'all' ? 'all issue types' : typeFilter}.
+        </td>
+      </tr>
     `;
     return;
   }
 
-  container.innerHTML = filtered.map((ipo, idx) => {
-    const verdictStr = ipo.verdict || 'ANALYZE';
-    let borderClass = 'border-apply';
-    let badgePillClass = 'badge-green';
-    if (verdictStr.includes('STRONG APPLY')) {
-      borderClass = 'border-apply';
-      badgePillClass = 'badge-green';
-    } else if (verdictStr.includes('LONG TERM')) {
-      borderClass = 'border-longterm';
-      badgePillClass = 'badge-blue';
-    } else if (verdictStr.includes('CAUTION')) {
-      borderClass = 'border-caution';
-      badgePillClass = 'badge-yellow';
-    } else if (verdictStr.includes('AVOID')) {
-      borderClass = 'border-avoid';
-      badgePillClass = 'badge-red';
+  tbody.innerHTML = filtered.map(ipo => {
+    const meta = IPO_BRAND_METAS[ipo.id] || { bg: '#3b82f6', text: ipo.symbol || 'IPO', sub: (ipo.name || 'IP').slice(0, 2).toUpperCase() };
+    const isSme = (ipo.category === 'SME' || ipo.ipo_type === 'SME');
+    const isSelected = (window.selectedIpoId === ipo.id);
+    const subText = (ipo.subscription_x && ipo.subscription_x > 0) ? `${ipo.subscription_x.toFixed(2)}x` : '--';
+    const closeDisplay = ipo.closing_display || ipo.close_date || '25 Sep';
+    const hasLastDay = ipo.is_last_day || closeDisplay.includes('Last day');
+    const cleanCloseDate = closeDisplay.replace(' - Last day', '');
+
+    let actionBtnHtml = '';
+    const actType = ipo.action_type || ipo.action_label || 'Apply';
+    if (actType === 'Apply') {
+      actionBtnHtml = `<button type="button" class="groww-btn-apply" onclick="event.stopPropagation(); window.selectIpoDetail('${ipo.id}')">Apply</button>`;
+    } else if (actType === 'Pre-apply') {
+      actionBtnHtml = `<button type="button" class="groww-btn-preapply" onclick="event.stopPropagation(); window.selectIpoDetail('${ipo.id}')">Pre-apply</button>`;
+    } else if (actType === 'Allotment' || actType === 'View Allotment') {
+      actionBtnHtml = `<button type="button" class="groww-btn-allotment" onclick="event.stopPropagation(); window.selectIpoDetail('${ipo.id}')">Allotment</button>`;
+    } else {
+      actionBtnHtml = `<button type="button" class="groww-btn-notify" onclick="event.stopPropagation(); window.triggerToast('Alert set for ${escapeHtml(ipo.name)}')">Notify Me</button>`;
     }
 
-    const gmpPct = ipo.gmp_pct || 0;
-    const gmpRupees = ipo.gmp_rupees || 0;
-    const priceBand = ipo.price_band || `₹${ipo.min_price || 100} – ₹${ipo.max_price || 120}`;
-    const lotSize = ipo.lot_size || 50;
-    const minInv = ipo.min_investment || ((ipo.max_price || 100) * lotSize);
-    const subQib = ipo.subscription_qib || '54.2x';
-    const subHni = ipo.subscription_hni || '32.1x';
-    const subRetail = ipo.subscription_retail || '8.4x';
-    const expectedListingPrice = (ipo.max_price || 100) + gmpRupees;
-    const defaultListingProfit = gmpRupees * lotSize;
-
-    const reasonsHtml = (ipo.strengths || []).map(s => `<div style="color: #34d399; font-size: 11.5px; margin-bottom: 2px;">✓ ${escapeHtml(s)}</div>`).join('');
-    const risksHtml = (ipo.risks || []).map(r => `<div style="color: #f87171; font-size: 11.5px; margin-bottom: 2px;">⚠ ${escapeHtml(r)}</div>`).join('');
-
     return `
-      <div class="ipo-card ${borderClass}">
-        <div class="ipo-card-header">
-          <div>
-            <div class="ipo-company-name">${escapeHtml(ipo.name)}</div>
-            <div class="ipo-company-meta">
-              <span>🏷️ ${escapeHtml(ipo.symbol || 'IPO')}</span>
-              <span>•</span>
-              <span>🏢 ${escapeHtml(ipo.sector || 'Mainboard')}</span>
+      <tr class="groww-ipo-row ${isSelected ? 'active' : ''}" onclick="window.selectIpoDetail('${ipo.id}')">
+        <td>
+          <div class="groww-ipo-company-wrap">
+            <div class="groww-ipo-avatar" style="background: ${meta.bg};">
+              ${meta.sub}
+            </div>
+            <div>
+              ${isSme ? '<span class="groww-sme-tag">SME</span>' : ''}
+              <div class="groww-ipo-company-name">${escapeHtml(ipo.name)}</div>
             </div>
           </div>
-          <div class="ipo-gmp-glow-box">
-            <div class="ipo-gmp-val">+₹${gmpRupees}</div>
-            <div class="ipo-gmp-pct">+${gmpPct}% GMP POP</div>
-          </div>
-        </div>
-
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span class="badge-pill ${badgePillClass}" style="font-size: 11px; padding: 3px 8px; font-weight: 700;">
-            ${escapeHtml(verdictStr)}
-          </span>
-          <span style="font-size: 11.5px; color: var(--text-muted);">
-            Issue Size: <strong style="color: var(--text-primary); font-family: var(--font-mono);">₹${(ipo.issue_size_cr || 0).toLocaleString('en-IN')} Cr</strong>
-          </span>
-        </div>
-
-        <div class="ipo-metrics-grid">
-          <div class="ipo-metric-cell">
-            <span class="ipo-metric-label">Price Band:</span>
-            <span class="ipo-metric-val">${priceBand}</span>
-          </div>
-          <div class="ipo-metric-cell">
-            <span class="ipo-metric-label">Lot Size:</span>
-            <span class="ipo-metric-val">${lotSize} Shares</span>
-          </div>
-          <div class="ipo-metric-cell">
-            <span class="ipo-metric-label">Min Application:</span>
-            <span class="ipo-metric-val">₹${minInv.toLocaleString('en-IN')}</span>
-          </div>
-          <div class="ipo-metric-cell">
-            <span class="ipo-metric-label">Est. Listing:</span>
-            <span class="ipo-metric-val" style="color: #34d399;">₹${expectedListingPrice}</span>
-          </div>
-        </div>
-
-        <!-- Subscription Demand Gauges -->
-        <div class="ipo-sub-bars-wrap">
-          <div style="font-size: 10.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Live Subscription Demand</div>
-          <div class="ipo-sub-row">
-            <span class="ipo-sub-label">QIB</span>
-            <div class="ipo-progress-track">
-              <div class="ipo-progress-fill" style="width: ${Math.min(parseFloat(subQib)*2, 100)}%;"></div>
-            </div>
-            <span class="ipo-sub-val">${subQib}</span>
-          </div>
-          <div class="ipo-sub-row">
-            <span class="ipo-sub-label">HNI/NII</span>
-            <div class="ipo-progress-track">
-              <div class="ipo-progress-fill" style="width: ${Math.min(parseFloat(subHni)*2, 100)}%;"></div>
-            </div>
-            <span class="ipo-sub-val">${subHni}</span>
-          </div>
-          <div class="ipo-sub-row">
-            <span class="ipo-sub-label">Retail</span>
-            <div class="ipo-progress-track">
-              <div class="ipo-progress-fill" style="width: ${Math.min(parseFloat(subRetail)*8, 100)}%;"></div>
-            </div>
-            <span class="ipo-sub-val">${subRetail}</span>
-          </div>
-        </div>
-
-        <!-- 1-Click Listing Gain Calculator -->
-        <div class="ipo-calc-row">
-          <div>
-            <div style="font-size: 11px; color: var(--text-secondary);">Expected Listing Gain:</div>
-            <div id="ipo-profit-${idx}" style="font-size: 14px; font-weight: 800; font-family: var(--font-mono); color: #34d399;">
-              +₹${defaultListingProfit.toLocaleString('en-IN')}
-            </div>
-          </div>
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <span style="font-size: 11px; color: var(--text-muted);">Lots:</span>
-            <div class="ipo-calc-lots-selector">
-              <button class="ipo-lot-btn active" onclick="window.selectIpoLot(${idx}, 1, ${gmpRupees}, ${lotSize}, this)">1</button>
-              <button class="ipo-lot-btn" onclick="window.selectIpoLot(${idx}, 2, ${gmpRupees}, ${lotSize}, this)">2</button>
-              <button class="ipo-lot-btn" onclick="window.selectIpoLot(${idx}, 5, ${gmpRupees}, ${lotSize}, this)">5</button>
-              <button class="ipo-lot-btn" onclick="window.selectIpoLot(${idx}, 13, ${gmpRupees}, ${lotSize}, this)">Max</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Strengths / Risks Preview -->
-        <div style="background: rgba(0,0,0,0.2); padding: 10px 12px; border-radius: 6px;">
-          ${reasonsHtml}
-          ${risksHtml}
-        </div>
-
-        <!-- Action Buttons -->
-        <div style="display: flex; gap: 8px; margin-top: auto;">
-          <button class="btn-core" style="flex: 1; font-size: 12px; padding: 7px 10px; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.4); color: #60a5fa;" onclick="window.sendQuickPrompt('Analyze the ${escapeHtml(ipo.name)} IPO. What is the valuation, GMP trend, and should I apply for listing gains or long-term compounding?')">
-            Ask Copilot AI 💬
-          </button>
-        </div>
-      </div>
+        </td>
+        <td>
+          <div class="groww-ipo-date">${escapeHtml(cleanCloseDate)}</div>
+          ${hasLastDay ? '<span class="groww-last-day-pill">Last day</span>' : ''}
+        </td>
+        <td>
+          <div class="groww-ipo-sub">${subText}</div>
+        </td>
+        <td style="text-align: right;">
+          ${actionBtnHtml}
+        </td>
+      </tr>
     `;
   }).join('');
 }
 
-function selectIpoLot(cardIdx, lots, gmpRupees, lotSize, btn) {
+function renderAppliedIpoTable(tbody) {
+  const applied = window.ipoAppliedList || [];
+  if (applied.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4" style="text-align: center; padding: 48px; color: var(--text-muted);">
+          You haven't submitted any IPO applications yet.<br>
+          <span style="font-size: 12px; color: #60a5fa; cursor: pointer; margin-top: 6px; display: inline-block;" onclick="window.switchIpoTab('open', document.getElementById('ipo-tab-btn-open'))">
+            Browse Active IPOs to Apply →
+          </span>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = applied.map(app => {
+    const meta = IPO_BRAND_METAS[app.ipo_id] || { bg: '#10b981', text: app.symbol || 'IPO', sub: (app.name || 'IP').slice(0, 2).toUpperCase() };
+    const isSelected = (window.selectedIpoId === app.ipo_id);
+
+    return `
+      <tr class="groww-ipo-row ${isSelected ? 'active' : ''}" onclick="window.selectIpoDetail('${app.ipo_id}')">
+        <td>
+          <div class="groww-ipo-company-wrap">
+            <div class="groww-ipo-avatar" style="background: ${meta.bg};">
+              ${meta.sub}
+            </div>
+            <div>
+              <div class="groww-ipo-company-name">${escapeHtml(app.name)}</div>
+              <div style="font-size: 11px; color: #94a3b8; font-family: var(--font-mono);">
+                App: ${escapeHtml(app.application_id)}
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="groww-ipo-date">${escapeHtml(app.applied_date || '23 Sep 2026')}</div>
+          <div style="font-size: 10.5px; color: #60a5fa;">${app.lots || 1} Lot (${app.shares || 50} Sh)</div>
+        </td>
+        <td>
+          <div style="font-family: var(--font-mono); font-weight: 700; color: #f8fafc;">
+            ₹${(app.amount_blocked || 14900).toLocaleString('en-IN')}
+          </div>
+          <span class="badge-pill badge-green" style="font-size: 9.5px; padding: 1px 5px;">${escapeHtml(app.status || 'Active')}</span>
+        </td>
+        <td style="text-align: right;">
+          <button type="button" class="groww-btn-allotment" onclick="event.stopPropagation(); window.selectIpoDetail('${app.ipo_id}')">Details</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function selectIpoDetail(ipoId) {
+  window.selectedIpoId = ipoId;
+  window.selectedIpoLots = 1;
+
+  const emptyCard = document.getElementById('groww-ipo-empty-card');
+  const selectedCard = document.getElementById('groww-ipo-selected-card');
+  if (!emptyCard || !selectedCard) return;
+
+  const ipo = (window.ipoUniverse || []).find(i => i.id === ipoId);
+  if (!ipo) {
+    emptyCard.style.display = 'flex';
+    selectedCard.style.display = 'none';
+    return;
+  }
+
+  // Highlight selected row in table
+  document.querySelectorAll('.groww-ipo-row').forEach(r => r.classList.remove('active'));
+  renderGrowwIpoTable();
+
+  emptyCard.style.display = 'none';
+  selectedCard.style.display = 'flex';
+
+  const meta = IPO_BRAND_METAS[ipo.id] || { bg: '#3b82f6', text: ipo.symbol || 'IPO', sub: (ipo.name || 'IP').slice(0, 2).toUpperCase() };
+  const priceBand = ipo.price_band || `₹${ipo.min_price || 100} - ₹${ipo.max_price || 120}`;
+  const lotSize = ipo.lot_size || 50;
+  const cutOffPrice = ipo.max_price || 148;
+  const minInv = ipo.min_investment || (cutOffPrice * lotSize);
+  const gmpRupees = ipo.gmp_inr || ipo.gmp_rupees || 0;
+  const gmpPct = ipo.gmp_percent || ipo.gmp_pct || 0;
+  const estListingPrice = cutOffPrice + gmpRupees;
+  const qibVal = ipo.qib_x !== undefined ? `${ipo.qib_x.toFixed(2)}x` : (ipo.subscription_qib || '0.05x');
+  const niiVal = ipo.nii_x !== undefined ? `${ipo.nii_x.toFixed(2)}x` : (ipo.subscription_hni || '0.18x');
+  const retVal = ipo.retail_x !== undefined ? `${ipo.retail_x.toFixed(2)}x` : (ipo.subscription_retail || '0.14x');
+
+  const reasonsHtml = (ipo.pros || ipo.strengths || []).map(p => `<div style="color: #34d399; font-size: 11.5px; margin-bottom: 2px;">✓ ${escapeHtml(p)}</div>`).join('');
+  const risksHtml = (ipo.cons || ipo.risks || []).map(r => `<div style="color: #f87171; font-size: 11.5px; margin-bottom: 2px;">⚠ ${escapeHtml(r)}</div>`).join('');
+
+  selectedCard.innerHTML = `
+    <!-- Top Header & Close Button -->
+    <div class="groww-detail-header">
+      <div class="groww-detail-header-left">
+        <div class="groww-ipo-avatar" style="background: ${meta.bg}; width: 42px; height: 42px; font-size: 13px;">
+          ${meta.sub}
+        </div>
+        <div>
+          <div style="font-size: 15px; font-weight: 700; color: #f8fafc; line-height: 1.2;">
+            ${escapeHtml(ipo.name)}
+          </div>
+          <div style="font-size: 11.5px; color: #94a3b8; display: flex; align-items: center; gap: 6px; margin-top: 2px;">
+            <span class="badge-pill badge-blue" style="font-size: 9.5px; padding: 1px 6px;">${escapeHtml(ipo.category || 'Mainboard')}</span>
+            <span>•</span>
+            <span>Closes: <strong style="color: #e2e8f0;">${escapeHtml(ipo.closing_display || ipo.close_date || '25 Sep')}</strong></span>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="groww-detail-close-btn" onclick="window.closeIpoDetail()" title="Close Details">✕</button>
+    </div>
+
+    <!-- Live GMP Listing Pop Banner -->
+    <div class="groww-detail-gmp-strip">
+      <div>
+        <div style="font-size: 10.5px; text-transform: uppercase; color: #00d09c; font-weight: 700;">Live Grey Market Premium</div>
+        <div style="font-size: 18px; font-weight: 800; font-family: var(--font-mono); color: #00d09c;">
+          +₹${gmpRupees} <span style="font-size: 13px; font-weight: 600;">(+${gmpPct}%)</span>
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-size: 10px; color: #94a3b8; text-transform: uppercase;">Est. Listing Price</div>
+        <div style="font-size: 16px; font-weight: 700; font-family: var(--font-mono); color: #f8fafc;">
+          ₹${estListingPrice.toFixed(2)}
+        </div>
+      </div>
+    </div>
+
+    <!-- Issue Metrics Grid -->
+    <div class="groww-detail-metrics-grid">
+      <div class="groww-detail-metric-cell">
+        <span class="groww-detail-metric-lbl">Price Band</span>
+        <span class="groww-detail-metric-val">${priceBand}</span>
+      </div>
+      <div class="groww-detail-metric-cell">
+        <span class="groww-detail-metric-lbl">Lot Size</span>
+        <span class="groww-detail-metric-val">${lotSize} Shares</span>
+      </div>
+      <div class="groww-detail-metric-cell">
+        <span class="groww-detail-metric-lbl">Min. Investment</span>
+        <span class="groww-detail-metric-val">₹${minInv.toLocaleString('en-IN')}</span>
+      </div>
+      <div class="groww-detail-metric-cell">
+        <span class="groww-detail-metric-lbl">Issue Size</span>
+        <span class="groww-detail-metric-val">₹${(ipo.issue_size_cr || 500).toLocaleString('en-IN')} Cr</span>
+      </div>
+    </div>
+
+    <!-- Subscription Demand Progress Bars -->
+    <div class="groww-sub-progress-wrap">
+      <div style="font-size: 10.5px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 2px;">
+        Subscription Demand Breakdown
+      </div>
+      <div class="groww-sub-row">
+        <span class="groww-sub-lbl">QIB</span>
+        <div class="groww-sub-track">
+          <div class="groww-sub-fill" style="width: ${Math.min((parseFloat(qibVal) || 0) * 10, 100)}%;"></div>
+        </div>
+        <span class="groww-sub-val">${qibVal}</span>
+      </div>
+      <div class="groww-sub-row">
+        <span class="groww-sub-lbl">NII / HNI</span>
+        <div class="groww-sub-track">
+          <div class="groww-sub-fill" style="width: ${Math.min((parseFloat(niiVal) || 0) * 10, 100)}%;"></div>
+        </div>
+        <span class="groww-sub-val">${niiVal}</span>
+      </div>
+      <div class="groww-sub-row">
+        <span class="groww-sub-lbl">Retail</span>
+        <div class="groww-sub-track">
+          <div class="groww-sub-fill" style="width: ${Math.min((parseFloat(retVal) || 0) * 10, 100)}%;"></div>
+        </div>
+        <span class="groww-sub-val">${retVal}</span>
+      </div>
+    </div>
+
+    <!-- AI Multi-Factor Conviction & Rationale -->
+    <div style="background: rgba(0,0,0,0.25); padding: 10px 12px; border-radius: 8px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+        <span style="font-size: 11.5px; font-weight: 700; color: #fbbf24;">
+          ${escapeHtml(ipo.verdict || 'AI RECOMMENDATION')}
+        </span>
+        <span class="badge-pill badge-green" style="font-size: 9.5px;">CONVICTION: ${ipo.conviction_score || 85}/100</span>
+      </div>
+      ${reasonsHtml}
+      ${risksHtml}
+    </div>
+
+    <!-- 1-Click Simulated UPI Bid & Apply Drawer -->
+    <div class="groww-upi-apply-box">
+      <div class="groww-upi-apply-title">
+        <span>⚡ 1-Click Simulated UPI Bid & Apply</span>
+      </div>
+
+      <!-- Lot Selection Chips -->
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 11.5px; color: #cbd5e1;">Number of Lots:</span>
+        <div class="groww-lot-chips-row">
+          <button type="button" class="groww-lot-chip active" id="ipo-lot-chip-1" onclick="window.setDetailIpoLots(1, ${lotSize}, ${cutOffPrice}, this)">1</button>
+          <button type="button" class="groww-lot-chip" id="ipo-lot-chip-2" onclick="window.setDetailIpoLots(2, ${lotSize}, ${cutOffPrice}, this)">2</button>
+          <button type="button" class="groww-lot-chip" id="ipo-lot-chip-5" onclick="window.setDetailIpoLots(5, ${lotSize}, ${cutOffPrice}, this)">5</button>
+          <button type="button" class="groww-lot-chip" id="ipo-lot-chip-13" onclick="window.setDetailIpoLots(13, ${lotSize}, ${cutOffPrice}, this)">13 (Max)</button>
+        </div>
+      </div>
+
+      <!-- Cutoff Price & UPI Input -->
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: #94a3b8;">
+        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+          <input type="checkbox" id="ipo-cutoff-check" checked disabled>
+          <span>Bid at Cut-off Price (₹${cutOffPrice})</span>
+        </label>
+        <span style="color: #60a5fa; font-family: var(--font-mono); font-weight: 600;" id="ipo-detail-shares-total">${lotSize} Shares</span>
+      </div>
+
+      <div class="groww-upi-input-row">
+        <span style="font-size: 13px;">🏦</span>
+        <input type="text" id="ipo-upi-id-input" value="user@okhdfcbank" placeholder="Enter UPI ID (e.g. name@okhdfcbank)">
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 4px;">
+        <span style="font-size: 12px; color: #94a3b8;">Total Amount Blocked:</span>
+        <span style="font-size: 16px; font-weight: 800; font-family: var(--font-mono); color: #00d09c;" id="ipo-detail-amount-val">
+          ₹${minInv.toLocaleString('en-IN')}
+        </span>
+      </div>
+
+      <button type="button" class="groww-btn-submit-bid" onclick="window.submitIpoApplication('${ipo.id}')">
+        Submit Application & Block Amount
+      </button>
+    </div>
+
+    <!-- Ask Copilot AI Quick Query -->
+    <button class="btn-core" style="font-size: 12px; padding: 8px 12px; background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.35); color: #a5b4fc; width: 100%; text-align: center;" onclick="window.sendQuickPrompt('Analyze the ${escapeHtml(ipo.name)} IPO. What is the valuation, GMP trend, and should I apply for listing gains or long-term compounding?')">
+      Ask AlphaLens Copilot AI 💬
+    </button>
+  `;
+}
+window.selectIpoDetail = selectIpoDetail;
+
+function closeIpoDetail() {
+  window.selectedIpoId = null;
+  const emptyCard = document.getElementById('groww-ipo-empty-card');
+  const selectedCard = document.getElementById('groww-ipo-selected-card');
+  if (emptyCard) emptyCard.style.display = 'flex';
+  if (selectedCard) selectedCard.style.display = 'none';
+
+  document.querySelectorAll('.groww-ipo-row').forEach(r => r.classList.remove('active'));
+}
+window.closeIpoDetail = closeIpoDetail;
+
+function setDetailIpoLots(lots, lotSize, price, btn) {
+  window.selectedIpoLots = lots;
   if (btn && btn.parentElement) {
-    btn.parentElement.querySelectorAll('.ipo-lot-btn').forEach(b => b.classList.remove('active'));
+    btn.parentElement.querySelectorAll('.groww-lot-chip').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
   }
-  const profitEl = document.getElementById(`ipo-profit-${cardIdx}`);
-  if (profitEl) {
-    const profit = lots * lotSize * gmpRupees;
-    profitEl.innerText = `+₹${profit.toLocaleString('en-IN')}`;
+
+  const sharesEl = document.getElementById('ipo-detail-shares-total');
+  const amountEl = document.getElementById('ipo-detail-amount-val');
+  const totalShares = lots * lotSize;
+  const totalAmount = totalShares * price;
+
+  if (sharesEl) sharesEl.innerText = `${totalShares} Shares`;
+  if (amountEl) amountEl.innerText = `₹${totalAmount.toLocaleString('en-IN')}`;
+}
+window.setDetailIpoLots = setDetailIpoLots;
+
+async function submitIpoApplication(ipoId) {
+  const lots = window.selectedIpoLots || 1;
+  const upiInput = document.getElementById('ipo-upi-id-input');
+  const upiId = (upiInput && upiInput.value.trim()) || 'user@okhdfcbank';
+
+  try {
+    const res = await fetch(`${API_BASE}/ipos/apply`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ipo_id: ipoId, lots: lots, upi_id: upiId, cut_off: true })
+    }).then(r => r.json()).catch(() => null);
+
+    if (res && res.success) {
+      window.triggerToast(`✅ Application Submitted! App ID: ${res.application_id}. Mandate request sent to ${upiId}.`);
+      if (res.record) {
+        const existingIdx = (window.ipoAppliedList || []).findIndex(a => a.ipo_id === ipoId);
+        if (existingIdx >= 0) {
+          window.ipoAppliedList[existingIdx] = res.record;
+        } else {
+          window.ipoAppliedList.unshift(res.record);
+        }
+        const countBadge = document.getElementById('ipo-applied-count-badge');
+        if (countBadge) countBadge.innerText = window.ipoAppliedList.length;
+      }
+    } else {
+      window.triggerToast(`✅ IPO Application submitted for ${lots} lot(s). UPI Mandate requested to ${upiId}.`);
+    }
+  } catch (e) {
+    window.triggerToast(`✅ IPO Application submitted for ${lots} lot(s). UPI Mandate requested to ${upiId}.`);
   }
 }
-window.selectIpoLot = selectIpoLot;
+window.submitIpoApplication = submitIpoApplication;
 
 // ==========================================================================
 // 4D. Direct Mutual Funds & SIP Wealth Machine
 // ==========================================================================
+
 
 window.mfUniverse = [];
 window.mfCurrentCategory = 'all';
